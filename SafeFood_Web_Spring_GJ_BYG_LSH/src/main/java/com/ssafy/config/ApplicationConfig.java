@@ -35,12 +35,10 @@ public class ApplicationConfig
 		return service;
 	}
 
-	@Bean
-	public FoodService foodService(FoodRepo repo)
-	{
-		FoodService service = new FoodService(repo);
-		return service;
-	}
+	/*
+	 * @Bean public FoodService foodService(FoodRepo repo) { FoodService service
+	 * = new FoodService(repo); return service; }
+	 */
 
 	@Bean
 	public DataSource ds
