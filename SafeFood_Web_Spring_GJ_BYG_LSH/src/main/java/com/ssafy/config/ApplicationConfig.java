@@ -22,34 +22,27 @@ import com.ssafy.service.AccountService;
 import com.ssafy.service.FoodService;
 
 @Configuration
-@ComponentScan(basePackageClasses = {AccountRepo.class})
+@ComponentScan(basePackageClasses = { AccountRepo.class })
 /* @EnableAspectJAutoProxy */ // AOP를 쓰지 않으므로 주석해뒀음
 @EnableTransactionManagement
-@PropertySource({"classpath:/config.properties"})
-public class ApplicationConfig
-{
+@PropertySource({ "classpath:/config.properties" })
+public class ApplicationConfig {
 	@Bean
-	public AccountService accountService(AccountRepo repo)
-	{
+	public AccountService accountService(AccountRepo repo) {
 		AccountService service = new AccountService(repo);
 		return service;
 	}
 
-	
-	 @Bean public FoodService foodService(FoodRepo repo) {
-		 FoodService service
-	 = new FoodService(repo); return service; }
-	 
+	@Bean
+	public FoodService foodService(FoodRepo repo) {
+
+		FoodService service = new FoodService(repo);
+		return service;
+	}
 
 	@Bean
-	public DataSource ds
-	(
-		@Value("${db.driverClassName}") String driver,
-		@Value("${db.url}") 			String url,
-		@Value("${db.userName}") 		String user,
-		@Value("${db.password}") 		String pass
-	)
-	{
+	public DataSource ds(@Value("${db.driverClassName}") String driver, @Value("${db.url}") String url,
+			@Value("${db.userName}") String user, @Value("${db.password}") String pass) {
 		DriverManagerDataSource ds = new DriverManagerDataSource();
 		ds.setDriverClassName(driver);
 		ds.setUrl(url);
@@ -59,8 +52,7 @@ public class ApplicationConfig
 	}
 
 	@Bean
-	public SqlSessionFactoryBean sqlSessionFactoryBean(DataSource ds, ApplicationContext ctx)
-	{
+	public SqlSessionFactoryBean sqlSessionFactoryBean(DataSource ds, ApplicationContext ctx) {
 		SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
 		bean.setDataSource(ds);
 		String location = "classpath:/mybatis/mybatis_config.xml";
@@ -69,15 +61,13 @@ public class ApplicationConfig
 	}
 
 	@Bean
-	public SqlSessionTemplate template(SqlSessionFactoryBean factory) throws Exception
-	{
+	public SqlSessionTemplate template(SqlSessionFactoryBean factory) throws Exception {
 		SqlSessionTemplate template = new SqlSessionTemplate(factory.getObject());
 		return template;
 	}
 
 	@Bean
-	public PlatformTransactionManager transactionManager(DataSource ds)
-	{
+	public PlatformTransactionManager transactionManager(DataSource ds) {
 		return new DataSourceTransactionManager(ds);
 	}
 }

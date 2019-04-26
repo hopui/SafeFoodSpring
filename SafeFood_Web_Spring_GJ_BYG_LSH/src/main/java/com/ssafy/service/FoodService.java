@@ -42,18 +42,18 @@ public class FoodService
 	}
 
 	public Food selectMyFood(String email, String code) {
-		return selectMyFood(email, code);
+		return dao.selectMyFood(email, code);
 	}
 
 	public int insertMyfood(String email, String code, int quantity) {
-		return insertMyfood(email, code, quantity);
+		return dao.insertMyfood(email, code, quantity);
 	}
 
 	public int updateMyfood(String email, String code, int quantity) {
-		return updateMyfood(email, code, quantity);
+		return dao.updateMyfood(email, code, quantity);
 	}
 	
 	public int deleteMyfood(String email, String code) {
-		return deleteMyfood(email, code);
+		return dao.deleteMyfood(email, code);
 	}
 }

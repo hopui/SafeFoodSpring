@@ -50,22 +50,22 @@ public class FoodRepo {
 	}
 
 	public Food selectMyFood(String email, String code) {
-		String stmt = ns + "selectMaterial";
-		Map<String, String> menu = new HashMap<String, String>();
-		menu.put("email", email);
-		menu.put("code", code);
-		return tmp.selectOne(stmt, menu);
+		String stmt = ns + "selectMyFood";
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("email", email);
+		map.put("code", code);
+		return tmp.selectOne(stmt, map);
 	}
 
 	public int insertMyfood(String email, String code, int quantity) {
 		Food food = selectMyFood(email, code);
 		if (food == null) {
 			String stmt = ns + "insertMyFood";
-			Map<String, String> menu = new HashMap<String, String>();
-			menu.put("email", email);
-			menu.put("code", code);
-			menu.put("quantity", String.valueOf(quantity));
-			return tmp.insert(stmt, menu);
+			Map<String, String> map = new HashMap<String, String>();
+			map.put("email", email);
+			map.put("code", code);
+			map.put("quantity", String.valueOf(quantity));
+			return tmp.insert(stmt, map);
 		}else {
 			//return updateMyfood(email, code, food.quantity);
 			return -1;
@@ -74,19 +74,19 @@ public class FoodRepo {
 
 	public int updateMyfood(String email, String code, int quantity) {
 		String stmt = ns + "updateMyFood";
-		Map<String, String> menu = new HashMap<String, String>();
-		menu.put("email", email);
-		menu.put("code", code);
-		menu.put("quantity", String.valueOf(quantity));
-		return tmp.update(stmt, menu);
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("email", email);
+		map.put("code", code);
+		map.put("quantity", String.valueOf(quantity));
+		return tmp.update(stmt, map);
 	}
 	
 	public int deleteMyfood(String email, String code) {
 		String stmt = ns + "deleteMyFood";
-		Map<String, String> menu = new HashMap<String, String>();
-		menu.put("email", email);
-		menu.put("code", code);
-		return tmp.delete(stmt, menu);
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("email", email);
+		map.put("code", code);
+		return tmp.delete(stmt, map);
 	}
 
 }

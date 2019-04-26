@@ -8,20 +8,23 @@
 	</select>
 
 	<select id="selectMyFoodAll" resultType="food" parameterType="String">
-		select * from takenfood where user_email =  #{user_email}
+		select * from food f join takenfood t on t.user_email = #{email} where f.code = t.food_code
 	</select>
 	<select id="selectCode" resultType="food" parameterType="int">
-		select  from food where code=#{code}
+		select * from food where code=#{code}
 	</select>
-	<select id="selectMaker" resultType="food" parameterType="string">
-		select * from food where maker like '%#{maker}%'
+	<select id="selectMaker" resultType="food" parameterType="String">
+	 <bind name="pattern" value="'%' + _parameter + '%'" />
+		select * from food where maker like #{pattern}
 	</select>
-	<select id="selectMaterial" resultType="food" parameterType="string">
-		select * from food where material like '%#{material}%'
+	<select id="selectMaterial" resultType="food" parameterType="String">
+		<bind name="pattern" value="'%' + _parameter + '%'" />
+		select * from food where material like #{pattern}
 	</select>
 	
-	<select id="selectName" resultType="food" parameterType="string">
-		select * from food where name like '%#{name}%'
+	<select id="selectName" resultType="food" parameterType="String">
+		<bind name="pattern" value="'%' + _parameter + '%'" />
+		select * from food where name like #{pattern}
 	</select>
 	
 	<select id="selectMyFood" resultType="food" parameterType="map">
