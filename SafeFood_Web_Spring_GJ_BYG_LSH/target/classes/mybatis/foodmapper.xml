@@ -25,7 +25,7 @@
 	</select>
 	
 	<select id="selectMyFood" resultType="food" parameterType="map">
-		select * from takenfood where user_email =  #{email} and food_code = #{code}
+		select * from food f join takenfood t on t.user_email = #{email} where f.code = #{code}
 	</select>
 	
 	<insert id="insertMyFood" parameterType="map">
