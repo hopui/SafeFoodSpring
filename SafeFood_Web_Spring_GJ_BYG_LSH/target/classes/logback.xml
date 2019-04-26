@@ -31,7 +31,7 @@
 	</appender>
 
 	<!-- root 로거 기본 설정 -->
-	<logger name="org" level="trace"></logger>
+	<logger name="org" level="info"></logger>
 	<!-- <logger name="org.springframework" level="info"></logger>
 	<logger name="org.aspectj" level="info"></logger> -->
 	<!-- root 로거 기본 설정 -->

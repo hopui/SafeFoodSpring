@@ -1,8 +1,7 @@
 package com.ssafy.test;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.assertThat;
 
 import javax.sql.DataSource;
 
@@ -19,12 +18,12 @@ import com.ssafy.config.ApplicationConfig;
 @ContextConfiguration(classes = {ApplicationConfig.class})
 public class DataTest
 {
-	@Value("${db.driverClassName}") 
+	@Value("${db.driverClassName}")
 	String driver;
 
 	@Autowired
 	DataSource ds;
-	
+
 	@Test
 	public void testDriver()
 	{
@@ -36,4 +35,5 @@ public class DataTest
 	{
 		assertThat(ds, is(notNullValue()));
 	}
+
 }

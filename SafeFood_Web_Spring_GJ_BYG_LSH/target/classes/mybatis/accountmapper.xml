@@ -8,7 +8,7 @@
 	</select>
 
 	<select id="select" resultType="account" parameterType="string">
-		select * from user where email=#{email} and password=${password}
+		select * from user where email=#{email}
 	</select>
 
 	<insert id="insert" parameterType="account">
