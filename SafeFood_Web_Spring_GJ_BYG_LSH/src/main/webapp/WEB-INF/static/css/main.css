@@ -1,0 +1,170 @@
+@charset "UTF-8";
+
+
+<!-- 메인 css -->
+<style>
+h2 {
+	font-family: 'Jua', sans-serif;
+}
+
+#rred {
+	color: red;
+}
+
+.btn-primary {
+	margin-right: 10px;
+	color: #fff;
+	background-color: #337ab7;
+	border-color: #2e6da4;
+}
+
+h1 {
+	font-size: -webkit-xxx-large;
+	font-family: cursive;
+}
+
+p {
+	font-family: auto;
+	font-size: x-large;
+	margin-bottom: 34px;
+}
+
+.jumbotron2 {
+	background-image:
+		url(https://ak1.ostkcdn.com/img/mxc/122017_Plates_Plates_HERO.jpg?imwidth=1024&impolicy=medium);
+	color: #fff;
+	padding: 100px 25px;
+	height: 500px;
+	padding-top: 190px;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	position: relative;
+}
+
+.col-sm-12 {
+	padding-right: 200px;
+	padding-left: 200px;
+	padding-bottom: 10px;
+}
+
+.jumbotron {
+	background-color: gray;
+	color: #fff;
+	padding: 100px 25px;
+}
+
+.container-fluid {
+	padding: 60px 50px;
+}
+
+.bg-grey {
+	background-color: #f6f6f6;
+}
+
+}
+.logo {
+	color: #f4511e;
+	font-size: 200px;
+}
+
+.item h4 {
+	font-size: 19px;
+	line-height: 1.375em;
+	font-weight: 400;
+	font-style: italic;
+	margin: 70px 0;
+}
+
+.item span {
+	font-style: normal;
+}
+
+.navbar {
+	margin-bottom: 0;
+	background-color: white;
+	z-index: 9999;
+	border: 0;
+	font-size: 12px !important;
+	line-height: 1.42857143 !important;
+	letter-spacing: 4px;
+	border-radius: 0;
+	height: 90px;
+}
+
+.navbar li span {
+	padding: 10px;
+}
+
+.navbar li sapn, .navbar .navbar-brand {
+	color: black !important;
+}
+
+.navbar-nav li span:hover, .navbar-nav li.active span {
+	color: #f4511e !important;
+	background-color: #fff !important;
+}
+
+.navbar-default .navbar-toggle {
+	border-color: transparent;
+	color: #fff !important;
+}
+
+@media screen and (max-width: 768px) {
+	.col-sm-4 {
+		text-align: center;
+		margin: 25px 0;
+	}
+}
+
+.btn-danger2 {
+	color: #fff;
+	background-color: rgba(0, 143, 204, 0.3);
+	border-color: #fff;
+}
+
+#navtop {
+	margin-bottom: 0;
+	background-color: black;
+	z-index: 9999;
+	border: 0;
+	font-size: 12px !important;
+	line-height: 1.42857143 !important;
+	letter-spacing: 4px;
+	border-radius: 0;
+	height: 90px;
+}
+
+.col-sm-12 {
+	padding-right: 200px;
+	padding-left: 200px;
+}
+
+.search-gray {
+	background-color: rgba(0, 143, 204, 0.03);
+	height: 270px;
+	margin-bottom: 10px;
+	border: solid 15px white;
+}
+
+.prdtimg2 {
+	padding-left: 20px;
+	width: 80%;
+	height: 80%;
+	width: 80%;
+	padding-top: 31px;
+}
+
+.searchimg {
+	padding-top: 30px;
+}
+
+#myNavbar2 {
+	height: 100px;
+}
+
+a:link {text-decoration:none; color:#646464;}
+a:visited {text-decoration:none; color:#646464;}
+a:active {text-decoration:none; color:#646464;}
+a:hover {text-decoration:none; color:#646464;}
+</style>
