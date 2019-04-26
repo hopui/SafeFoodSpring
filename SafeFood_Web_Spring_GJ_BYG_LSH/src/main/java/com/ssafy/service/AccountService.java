@@ -38,10 +38,10 @@ public class AccountService
 		}
 	}
 
-	public Account select(String id)
+	public Account select(String email)
 	{
-		logger.trace("select: {}",id);
-		return accountRepo.select(id);
+		logger.trace("select: {}",email);
+		return accountRepo.select(email);
 	}
 
 	public List<Account> selectAll()

@@ -13,8 +13,7 @@ import com.ssafy.model.dto.Account;
 @Repository
 public class AccountRepo
 {
-	private static final Logger logger = LoggerFactory
-			.getLogger(AccountRepo.class);
+	private static final Logger logger = LoggerFactory.getLogger(AccountRepo.class);
 	private static final String ns = "com.ssafy.model.mapper.Account.";
 
 	@Autowired
