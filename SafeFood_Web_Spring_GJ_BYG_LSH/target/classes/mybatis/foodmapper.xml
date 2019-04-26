@@ -20,11 +20,15 @@
 		select * from food where material like '%#{material}%'
 	</select>
 	
+	<select id="selectName" resultType="food" parameterType="string">
+		select * from food where name like '%#{name}%'
+	</select>
+	
 	<select id="selectMyFood" resultType="food" parameterType="map">
 		select * from takenfood where user_email =  #{email} and food_code = #{code}
 	</select>
 	
-	<insert id="insertMyFood" parameterType="takenfood">
+	<insert id="insertMyFood" parameterType="map">
 		insert into takenfood (user_email, food_code, quantity) values(#{email},#{code},#{quantity})
 	</insert>
 
