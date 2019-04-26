@@ -2,23 +2,24 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ssafy.model.mapper.UserInfo">
-	<select id="selectAllUsers" resultType="userInfo">
-		select * from user_info
+<mapper namespace="com.ssafy.model.mapper.Account">
+	<select id="selectAllUsers" resultType="account">
+		select * from user
 	</select>
 
-	<select id="select" resultType="userInfo" parameterType="string">
-		select * from user_info where user_id=#{id}
+	<select id="select" resultType="account" parameterType="string">
+		select * from user where email=#{email} and password=${password}
 	</select>
 
-	<insert id="insert" parameterType="userInfo">
-		insert into user_info values(#{userId}, #{name}, #{password})
+	<insert id="insert" parameterType="account">
+		insert into user values(#{email}, #{password}, #{name}, #{address}, #{phone}, #{allergy})
 	</insert>
 
-	<update id="update" parameterType="userInfo">
-		update user_info set name=#{name}, password=#{password} where user_id=#{userId}
+	<update id="update" parameterType="account">
+		update user set password=#{password}, name=#{name}, address=#{address}, phone=#{phone}, allergy=#{allergy} where email=#{email}
 	</update>
+	
 	<delete id="delete" parameterType="string">
-		delete from user_info where user_id=#{userId}
+		delete from user where email=#{email}
 	</delete>
 </mapper>
