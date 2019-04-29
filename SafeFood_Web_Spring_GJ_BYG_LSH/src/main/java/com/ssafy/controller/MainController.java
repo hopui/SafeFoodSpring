@@ -18,9 +18,15 @@ public class MainController
 	FoodService service;
 	
 	@GetMapping("/main")
-	public String main(Model model)
+	public String goMain(Model model)
 	{
-		model.addAttribute("foods",service.selectAll());
-		return "index";
+		//model.addAttribute("foods",service.selectAll());
+		return "/index";
+	}
+	
+	@GetMapping("/session/myTakenInfo")
+	public String doMyTakenInfo(Model model)
+	{
+		return "redirect:session/MyTakenInfo";
 	}
 }

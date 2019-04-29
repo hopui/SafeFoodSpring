@@ -16,39 +16,38 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import com.ssafy.repository.AccountRepo;
+import com.ssafy.repository.UserRepo;
 import com.ssafy.repository.FoodRepo;
-import com.ssafy.service.AccountService;
+import com.ssafy.service.UserService;
 import com.ssafy.service.FoodService;
 
 @Configuration
-@ComponentScan(basePackageClasses = {AccountRepo.class})
+@ComponentScan(basePackageClasses = { UserRepo.class })
 /* @EnableAspectJAutoProxy */ // AOP를 쓰지 않으므로 주석해뒀음
 @EnableTransactionManagement
-@PropertySource({"classpath:/config.properties"})
+@PropertySource({ "classpath:/config.properties" })
 public class ApplicationConfig
 {
 	@Bean
-	public AccountService accountService(AccountRepo repo)
+	public UserService accountService(UserRepo repo)
 	{
-		AccountService service = new AccountService(repo);
+		UserService service = new UserService(repo);
 		return service;
 	}
 
-	
-	 @Bean public FoodService foodService(FoodRepo repo) {
-		 FoodService service
-	 = new FoodService(repo); return service; }
-	 
+	@Bean
+	public FoodService foodService(FoodRepo repo)
+	{
+		FoodService service = new FoodService(repo);
+		return service;
+	}
 
 	@Bean
-	public DataSource ds
-	(
-		@Value("${db.driverClassName}") String driver,
-		@Value("${db.url}") 			String url,
-		@Value("${db.userName}") 		String user,
-		@Value("${db.password}") 		String pass
-	)
+	public DataSource ds(
+			@Value("${db.driverClassName}") String driver, 
+			@Value("${db.url}") String url,
+			@Value("${db.userName}") String user,
+			@Value("${db.password}") String pass)
 	{
 		DriverManagerDataSource ds = new DriverManagerDataSource();
 		ds.setDriverClassName(driver);

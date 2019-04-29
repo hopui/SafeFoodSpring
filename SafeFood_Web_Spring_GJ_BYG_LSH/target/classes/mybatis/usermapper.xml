@@ -2,20 +2,20 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ssafy.model.mapper.Account">
-	<select id="selectAllUsers" resultType="account">
+<mapper namespace="com.ssafy.model.mapper.User">
+	<select id="selectAllUsers" resultType="user">
 		select * from user
 	</select>
 
-	<select id="select" resultType="account" parameterType="string">
+	<select id="select" resultType="user" parameterType="string">
 		select * from user where email=#{email}
 	</select>
 
-	<insert id="insert" parameterType="account">
+	<insert id="insert" parameterType="user">
 		insert into user values(#{email}, #{password}, #{name}, #{address}, #{phone}, #{allergy})
 	</insert>
 
-	<update id="update" parameterType="account">
+	<update id="update" parameterType="user">
 		update user set password=#{password}, name=#{name}, address=#{address}, phone=#{phone}, allergy=#{allergy} where email=#{email}
 	</update>
 	
