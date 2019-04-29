@@ -20,7 +20,7 @@ public class MainController
 	@GetMapping("/main")
 	public String goMain(Model model)
 	{
-		//model.addAttribute("foods",service.selectAll());
+		model.addAttribute("foods",service.selectAll());
 		return "/index";
 	}
 	
