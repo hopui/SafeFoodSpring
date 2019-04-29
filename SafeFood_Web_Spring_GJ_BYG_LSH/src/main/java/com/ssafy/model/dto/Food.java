@@ -31,7 +31,7 @@ public class Food {
 	/**원료*/
 	protected String material;
 	/**이미지 경로*/
-	protected String img;
+	protected String image;
 	protected String allergy;
 	public Food() {
 	}
@@ -124,10 +124,10 @@ public class Food {
 		this.material = material;
 	}
 	public String getImg() {
-		return img;
+		return image;
 	}
 	public void setImg(String img) {
-		this.img = img;
+		this.image = img;
 	}
 	
 	public String getAllergy() {
@@ -141,7 +141,7 @@ public class Food {
 		return "Food [code=" + code + ", name=" + name + ", supportpereat=" + supportpereat + ", calory=" + calory
 				+ ", carbo=" + carbo + ", protein=" + protein + ", fat=" + fat + ", sugar=" + sugar + ", natrium="
 				+ natrium + ", chole=" + chole + ", fattyacid=" + fattyacid + ", transfat=" + transfat + ", maker="
-				+ maker + ", material=" + material + ", img=" + img + "]";
+				+ maker + ", material=" + material + ", img=" + image + "]";
 	}
 	
 }
