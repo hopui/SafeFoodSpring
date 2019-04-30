@@ -184,6 +184,9 @@
 						</c:forEach>
 					</c:if>
 				</c:if>
+				<c:if test="${empty foods}">
+					<div style='text-align: center;'>식품정보가 없습니다.</div>
+				</c:if>
 			</div> 
 		</div> <!-- 상품정보 출력 끝 -->
 	
