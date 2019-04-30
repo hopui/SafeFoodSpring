@@ -26,7 +26,6 @@ public class FoodController
 	@Autowired
 	FoodService service;
 	
-	
 	@GetMapping("/search")
 	public String allInfo(Model model) {
 		model.addAttribute("foods", service.selectAll());
@@ -102,17 +101,16 @@ public class FoodController
 		User user = (User)session.getAttribute("loginUser");
 		if(eat !=null) {
 			if(service.insertMyfood(user.getEmail(),eat,quantity)>0)
-				redir.addAttribute("alarm","섭취 등록 성공했습니다.");
+				redir.addFlashAttribute("alarm","섭취 등록 성공했습니다.");
 			else
-				redir.addAttribute("alarm","섭취 등록 실패했습니다.");
-			return "redirect:/detail/"+eat;
+				redir.addFlashAttribute("alarm","섭취 등록 실패했습니다.");
+			return "redirect:/detail/"+eat; 
 		}
 	
 		if(service.deleteMyfood(user.getEmail(), delete)>0)
-			redir.addAttribute("alarm","식품 삭제 성공했습니다.");
+			redir.addFlashAttribute("alarm","식품 삭제 성공했습니다.");
 		else
-			redir.addAttribute("alarm","식품 삭제 실패했습니다.");
+			redir.addFlashAttribute("alarm","식품 삭제 실패했습니다.");
 		return "redirect:/session/MyTakenInfo";
 	}
-	
 }
