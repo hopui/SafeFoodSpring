@@ -56,4 +56,8 @@ public class FoodService
 	public int deleteMyfood(String email, String code) {
 		return dao.deleteMyfood(email, code);
 	}
+	
+	public int deleteMyfoodForUser(String email) {
+		return dao.deleteMyfoodForUser(email);
+	}
 }
