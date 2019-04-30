@@ -145,7 +145,7 @@
 								<div class='col-sm-4 search-img'>
 								<c:url value="/detail/${food.code }" var="detailUrl"></c:url>
 									<a href='${detailUrl}'>
-									<c:url value="/static/${food.image }" var="foodImg"/>
+									<c:url value="static/${food.image }" var="foodImg"/>
 									<img class='prdtimg2' src='${foodImg }'></a>
 								</div>
 								

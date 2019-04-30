@@ -36,6 +36,12 @@ h1 {
 	font-family: 'Do Hyeon', sans-serif;
 	font-size: -webkit-xxx-large;
 }
+.container {
+ margin-right: auto;
+    margin-left: auto;
+			position: relative;
+			width: 50%;
+}
 </style>
 <!-- 그래프 -->
 <style>
@@ -179,14 +185,14 @@ footer {
 	<div class="text-center">
 		<h1>제품 정보</h1>
 	</div>
-	<c:set var="allergy"
-		value="{['대두', '땅콩', '우유', '게', '새우', '참치', '연어', '쑥','소고기', '닭고기', '돼지고기','복숭아', '민들레','계란흰자']}" />
 	<div class="text-center" id="ddd">
-		<img src="../img/product.png" id="prdt">
+	<c:url value="/static/img/product.png" var="cartImg"/>
+		<img src="${cartImg }" id="prdt">
 	</div>
 	<div class="container row">
 		<div class="col-sm-3" id="main_img">
-			<img class='imgs' src="../${food.img }">
+		<c:url value="/static/${food.image }" var="foodImg"/>
+			<img class='imgs' src="${foodImg }">
 		</div>
 		<div class="col-sm-9">
 			<table class="table">
