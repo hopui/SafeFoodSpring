@@ -23,6 +23,10 @@
 		
 		<!-- local css -->
 		<style>
+			.container:hover .overlay {
+				opacity: 0.5;
+			}
+		
 			body {font-family: 'Varela Round', sans-serif;}
 			h2 {font-family: 'Jua', sans-serif;}	
 			h1 {

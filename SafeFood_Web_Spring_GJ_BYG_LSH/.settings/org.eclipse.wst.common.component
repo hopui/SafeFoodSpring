@@ -4,7 +4,7 @@
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
-        <property name="context-root" value="SafeFood_Web_Spring_GJ_BYG_LSH"/>
         <property name="java-output-path" value="/SafeFood_Web_Spring_GJ_BYG_LSH/target/classes"/>
+        <property name="context-root" value="SafeFood_Web_SF_광주_02_BYG_LSH"/>
     </wb-module>
 </project-modules>

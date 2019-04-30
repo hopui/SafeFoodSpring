@@ -39,7 +39,6 @@
 		}
 		</style>
 		
-		<!-- 그래프 -->
 		<style>
 		@keyframes bake-pie {
 			from { 
@@ -153,10 +152,11 @@
 			width: auto;
 		}
 		
-		<!-- hover -->
-		.container {
+		.container2 {
+			display: inline-block;
 			position: relative;
-			width: 50%;
+			width: 960px;
+			margin: 0 380px;
 		}
 		
 		.image {
@@ -219,9 +219,9 @@
 		<div class="text-center" id="ddd">
 			<img src="${checkImg }" id="prdt">
 		</div>
-	
+		
 		<!-- 섭취 리스트 -->
-		<div class="container">
+		<div class="container2">
 			<c:if test="${empty foods }">
 				<h2 style="text-align: center;">섭취식품이 없습니다.</h2>
 			</c:if>
