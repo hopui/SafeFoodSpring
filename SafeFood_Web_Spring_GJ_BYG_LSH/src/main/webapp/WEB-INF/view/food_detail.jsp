@@ -224,18 +224,14 @@ footer {
 			<c:url value="/session/modify" var="modilUrl"></c:url>
 			<form id="eat_form" method="post" action="${modilUrl}">
 				<c:if test="${not empty loginUser}">
-					<%
-						String modi = request.getParameter("action");
-							if (modi != null) {
-					%>
+					<c:if test="${not empty action }">
 					<input hidden='true' name='delete' value='${food.code }'>
 					<button class='btn btn-danger' type="submit">
 						<span id="delete" class='glyphicon glyphicon-remove'
 							aria-hidden='true'></span>삭제
 					</button>
-					<%
-						} else {
-					%>
+					</c:if>
+					<c:if test="${empty action }">
 					<label>Quantity</label>
 					<input type="number" class="form-control" name='quantity'>
 					<br>
@@ -247,9 +243,7 @@ footer {
 					<button type='button' class='btn btn-primary'>
 						<span class='glyphicon glyphicon-shopping-cart' aria-hidden='true'></span>찜
 					</button>
-					<%
-						}
-					%>
+					</c:if>
 				</c:if>
 			</form>
 		</div>

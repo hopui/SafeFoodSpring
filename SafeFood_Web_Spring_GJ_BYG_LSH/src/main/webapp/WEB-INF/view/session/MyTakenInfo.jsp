@@ -259,17 +259,15 @@
 			</div>
 		</div>
 		<br> <br>
-		
 		<!-- footer -->
 		<jsp:include page="../include/footer.jsp"/>
 	</body>
 	<script>
-		let alarm = "${alarm }";
-		if(alarm) {
-			alert(alarm);
-		}	
-		
-	<% long sum[] = (long[]) request.getAttribute("nutriSum");%>
+	<% long[] sum = (long[]) request.getAttribute("nutriSum");%>
+	let alarm = "${alarm }";
+	if(alarm) {
+		alert(alarm);
+	}	
 		$(".kcal").text('<%=sum[0]%>');
 		$(".tan").text('<%=sum[1]%>');
 		$(".dan").text('<%=sum[2]%>');
@@ -278,7 +276,7 @@
 		$(".na").text('<%=sum[5]%>');
 		$(".col").text('<%=sum[6]%>');
 		$(".fat").text('<%=sum[7]%>');
-		$(".trans").text('<%=sum[8]%>');
+		$(".trans").text('<%=sum[8]%>'); 
 	
 		createPie(".pieID.legend", ".pieID.pie");
 	

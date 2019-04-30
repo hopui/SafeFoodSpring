@@ -19,43 +19,41 @@ import com.ssafy.model.dto.User;
 import com.ssafy.service.FoodService;
 
 @Controller
-public class FoodController
-{
+public class FoodController {
 	private static final Logger logger = LoggerFactory.getLogger(FoodController.class);
-	
+
 	@Autowired
 	FoodService service;
-	
+
 	@GetMapping("/search")
 	public String allInfo(Model model) {
 		model.addAttribute("foods", service.selectAll());
-		model.addAttribute("foodlist","전체");
+		model.addAttribute("foodlist", "전체");
 		return "index";
 	}
-	
-	//pathvarable 방식 restful ip
+
+	// pathvarable 방식 restful ip
 	@GetMapping("/detail/{code}")
 	public String getTest(Model model, @PathVariable int code) {
-		model.addAttribute("food",service.selectCode(code));
+		model.addAttribute("food", service.selectCode(code));
 		return "food_detail";
 	}
-	
-		@GetMapping("/detail/{code}/modi")
-		public String getDetailMy(Model model, @PathVariable int code) {
-			model.addAttribute("action","modi");
-			model.addAttribute("food",service.selectCode(code));
-			return "food_detail";
-		}
-	
+
+	@GetMapping("/detail/{code}/modi")
+	public String getDetailMy(Model model, @PathVariable int code) {
+		model.addAttribute("action", "modi");
+		model.addAttribute("food", service.selectCode(code));
+		return "food_detail";
+	}
+
 	@PostMapping("/search")
 	public String getSearch(Model model, String sort, String search_text) {
 		search_text = search_text.trim();
-		
-		if(search_text == null || search_text.equals(""))
-		{	
+
+		if (search_text == null || search_text.equals("")) {
 			model.addAttribute("foods", service.selectAll());
-		}else {
-			switch(sort) {
+		} else {
+			switch (sort) {
 			case "productname":
 				model.addAttribute("foods", service.selectName(search_text));
 				break;
@@ -67,50 +65,51 @@ public class FoodController
 				break;
 			}
 		}
-		model.addAttribute("foodlist","검색");
+		model.addAttribute("foodlist", "검색");
 		return "index";
 	}
-	
+
 	@GetMapping("/session/myTakenInfo")
-	public String doMyTakenInfo(Model model, HttpSession session)
-	{
-		User user = (User)session.getAttribute("loginUser");
-		List<Food> list =service.selectMyfoodAll(user.getEmail());
-		double sum[] = new double[9];
-		
-		for(Food f : list) {
-			Integer quantity = (Integer)service.selectQuantity(user.getEmail(), String.valueOf(f.getCode()));
-			sum[0]+=f.getCalory()*quantity;
-			sum[1]+=f.getCarbo()*quantity;
-			sum[2]+=f.getProtein()*quantity;
-			sum[3]+=f.getFat()*quantity;
-			sum[4]+=f.getSugar()*quantity;
-			sum[5]+=f.getNatrium()*quantity;
-			sum[6]+=f.getChole()*quantity;
-			sum[7]+=f.getFattyacid()*quantity;
-			sum[8]+=f.getTransfat()*quantity;
+	public String doMyTakenInfo(Model model, HttpSession session) {
+		User user = (User) session.getAttribute("loginUser");
+		List<Food> list = service.selectMyfoodAll(user.getEmail());
+		long sum[] = new long[9];
+
+		for (Food f : list) {
+			Integer quantity = (Integer) service.selectQuantity(user.getEmail(), String.valueOf(f.getCode()));
+			sum[0] += f.getCalory() * quantity;
+			sum[1] += f.getCarbo() * quantity;
+			sum[2] += f.getProtein() * quantity;
+			sum[3] += f.getFat() * quantity;
+			sum[4] += f.getSugar() * quantity;
+			sum[5] += f.getNatrium() * quantity;
+			sum[6] += f.getChole() * quantity;
+			sum[7] += f.getFattyacid() * quantity;
+			sum[8] += f.getTransfat() * quantity;
 		}
-		model.addAttribute("foods",list);
+		model.addAttribute("foods", list);
 		model.addAttribute("nutriSum", sum);
 		return "session/MyTakenInfo";
 	}
-	
+
 	@PostMapping("/session/modify")
-	public String doInsert( String eat,int quantity,String delete,
-			HttpSession session, RedirectAttributes redir) {
-		User user = (User)session.getAttribute("loginUser");
-		if(eat !=null) {
-			if(service.insertMyfood(user.getEmail(),eat,quantity)>0)
-				redir.addFlashAttribute("alarm","섭취 등록 성공했습니다.");
-			else
-				redir.addFlashAttribute("alarm","섭취 등록 실패했습니다.");
-			return "redirect:/detail/"+eat; 
+	public String doInsert(String eat, String quantity, String delete, HttpSession session, RedirectAttributes redir) {
+		User user = (User) session.getAttribute("loginUser");
+
+		if (eat != null) {
+			if (quantity != null && !quantity.trim().equals("")) {
+				if (service.insertMyfood(user.getEmail(), eat, Integer.parseInt(quantity)) > 0)
+					redir.addFlashAttribute("alarm", "섭취 등록 성공했습니다.");
+				else
+					redir.addFlashAttribute("alarm", "섭취 등록 실패했습니다.");
+				return "redirect:/detail/" + eat;
+			}
 		}
-	
-		if(service.deleteMyfood(user.getEmail(), delete)>0)
-			redir.addFlashAttribute("alarm","식품 삭제 성공했습니다.");
+
+		if (service.deleteMyfood(user.getEmail(), delete) > 0)
+			redir.addFlashAttribute("alarm", "식품 삭제 성공했습니다.");
 		else
-			redir.addFlashAttribute("alarm","식품 삭제 실패했습니다.");
-		return "redirect:/session/MyTakenInfo";
+			redir.addFlashAttribute("alarm", "식품 삭제 실패했습니다.");
+		return "/session/MyTakenInfo";
 	}
 }

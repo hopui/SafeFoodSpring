@@ -43,7 +43,7 @@
 		update takenfood set quantity = #{quantity} where user_email =#{email} and food_code=#{code}
 	</update>
 	
-	<delete id="deleteMyfood" parameterType="map">
+	<delete id="deleteMyFood" parameterType="map">
 		delete from takenfood where  user_email =  #{email} and food_code = #{code}
 	</delete>
 	
