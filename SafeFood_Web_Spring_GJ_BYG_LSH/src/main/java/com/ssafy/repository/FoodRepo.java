@@ -60,7 +60,7 @@ public class FoodRepo {
 	}
 
 	public int insertMyfood(String email, String code, int quantity) {
-		int food = selectQuantity(email, code);
+		Integer food = (Integer)selectQuantity(email, code);
 		if (food<1) {
 			String stmt = ns + "insertMyFood";
 			Map<String, String> map = new HashMap<String, String>();
@@ -78,12 +78,16 @@ public class FoodRepo {
 		}
 	}
 	
-	public Integer selectQuantity(String email, String code) {
+	public Object selectQuantity(String email, String code) {
 		String stmt = ns + "selectQuantity";
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("email", email);
 		map.put("code", code);
-		return tmp.selectOne(stmt, map);
+		Object quan= tmp.selectOne(stmt, map);
+		if (quan== null)
+			return 0;
+		else 
+			return quan;
 	}
 
 	public int updateMyfood(String email, String code, int quantity) {

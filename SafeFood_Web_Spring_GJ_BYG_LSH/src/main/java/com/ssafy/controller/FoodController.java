@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ssafy.model.dto.User;
 import com.ssafy.service.FoodService;
@@ -79,23 +80,22 @@ public class FoodController
 	}
 	
 	@PostMapping("/session/modify")
-	public String doInsert(Model model, String eat,int quantity,String delete,
-			HttpSession session) {
+	public String doInsert( String eat,int quantity,String delete,
+			HttpSession session, RedirectAttributes redir) {
 		User user = (User)session.getAttribute("loginUser");
-		System.out.println(user.getEmail());
 		if(eat !=null) {
 			if(service.insertMyfood(user.getEmail(),eat,quantity)>0)
-				model.addAttribute("alarm","섭취 등록 성공했습니다.");
+				redir.addAttribute("alarm","섭취 등록 성공했습니다.");
 			else
-				model.addAttribute("alarm","섭취 등록 실패했습니다.");
-			return "redirect:detail/"+eat;
+				redir.addAttribute("alarm","섭취 등록 실패했습니다.");
+			return "redirect:/detail/"+eat;
 		}
 	
 		if(service.deleteMyfood(user.getEmail(), delete)>0)
-			model.addAttribute("alarm","식품 삭제 성공했습니다.");
+			redir.addAttribute("alarm","식품 삭제 성공했습니다.");
 		else
-			model.addAttribute("alarm","식품 삭제 실패했습니다.");
-		return "redirect:session/MyTakenInfo";
+			redir.addAttribute("alarm","식품 삭제 실패했습니다.");
+		return "redirect:/session/MyTakenInfo";
 	}
 	
 }
