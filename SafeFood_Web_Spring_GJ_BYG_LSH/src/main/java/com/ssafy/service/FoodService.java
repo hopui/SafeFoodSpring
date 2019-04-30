@@ -60,4 +60,9 @@ public class FoodService
 	public int deleteMyfoodForUser(String email) {
 		return dao.deleteMyfoodForUser(email);
 	}
+	
+	public Object selectQuantity(String email, String code) {
+		return dao.selectQuantity(email, code);
+	}
+	
 }

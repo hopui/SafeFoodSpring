@@ -1,5 +1,7 @@
 package com.ssafy.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -10,9 +12,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.ssafy.model.dto.Food;
 import com.ssafy.model.dto.User;
 import com.ssafy.service.FoodService;
 
@@ -74,8 +76,23 @@ public class FoodController
 	public String doMyTakenInfo(Model model, HttpSession session)
 	{
 		User user = (User)session.getAttribute("loginUser");
-		//model.addAttribute("food",service.deleteMyfood(user.getEmail(), String.valueOf(code)));
-		model.addAttribute(service.selectMyfoodAll(user.getEmail()));
+		List<Food> list =service.selectMyfoodAll(user.getEmail());
+		double sum[] = new double[9];
+		
+		for(Food f : list) {
+			Integer quantity = (Integer)service.selectQuantity(user.getEmail(), String.valueOf(f.getCode()));
+			sum[0]+=f.getCalory()*quantity;
+			sum[1]+=f.getCarbo()*quantity;
+			sum[2]+=f.getProtein()*quantity;
+			sum[3]+=f.getFat()*quantity;
+			sum[4]+=f.getSugar()*quantity;
+			sum[5]+=f.getNatrium()*quantity;
+			sum[6]+=f.getChole()*quantity;
+			sum[7]+=f.getFattyacid()*quantity;
+			sum[8]+=f.getTransfat()*quantity;
+		}
+		model.addAttribute("foods",list);
+		model.addAttribute("nutriSum", sum);
 		return "session/MyTakenInfo";
 	}
 	
