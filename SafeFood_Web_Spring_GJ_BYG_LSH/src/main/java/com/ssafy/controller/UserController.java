@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ssafy.model.dto.User;
+import com.ssafy.service.FoodService;
 import com.ssafy.service.UserService;
 
 @Controller
@@ -21,8 +22,11 @@ public class UserController
 {
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	@Autowired
-	UserService service;
+	UserService userService;
 
+	@Autowired
+	FoodService foodService;
+	
 	// 1. 회원가입
 	@GetMapping("/register")
 	public String goRegisterForm(Model model)
@@ -35,7 +39,7 @@ public class UserController
 		try
 		{
 			// 1. 가입
-			int result = service.register(user);
+			int result = userService.register(user);
 			// 2. 세션 등록
 			HttpSession session = req.getSession();
 			session.setAttribute("loginUser", user);
@@ -56,7 +60,7 @@ public class UserController
 	public String login(Model model, User account, HttpServletRequest req, RedirectAttributes redir)
 	{
 		logger.trace("Account: {}", account);
-		User result = service.login(account.getEmail(), account.getPassword());
+		User result = userService.login(account.getEmail(), account.getPassword());
 		if (result != null)
 		{
 			HttpSession session = req.getSession();
@@ -87,7 +91,7 @@ public class UserController
 	@PostMapping("/findPassword")
 	public String doFindPassword(Model model, String email, RedirectAttributes redir)
 	{
-		User user = service.select(email);
+		User user = userService.select(email);
 		logger.trace("findPassword: {}", email);
 		if(user != null)
 		{
@@ -118,7 +122,7 @@ public class UserController
 		try
 		{
 			logger.trace("modfiy: {}", user);
-			int result = service.update(user);
+			int result = userService.update(user);
 			session.setAttribute("loginUser", user); // 변경된 정보로 세션 갱신
 			redir.addFlashAttribute("alarm", "수정성공!");
 		} catch(Exception e)
@@ -137,7 +141,8 @@ public class UserController
 		try
 		{
 			logger.trace("dropUserInfo: {}", email);
-			int result = service.delete(email);
+			foodService.deleteMyfoodForUser(email);
+			userService.delete(email);
 			session.invalidate();
 			redir.addFlashAttribute("alarm", "성공적으로 탈퇴되었습니다.");
 		} catch(Exception e) 

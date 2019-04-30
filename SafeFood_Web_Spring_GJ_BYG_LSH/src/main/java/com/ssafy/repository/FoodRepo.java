@@ -102,5 +102,10 @@ public class FoodRepo {
 		map.put("code", code);
 		return tmp.delete(stmt, map);
 	}
-
+	
+	public int deleteMyfoodForUser(String email)
+	{
+		String stmt = ns + "deleteMyfoods2";
+		return tmp.delete(stmt, email);
+	}
 }
