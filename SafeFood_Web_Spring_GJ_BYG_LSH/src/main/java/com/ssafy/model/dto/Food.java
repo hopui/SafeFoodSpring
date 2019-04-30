@@ -123,10 +123,10 @@ public class Food {
 	public void setMaterial(String material) {
 		this.material = material;
 	}
-	public String getImg() {
+	public String getImage() {
 		return image;
 	}
-	public void setImg(String img) {
+	public void setImage(String img) {
 		this.image = img;
 	}
 	

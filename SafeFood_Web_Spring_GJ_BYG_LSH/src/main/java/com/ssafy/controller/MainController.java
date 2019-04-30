@@ -21,7 +21,7 @@ public class MainController
 	public String goMain(Model model)
 	{
 		model.addAttribute("foods",service.selectAll());
-		return "/index";
+		return "index";
 	}
 	
 	@GetMapping("/session/myTakenInfo")

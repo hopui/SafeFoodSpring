@@ -20,9 +20,6 @@
 		<link href="https://fonts.googleapis.com/css?family=Jua" rel="stylesheet">
 		<link href="https://fonts.googleapis.com/css?family=Do+Hyeon|Jua" rel="stylesheet">
 
-		<!-- static css -->
-		<c:url value="/static/css/mainCSS.css" var="mainCSS"/>
-		<link rel="stylesheet" href="${mainCSS }"> 
 		
 		<!-- local css -->
 		<style>
@@ -53,6 +50,11 @@
 			a:hover {
 				text-decoration: none;
 				color: #646464;
+			}
+			
+			.container {
+			position: relative;
+			width: 50%;
 			}
 		</style>
 	</head>
@@ -97,14 +99,14 @@
 			</div>
 			<div id="product">
 				<!-- 식품 정보들을 받아왔을 때 비어있지 않을 경우 -->
-				<c:if test="${not empty foods} ">
+				<c:if test="${not empty foods}">
 					<c:if test="${empty foodlist}">
 						<c:forEach var="food" items="${foods}">
 							<div class='col-sm-12'>
 								<div class='col-sm-4'>
-									<div class='container'>
+									<div class = 'container'>
 										<a href='food?val=${food.code }'>
-											<img class='prdtimg image' alt='Avatar' src='static/${food.img }'>
+											<img class='prdtimg image' alt='Avatar' src='static/${food.image }'>
 										</a>
 										<div class='overlay align-bottom'>
 											<div class='text'>${food.name }<br>${food.maker }</div>
@@ -114,7 +116,7 @@
 								<div class='col-sm-8'>
 									<h2>${food.name }</h2>
 	
-									<c:if test="${not empty loginUser.email}">
+									 <c:if test="${not empty loginUser.email}">
 										<c:set var="loop_flag" value="false" />
 										<c:set var="mater" value="${food.material}" />
 										<c:forTokens items="${loginUser.allergy }"
@@ -126,7 +128,7 @@
 												</c:if>
 											</c:if>
 										</c:forTokens>
-									</c:if>
+									</c:if> 
 									<hr>
 									<span>${food.material }</span><br> <br>
 								</div>
@@ -140,7 +142,7 @@
 							<div class='col-sm-6 search-gray'>
 								<div class='col-sm-4 search-img'>
 									<a href='food?val=${food.code }'>
-									<c:url value="/static/${food.img }" var="foodImg"/>
+									<c:url value="/static/${food.image }" var="foodImg"/>
 									<img class='prdtimg2' src='${foodImg }'></a>
 								</div>
 								
