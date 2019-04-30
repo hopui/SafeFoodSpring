@@ -68,7 +68,8 @@
 			<p>건강한 삶을 위한 먹거리 프로젝트</p>
 			
 			<!-- ※form action URL 수정필요※ -->
-			<form class="form-inline" id="sendForm" method="post" action="food?foodlist">
+			<c:url value="/search" var="searchUrl"></c:url>
+			<form class="form-inline" id="sendForm" method="post" action="${searchUrl }">
 				<div class="input-group">
 					<div class="input-group-btn">
 						<div id="search-option" class="btn btn-danger2">검색조건</div>
@@ -105,7 +106,8 @@
 							<div class='col-sm-12'>
 								<div class='col-sm-4'>
 									<div class = 'container'>
-										<a href='food?val=${food.code }'>
+										<c:url value="/detail/${food.code }" var="detailUrl"></c:url>
+										<a href='${detailUrl}'>
 											<img class='prdtimg image' alt='Avatar' src='static/${food.image }'>
 										</a>
 										<div class='overlay align-bottom'>
@@ -141,7 +143,8 @@
 						<c:forEach var="food" items="${foods}">
 							<div class='col-sm-6 search-gray'>
 								<div class='col-sm-4 search-img'>
-									<a href='food?val=${food.code }'>
+								<c:url value="/detail/${food.code }" var="detailUrl"></c:url>
+									<a href='${detailUrl}'>
 									<c:url value="/static/${food.image }" var="foodImg"/>
 									<img class='prdtimg2' src='${foodImg }'></a>
 								</div>

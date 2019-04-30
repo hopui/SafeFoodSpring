@@ -75,7 +75,8 @@
 					<li><span>공지사항</span></li>
 					<li>
 						<span>
-							<a id="menu" href='${main }'>상품정보</a>
+						<c:url value="/search" var="searchUrl"></c:url>
+							<a id="menu" href='${searchUrl}'>상품정보</a>
 						</span>
 					</li>
 					<li><span>베스트 섭취 정보</span></li>
