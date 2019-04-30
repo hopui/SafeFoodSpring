@@ -10,13 +10,13 @@ public class User
 	private String name;
 	private String address;
 	private String phone;
-	private String[] allergy;
+	private String allergy;
 
 	public User()
 	{
 	}
 
-	public User(String email, String password, String name, String address, String phone, String[] allergy)
+	public User(String email, String password, String name, String address, String phone, String allergy)
 	{
 		this.email = email;
 		this.password = password;
@@ -78,23 +78,19 @@ public class User
 
 	public void setAllergy(String[] allergy)
 	{
-		this.allergy = allergy;
+		String temp = Arrays.toString(allergy);
+		this.allergy = temp.substring(1, temp.length()-1);
 	}
 
 	public String getAllergy()
 	{
-		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < allergy.length; i++)
-		{
-			sb.append(allergy[i]).append(",");
-		}
-		return sb.toString().substring(0, sb.length() - 1);
+		return this.allergy;
 	}
 
 	@Override
 	public String toString()
 	{
 		return "Account [email=" + email + ", password=" + password + ", name=" + name + ", address=" + address
-				+ ", phone=" + phone + ", allergy=" + Arrays.toString(allergy) + "]";
+				+ ", phone=" + phone + ", allergy=" + allergy + "]";
 	}
 }

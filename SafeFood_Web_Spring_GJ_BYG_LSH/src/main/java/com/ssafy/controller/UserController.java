@@ -129,4 +129,22 @@ public class UserController
 		
 		return "redirect:/main";
 	}
+	
+	// 7. 회원탈퇴
+	@GetMapping("/session/dropUserInfo")
+	public String dropUser(Model model, String email, RedirectAttributes redir, HttpSession session)
+	{
+		try
+		{
+			logger.trace("dropUserInfo: {}", email);
+			int result = service.delete(email);
+			session.invalidate();
+			redir.addFlashAttribute("alarm", "성공적으로 탈퇴되었습니다.");
+		} catch(Exception e) 
+		{
+			logger.error("dropUserInfo Error: {}", e);
+			redir.addFlashAttribute("alarm", "오류로 인해 삭제에 실패했습니다.");
+		}
+		return "redirect:/main";
+	}
 }
