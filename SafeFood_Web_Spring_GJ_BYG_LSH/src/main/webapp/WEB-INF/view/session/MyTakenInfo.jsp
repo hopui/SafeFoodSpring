@@ -33,6 +33,10 @@
 			font-family: 'Do Hyeon', sans-serif;
 			font-size: -webkit-xxx-large;
 		}
+		.takenimg {
+		width: -webkit-fill-available;
+		height: auto;
+		}
 		</style>
 		
 		<!-- 그래프 -->
@@ -218,11 +222,15 @@
 	
 		<!-- 섭취 리스트 -->
 		<div class="container">
+			<c:if test="${empty foods }">
+				<h2 style="text-align: center;">섭취식품이 없습니다.</h2>
+			</c:if>
 			<c:forEach var="food" items="${foods}">
 				<div class='col-md-3'>
 				<c:url value="/static/${food.image }" var="foodImg"/>
 				<c:url value="/detail/${food.code}/modi" var="detailUrl"></c:url>
-					<a href='${detailUrl }'><img class='prdtimg image' id = "imgbox" alt='Avatar' src='${foodImg}'></a>
+				<h4 style="text-align: center;">${food.quantity} 개</h4>
+					<a href='${detailUrl }'><img class='takenimg image' id = "imgbox" alt='Avatar' src='${foodImg}'></a>
 					
 					<div class='align-bottom overlay'>
 						<div class='text'>${food.name }<br>${food.maker }</div>

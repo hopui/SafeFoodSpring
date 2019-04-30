@@ -77,6 +77,7 @@ public class FoodController {
 
 		for (Food f : list) {
 			Integer quantity = (Integer) service.selectQuantity(user.getEmail(), String.valueOf(f.getCode()));
+			f.setQuantity(quantity);
 			sum[0] += f.getCalory() * quantity;
 			sum[1] += f.getCarbo() * quantity;
 			sum[2] += f.getProtein() * quantity;
@@ -110,6 +111,6 @@ public class FoodController {
 			redir.addFlashAttribute("alarm", "식품 삭제 성공했습니다.");
 		else
 			redir.addFlashAttribute("alarm", "식품 삭제 실패했습니다.");
-		return "/session/MyTakenInfo";
+		return "redirect:/session/MyTakenInfo";
 	}
 }

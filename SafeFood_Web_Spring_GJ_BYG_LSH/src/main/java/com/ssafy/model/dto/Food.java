@@ -33,6 +33,7 @@ public class Food {
 	/**이미지 경로*/
 	protected String image;
 	protected String allergy;
+	protected int qauntity;
 	public Food() {
 	}
 	public Food(int code) {
@@ -74,6 +75,13 @@ public class Food {
 	}
 	public void setProtein(double protein) {
 		this.protein = protein;
+	}
+	
+	public int getQuantity() {
+		return qauntity;
+	}
+	public void setQuantity(int quan) {
+		this.qauntity = quan;
 	}
 	public double getFat() {
 		return fat;
