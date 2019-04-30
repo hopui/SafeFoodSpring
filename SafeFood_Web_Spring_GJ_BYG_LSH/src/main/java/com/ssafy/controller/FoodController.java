@@ -111,6 +111,6 @@ public class FoodController {
 			redir.addFlashAttribute("alarm", "식품 삭제 성공했습니다.");
 		else
 			redir.addFlashAttribute("alarm", "식품 삭제 실패했습니다.");
-		return "redirect:/session/MyTakenInfo";
+		return "redirect:/session/myTakenInfo";
 	}
 }

@@ -286,7 +286,8 @@
 		$(".fat").text('<%=sum[7]%>');
 		$(".trans").text('<%=sum[8]%>'); 
 	
-		createPie(".pieID.legend", ".pieID.pie");
+		<%if(sum[0] <1)%>
+			createPie(".pieID.legend", ".pieID.pie");
 	
 		function sliceSize(dataNum, dataTotal) {
 			return (dataNum / dataTotal) * 360;
