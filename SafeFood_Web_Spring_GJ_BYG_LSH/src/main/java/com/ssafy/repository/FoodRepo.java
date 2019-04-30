@@ -78,7 +78,7 @@ public class FoodRepo {
 		}
 	}
 	
-	public int selectQuantity(String email, String code) {
+	public Integer selectQuantity(String email, String code) {
 		String stmt = ns + "selectQuantity";
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("email", email);

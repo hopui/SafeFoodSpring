@@ -82,6 +82,7 @@ public class FoodController
 	public String doInsert(Model model, String eat,int quantity,String delete,
 			HttpSession session) {
 		User user = (User)session.getAttribute("loginUser");
+		System.out.println(user.getEmail());
 		if(eat !=null) {
 			if(service.insertMyfood(user.getEmail(),eat,quantity)>0)
 				model.addAttribute("alarm","섭취 등록 성공했습니다.");
