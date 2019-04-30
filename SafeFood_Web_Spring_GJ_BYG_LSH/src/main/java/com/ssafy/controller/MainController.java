@@ -24,9 +24,4 @@ public class MainController
 		return "index";
 	}
 	
-	@GetMapping("/session/myTakenInfo")
-	public String doMyTakenInfo(Model model)
-	{
-		return "redirect:session/MyTakenInfo";
-	}
 }

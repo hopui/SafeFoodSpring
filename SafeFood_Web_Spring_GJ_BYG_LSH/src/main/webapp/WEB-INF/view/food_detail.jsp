@@ -221,14 +221,15 @@ footer {
 					</td>
 				</tr>
 			</table>
-			<form id="eat_form" method="post">
-				<c:if test="${not empty sessionScope.account}">
+			<c:url value="/session/modify" var="modilUrl"></c:url>
+			<form id="eat_form" method="post" action="${modilUrl}">
+				<c:if test="${not empty loginUser}">
 					<%
 						String modi = request.getParameter("action");
 							if (modi != null) {
 					%>
 					<input hidden='true' name='delete' value='${food.code }'>
-					<button class='btn btn-danger' id="button_delete">
+					<button class='btn btn-danger' type="submit">
 						<span id="delete" class='glyphicon glyphicon-remove'
 							aria-hidden='true'></span>삭제
 					</button>
@@ -391,45 +392,11 @@ footer {
 </script>
 
 <script>
-	$("#button_insert").on("click", function(e) {
-		e.preventDefault();
-		$.ajax({
 
-			type : "post",
-			url : "/safefood/food/food",
-			data : $("#eat_form").serialize(),
-			success : function(resText) {
-				console.log(resText);
-				if (resText == "1") {
-					alert("섭취정보가 저장되었습니다.");
-				} else {
-					alert("섭취정보 저장 실패했습니다.");
-				}
-			},
-			error : function() {
-				alert("ERROR 발생");
-			}
-		});
-	});
+let alarm = "${alarm }";
+if(alarm) {
+	alert(alarm);
+}	
 
-	$("#button_delete").on("click", function(e) {
-		e.preventDefault();
-		$.ajax({
-
-			type : "post",
-			url : "/safefood/food/food",
-			data : $("#eat_form").serialize(),
-			success : function(resText) {
-				if (resText == "1") {
-					alert("섭취정보가 삭제되었습니다.");
-				} else {
-					alert("섭취정보 삭제를 실패했습니다.");
-				}
-			},
-			error : function() {
-				alert("ERROR 발생");
-			}
-		});
-	});
 </script>
 </html>

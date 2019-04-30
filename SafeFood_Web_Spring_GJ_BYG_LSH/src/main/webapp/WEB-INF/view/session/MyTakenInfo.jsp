@@ -209,21 +209,20 @@
 			<h1>나의 섭취 정보</h1>
 		</div>
 		
-		<c:set 
-			var  = "allergy" 
-			value= "{['대두', '땅콩', '우유', '게', '새우', '참치', '연어', '쑥','소고기', '닭고기', '돼지고기','복숭아', '민들레','계란흰자']}" 
-		/>
 		
 		<!-- 상단 이미지 -->
+		<c:url value="/static/img/check.png" var="checkImg"/>
 		<div class="text-center" id="ddd">
-			<img src="/safefood/img/check.png" id="prdt">
+			<img src="${checkImg }" id="prdt">
 		</div>
-		
+	
 		<!-- 섭취 리스트 -->
 		<div class="container">
 			<c:forEach var="food" items="${foods}">
 				<div class='col-md-3'>
-					<a href='food?val=${food.code }&action=modify'><img class='prdtimg image' id = "imgbox" alt='Avatar' src='/safefood/${food.img }'></a>
+				<c:url value="/static/${food.image }" var="foodImg"/>
+				<c:url value="/detail/${food.code}/modi" var="detailUrl"></c:url>
+					<a href='${detailUrl }'><img class='prdtimg image' id = "imgbox" alt='Avatar' src='${foodImg}'></a>
 					
 					<div class='align-bottom overlay'>
 						<div class='text'>${food.name }<br>${food.maker }</div>
@@ -264,8 +263,12 @@
 		<!-- footer -->
 		<jsp:include page="../include/footer.jsp"/>
 	</body>
-	
 	<script>
+		let alarm = "${alarm }";
+		if(alarm) {
+			alert(alarm);
+		}	
+		
 	<% long sum[] = (long[]) request.getAttribute("nutriSum");%>
 		$(".kcal").text('<%=sum[0]%>');
 		$(".tan").text('<%=sum[1]%>');

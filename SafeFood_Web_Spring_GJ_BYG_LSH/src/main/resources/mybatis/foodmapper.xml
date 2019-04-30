@@ -28,11 +28,11 @@
 	</select>
 	
 	<select id="selectMyFood" resultType="food" parameterType="map">
-		select * from food f join takenfood t on t.user_email = #{email} where f.code = #{code}
+		select * from food f join takenfood t on t.user_email = #{email} where f.food_code = #{code}
 	</select>
 	
 	<select id="selectQuantity" resultType="int" parameterType="map">
-		select quantity from takenfood where user_email = #{email} and code = #{code}
+		select quantity from takenfood where user_email = #{email} and food_code = #{code}
 	</select>
 	
 	<insert id="insertMyFood" parameterType="map">
@@ -45,4 +45,9 @@
 	<delete id="deleteMyfood" parameterType="map">
 		delete from takenfood where  user_email =  #{email} and food_code = #{code}
 	</delete>
+	
+	<delete id="deleteMyfoods" parameterType="String">
+		delete from takenfood where  user_email =  #{email}
+	</delete>
+	
 </mapper>

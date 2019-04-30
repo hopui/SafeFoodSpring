@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.namespace.QName;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -58,8 +60,8 @@ public class FoodRepo {
 	}
 
 	public int insertMyfood(String email, String code, int quantity) {
-		Food food = selectMyFood(email, code);
-		if (food == null) {
+		int food = selectQuantity(email, code);
+		if (food<1) {
 			String stmt = ns + "insertMyFood";
 			Map<String, String> map = new HashMap<String, String>();
 			map.put("email", email);
@@ -67,9 +69,21 @@ public class FoodRepo {
 			map.put("quantity", String.valueOf(quantity));
 			return tmp.insert(stmt, map);
 		}else {
-			//return updateMyfood(email, code, food.quantity);
-			return -1;
+			String stmt = ns + "updateMyFood";
+			Map<String, String> map = new HashMap<String, String>();
+			map.put("email", email);
+			map.put("code", code);
+			map.put("quantity", String.valueOf(food+quantity));
+			return tmp.update(stmt,map);
 		}
+	}
+	
+	public int selectQuantity(String email, String code) {
+		String stmt = ns + "selectQuantity";
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("email", email);
+		map.put("code", code);
+		return tmp.selectOne(stmt, map);
 	}
 
 	public int updateMyfood(String email, String code, int quantity) {
