@@ -62,6 +62,8 @@
 			}
 		</style>
 	</head>
+	<script src="https://unpkg.com/vue"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
 	<body>
 		<!-- 헤더 -->
 		<jsp:include page="/WEB-INF/view/include/header.jsp"/>
