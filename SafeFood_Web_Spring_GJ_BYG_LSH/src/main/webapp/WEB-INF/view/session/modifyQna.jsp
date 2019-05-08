@@ -22,7 +22,7 @@
 
 		<style>
 			.container2 {
-				font-family: 'Varela Round', sans-serif;
+				font-family:  'Varela Round', sans-serif;
 				width: 960px;
 				margin: 100px auto;
 				padding: 20px;
