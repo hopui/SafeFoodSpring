@@ -46,7 +46,7 @@
 			  	</thead>
 		  	
 		  		<tbody>
-				    <tr v-for="board in boards">
+				    <tr v-for="board in boards" @click="goToDetail(board.boardId)">
 						<td><input type="checkbox" name="checked" :id="board.boardId"></td>
 						<th class="row">{{ board.boardId }}</th>
 						<td>{{ board.title }}</td>
@@ -67,9 +67,9 @@
 					<input class="btn btn-info btn-sm" type="button" value="검색">
 				</span>
 				
-				<span>
+				<span><c:url value="/session/writeQna" var="writeQnaUrl"/>
 					<input class="btn btn-danger btn-sm" type="button" value="선택삭제">
-					<input class="btn btn-success btn-sm" type="button" value="글쓰기">
+					<input class="btn btn-success btn-sm" type="button" value="글쓰기" onClick="location.href='${writeQnaUrl }'">
 				</span>			
 			</div>
 			
@@ -84,6 +84,7 @@
 				<button>→</button> <!-- @click="nextPage" -->
 			</div>
 		</div>
+		
 		<!-- 푸터 -->
 		<jsp:include page="/WEB-INF/view/include/footer.jsp"/>
 	</body>
@@ -108,7 +109,8 @@
 					axios.get("http://localhost:9090/api/page")
 					.then(response => {
 						this.boards = response.data.data;
-						this.maxPage = response.data.maxPage/10;
+						this.maxPage = Math.ceil(response.data.maxPage/10);
+						console.log(this.maxPage);
 					}).catch(error => {
 						console.log(error);
 					}).finally(()=> ( this.isProcessing=false ));
@@ -120,6 +122,9 @@
 					}).catch(error => {
 						console.log(error);
 					}).finally(()=> ( this.isProcessing=false ));
+				},
+				goToDetail(num){
+					location.href="readDetail/"+num;
 				}
 			}
 		});
