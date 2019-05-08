@@ -75,6 +75,12 @@
 					<li><span>공지사항</span></li>
 					<li>
 						<span>
+						<c:url value="/qna" var="qnaUrl"></c:url>
+							<a id="menu" href='${qnaUrl}'>Q&A</a>
+						</span>
+					</li>
+					<li>
+						<span>
 						<c:url value="/search" var="searchUrl"></c:url>
 							<a id="menu" href='${searchUrl}'>상품정보</a>
 						</span>

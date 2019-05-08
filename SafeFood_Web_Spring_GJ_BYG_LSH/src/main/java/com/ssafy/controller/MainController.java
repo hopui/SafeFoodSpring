@@ -24,4 +24,9 @@ public class MainController
 		return "index";
 	}
 	
+	@GetMapping("/qna")
+	public String goQna(Model model)
+	{
+		return "qna";
+	}
 }
