@@ -5,7 +5,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>Q&A</title>
+		<title>공지사항</title>
 		<!-- jQuery & Bootstrap -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
@@ -16,6 +16,10 @@
 		<link href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round" rel="stylesheet">
 		<link href="https://fonts.googleapis.com/css?family=Jua" rel="stylesheet">
 		<link href="https://fonts.googleapis.com/css?family=Do+Hyeon|Jua" rel="stylesheet">
+	
+		<!-- global css -->
+		<c:url value="/static/css/notice.css" var="noticeCSS"/>
+		<link href="${noticeCSS }" rel="stylesheet">
 	
 		<!-- local css -->
 		<style>
@@ -30,9 +34,9 @@
 		
 		<div class="container" id="container" align="center" style="margin-bottom: 50px;">
 			<br><br><br><br><br>
-			<!-- 본문 -->
-			<h2 align="left">질문과 답변</h2>
-			<hr>
+			<!-- 본문 --><c:url value="/static/img/notice.png" var="noticeImgUrl"/>
+			<div align="left"><img src="${noticeImgUrl }" class="img_style"><span class="web_font">공지사항</span></div>
+			<hr style="margin-top: 5px;">
 			<table class="table table-hover">
 				<thead>
 				    <tr>
@@ -46,10 +50,15 @@
 			  	</thead>
 		  	
 		  		<tbody>
-				    <tr v-for="board in boards" @click="goToDetail(board.boardId)">
-						<td><input type="checkbox" name="checked" :id="board.boardId"></td>
+				    <tr v-for="board in boards">
+						<td>
+							<input v-if="board.userEmail === '${loginUser.email }' || '${loginUser.authority }' === 'admin'" 
+								   type="checkbox" name="checked" 
+								   :value="board.boardId"
+								   v-model="checked">
+						</td>
 						<th class="row">{{ board.boardId }}</th>
-						<td>{{ board.title }}</td>
+						<td @click="goToDetail(board.boardId)"><a href="#">{{ board.title }}</a></td>
 						<td>{{ board.name }}</td>
 						<td>{{ board.hit }}</td>
 						<td>{{ board.regDate }}</td>
@@ -68,7 +77,7 @@
 				</span>
 				
 				<span><c:url value="/session/writeQna" var="writeQnaUrl"/>
-					<input class="btn btn-danger btn-sm" type="button" value="선택삭제">
+					<input class="btn btn-danger btn-sm" type="button" value="선택삭제" @click="deleteChecked">
 					<input class="btn btn-success btn-sm" type="button" value="글쓰기" onClick="location.href='${writeQnaUrl }'">
 				</span>			
 			</div>
@@ -98,7 +107,8 @@
 			data(){
 				return {
 					boards:[], // Board 객체들
-					maxPage:0
+					maxPage:0,
+					checked:[] // check된 게시글들
 				};
 			},
 			mounted(){
@@ -125,6 +135,18 @@
 				},
 				goToDetail(num){
 					location.href="readDetail/"+num;
+				},
+				deleteChecked(){
+					console.log(this.checked);
+					for(let check of this.checked){
+						axios.delete("http://localhost:9090/api/delete/" + check)
+						.then(response => {
+							this.checked = null;
+							console.log(this.checked);
+						}).catch(error => {
+							console.log(error);
+						}).finally(()=> ( this.reload() ));
+					}
 				}
 			}
 		});
