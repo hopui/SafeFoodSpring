@@ -22,22 +22,18 @@
 
 		<style>
 			.container2 {
-				font-family:  'Varela Round', sans-serif;
+				font-family: 'Varela Round', sans-serif;
 				width: 960px;
-				margin: 100px auto;
+				margin: 70px auto;
 				padding: 20px;
-				border-radius: 5px;
 			}
 			
 			h2 {
 				font-size: 4em;
-				padding: 2px 20px;
 			}
 			
 			input[type=button], input[type=text], input[type=password] {
 				margin: 5px;
-				border: 1px solid black;
-				border-radius: 5px;
 			}
 			
 			table {
@@ -50,17 +46,18 @@
 			}
 			
 			#btns {
-				display: inline-block;
 				float: right;
-				margin-right: 22px;
 			}
 			
-			.content{
+			textarea 
+			{
+				margin-top: 10px;
 				font-size: 1.25em;
-				text-align: left;
-				min-width: 920px;
-				min-height: 400px;
+				padding: 10px;
+				width: 920px;
+				height: 250px;
 			}
+			
 			.title{
 				width: 500px;
 			}
@@ -83,20 +80,19 @@
 							</td>
 						</tr>
 						<tr>
-							<th colspan="1"><b>작성자</b></th>
-							<td><label id="name">${loginUser.name }</label>
-						</tr>	
+							<th><b>작성자</b></th>
+							<td><span id="name"><b>${loginUser.name }</b></span>
+						</tr>
 					</table>
+					
 					<input type="hidden" value="${loginUser.email }" id="userEmail">
-				</div>
-				
-				<div class="row text-center">
-					<input class="content" type="text" name="content" v-model:value="board.content">
-				</div>
-			
-				<div id="btns">
-					<input type="submit" class="btn btn-success btn-lg" value="수정하기">
-					<input type="reset" class="btn btn-warning btn-lg" value="다시작성">
+					
+					<textarea name="content" v-model="board.content"></textarea>
+
+					<div id="btns">
+						<input type="submit" class="btn btn-success btn-lg" value="수정하기">
+						<input type="reset" class="btn btn-warning btn-lg" value="다시작성">
+					</div>
 				</div>
 			</form>
 		</div>

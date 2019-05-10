@@ -7,7 +7,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>질문하기</title>
+		<title>공지작성</title>
 
 		<!-- jQuery & Bootstrap -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -24,20 +24,17 @@
 			.container2 {
 				font-family: 'Varela Round', sans-serif;
 				width: 960px;
-				margin: 100px auto;
+				margin: 70px auto;
 				padding: 20px;
 				border-radius: 5px;
 			}
 			
 			h2 {
 				font-size: 4em;
-				padding: 2px 20px;
 			}
 			
 			input[type=button], input[type=text], input[type=password] {
 				margin: 5px;
-				border: 1px solid black;
-				border-radius: 5px;
 			}
 			
 			table {
@@ -50,14 +47,12 @@
 			}
 			
 			#btns {
-				display: inline-block;
 				float: right;
-				margin-right: 22px;
 			}
 			
 			.content{
 				font-size: 1.25em;
-				min-width: 860px;
+				min-width: 920px;
 				min-height: 400px;
 			}
 		</style>
@@ -67,32 +62,29 @@
 		<jsp:include page="/WEB-INF/view/include/header.jsp"/>
 		
 		<div class="container2" id="container">
-			<h2 align="left">질문하기</h2>
+			<h2 align="left">공지사항</h2>
 			
 			<form method="post" @submit.prevent="doInsert">
 				<div align="left">
 					<table>
 						<tr>
-							<th><b>제목</b></th>
+							<th><b>제&nbsp; &nbsp; 목</b></th>
 							<td class="title">
 								<input class="title" type="text" name="title" v-model:value="qna.title" required>
 							</td>
 						</tr>
 						<tr>
-							<th colspan="1"><b>작성자</b></th>
-							<td><label id="name">${loginUser.name }</label>
+							<th><b>작성자</b></th>
+							<td><span id="name"><b>&nbsp;${loginUser.name }</b></span>
 						</tr>	
-					</table>
-					<input type="hidden" value="${loginUser.email }" id="userEmail">
-				</div>
-				
-				<div class="row text-center">
-					<input class="content" type="text" name="content" v-model:value="qna.content">
-				</div>
-			
-				<div id="btns">
-					<input type="submit" class="btn btn-success btn-lg" value="올리기">
-					<input type="reset" class="btn btn-warning btn-lg" value="다시작성">
+					</table><input type="hidden" value="${loginUser.email }" id="userEmail"><br>
+					
+					<textarea class="content" name="content" v-model="qna.content"></textarea>
+					
+					<div id="btns">
+						<input type="submit" class="btn btn-success btn-lg" value="올리기">
+						<input type="reset" class="btn btn-warning btn-lg" value="다시작성">
+					</div>
 				</div>
 			</form>
 		</div>

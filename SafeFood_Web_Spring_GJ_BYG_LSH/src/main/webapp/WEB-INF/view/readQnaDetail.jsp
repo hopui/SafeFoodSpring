@@ -23,7 +23,7 @@
 			.container2 {
 				font-family: 'Varela Round', sans-serif;
 				width: 960px;
-				margin: 100px auto;
+				margin: 70px auto;
 				padding: 20px;
 			}
 			
@@ -34,28 +34,22 @@
 			h2
 			{
 				font-size: 3em;
-				padding: 2px 20px;
 			}
 			
 			input[type=button], input[type=text], input[type=password] 
 			{
 				margin: 5px;
-				border: 1px solid black;
-				border-radius: 5px;
 			}
 			
 			table 
 			{
 				padding: 50px;
-				text-align: center;
 				font-size: 1.25em;
 				width: 960px;
-				margin: 20px;
 			}
 			
 			th 
 			{
-				min-width: 70px;
 				padding: 5px;
 				text-align: left;
 			}
@@ -67,16 +61,14 @@
 			
 			#btns 
 			{
-				display: inline-block;
 				float: right;
-				margin-right: 22px;
 			}
 			
 			textarea 
 			{
+				margin-top: 10px;
 				font-size: 1.25em;
-				resize: none;
-				border-radius: 10px;
+				padding: 10px;
 				width: 920px;
 				height: 250px;
 			}
@@ -115,7 +107,7 @@
 			<div class="tableArea">
 				<table>
 					<tr>
-						<th>제목
+						<th>제&nbsp; &nbsp; 목
 						<td><input type="text" id="title" name="title" readonly="readonly" :value="board.title">
 						<th>조회수
 						<td><input type="text" id="readCnt" name="readCnt" readonly="readonly" :value="board.hit">
@@ -123,18 +115,19 @@
 					<tr>
 						<th>작성자
 						<td><input type="text" id="writer" name="writer" readonly="readonly" :value="board.name">
-						
 						<th>작성일
 						<td><input type="text" id="regDate" name="regDate" readonly="readonly" :value="board.regDate">
 					</tr>
 				</table>
+				
 				<textarea id="content" name="content" readonly="readonly">{{board.content }}</textarea>
+				
+				<div class="bottom_btns" v-if="'${loginUser.authority }' === 'admin'">
+					<input type="button" class="btn btn-success btn-lg" value="수정" @click="goToModify(board.boardId)">
+					<input type="button" class="btn btn-danger btn-lg" value="삭제" @click="doDelete">
+				</div>
 			</div>
 			
-			<div class="bottom_btns">
-				<input type="button" class="btn btn-success btn-lg" value="수정" @click="goToModify(board.boardId)">
-				<input type="button" class="btn btn-danger btn-lg" value="삭제" @click="doDelete">
-			</div>
 			
 		</div>
 		
