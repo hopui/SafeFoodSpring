@@ -48,6 +48,10 @@ public class FoodService
 	public int insertMyfood(String email, String code, int quantity) {
 		return dao.insertMyfood(email, code, quantity);
 	}
+	
+	public int insertfood( Food food) {
+		return dao.insertfood(food);
+	}
 
 	public int updateMyfood(String email, String code, int quantity) {
 		return dao.updateMyfood(email, code, quantity);

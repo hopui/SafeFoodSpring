@@ -29,13 +29,36 @@ public class Food {
 	/**제조사*/
 	protected String maker;
 	/**원료*/
-	protected String material;
+	protected String foodGroup;
 	/**이미지 경로*/
 	protected String image;
 	protected String allergy;
 	protected int qauntity;
 	public Food() {
 	}
+	
+	
+	public Food(int code, String name, double supportpereat, double calory, double carbo, double protein, double fat,
+			double sugar, double natrium, double chole, double fattyacid, double transfat, String maker,
+			String foodGroup) {
+		super();
+		this.code = code;
+		this.name = name;
+		this.supportpereat = supportpereat;
+		this.calory = calory;
+		this.carbo = carbo;
+		this.protein = protein;
+		this.fat = fat;
+		this.sugar = sugar;
+		this.natrium = natrium;
+		this.chole = chole;
+		this.fattyacid = fattyacid;
+		this.transfat = transfat;
+		this.maker = maker;
+		this.foodGroup = foodGroup;
+	}
+
+
 	public Food(int code) {
 		super();
 		this.code = code;
@@ -125,11 +148,11 @@ public class Food {
 	public void setMaker(String maker) {
 		this.maker = maker;
 	}
-	public String getMaterial() {
-		return material;
+	public String getFoodGroup() {
+		return foodGroup;
 	}
-	public void setMaterial(String material) {
-		this.material = material;
+	public void setFoodGroup(String foodGroup) {
+		this.foodGroup = foodGroup;
 	}
 	public String getImage() {
 		return image;
@@ -149,7 +172,7 @@ public class Food {
 		return "Food [code=" + code + ", name=" + name + ", supportpereat=" + supportpereat + ", calory=" + calory
 				+ ", carbo=" + carbo + ", protein=" + protein + ", fat=" + fat + ", sugar=" + sugar + ", natrium="
 				+ natrium + ", chole=" + chole + ", fattyacid=" + fattyacid + ", transfat=" + transfat + ", maker="
-				+ maker + ", material=" + material + ", img=" + image + "]";
+				+ maker + ", material=" + foodGroup + ", img=" + image + "]";
 	}
 	
 }

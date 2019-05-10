@@ -78,6 +78,11 @@ public class FoodRepo {
 		}
 	}
 	
+	public int insertfood(Food food) {
+		String stmt = ns + "insertfood";
+		return tmp.insert(stmt, food);
+	}
+	
 	public Object selectQuantity(String email, String code) {
 		String stmt = ns + "selectQuantity";
 		Map<String, String> map = new HashMap<String, String>();
