@@ -1,0 +1,35 @@
+@charset "UTF-8";
+
+@-webkit-keyframes rainbow {
+	0% {color:#B85656;}
+	9%{color:#C2795F;}
+	18%{color:#CCC166;}
+	27%{color:#8CB85A;}
+	36%{color:#5CC75C;}
+	45%{color:#58BA86;}
+	54%{color:#609ABF;}
+	63%{color:#5A6CBA;}
+	72%{color:#7858B3;}
+	81%{color:#B461BA;}
+	90%{color:#BA5D8C;}
+	100%{color:#B55D7E;}
+}
+
+a:link, a:visited {
+	text-decoration: none;
+}
+
+a:hover {
+	color: ; /*fall back, 이 효과가 안보이시는 분들을 위한 색설정*/
+	font-weight: bold;
+	-webkit-animation: rainbow infinite 3s;
+}
+
+.web_font {
+	font-family: 'Do Hyeon', sans-serif;
+	font-size: 2.8em;
+}
+.img_style {
+	margin-bottom: 20px;
+	margin-right: 7px;
+}

@@ -12,7 +12,7 @@
 	</select>
 
 	<insert id="insert" parameterType="user">
-		insert into user values(#{email}, #{password}, #{name}, #{address}, #{phone}, #{allergy})
+		insert into user values(#{email}, #{password}, #{name}, #{address}, #{phone}, #{allergy}, #{authority})
 	</insert>
 
 	<update id="update" parameterType="user">

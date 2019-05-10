@@ -60,6 +60,7 @@
 				<div class="form-group">
 					<label for="registerPhone">전화번호</label> 
 					<input type="text" class="form-control" id="registerPhone" name="phone" placeholder="010-0000-0000" required>
+					<input type="hidden" name="authority" value="member">
 				</div>
 				<!-- 알레르기 -->
 				<div class="form-group">

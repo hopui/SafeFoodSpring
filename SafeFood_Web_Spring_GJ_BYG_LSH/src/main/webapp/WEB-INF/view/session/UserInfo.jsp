@@ -32,6 +32,10 @@
 
 			<table class="table table-striped table-hover">
 				<tr>
+					<th scope="col">등급</th>
+					<td>${loginUser.authority }</td>
+				</tr>
+				<tr>
 					<th scope="col">이메일</th>
 					<td>${loginUser.email }</td>
 				</tr>

@@ -11,12 +11,12 @@ public class User
 	private String address;
 	private String phone;
 	private String allergy;
-
+	private String authority;
 	public User()
 	{
 	}
 
-	public User(String email, String password, String name, String address, String phone, String allergy)
+	public User(String email, String password, String name, String address, String phone, String allergy, String authority)
 	{
 		this.email = email;
 		this.password = password;
@@ -24,6 +24,7 @@ public class User
 		this.address = address;
 		this.phone = phone;
 		this.allergy = allergy;
+		this.authority = authority;
 	}
 
 	public String getEmail()
@@ -86,11 +87,21 @@ public class User
 	{
 		return this.allergy;
 	}
+	
+	public String getAuthority()
+	{
+		return authority;
+	}
+
+	public void setAuthority(String authority)
+	{
+		this.authority = authority;
+	}
 
 	@Override
 	public String toString()
 	{
 		return "Account [email=" + email + ", password=" + password + ", name=" + name + ", address=" + address
-				+ ", phone=" + phone + ", allergy=" + allergy + "]";
+				+ ", phone=" + phone + ", allergy=" + allergy + authority + "]";
 	}
 }
