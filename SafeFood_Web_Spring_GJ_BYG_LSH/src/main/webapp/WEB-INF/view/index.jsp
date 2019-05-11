@@ -228,20 +228,18 @@ a:hover {
 
 			<div v-if="foods.length == 0 " style='text-align: center;'>식품정보가
 				없습니다.</div>
-				<c:url value="/form" var="formUrl"></c:url>
-				<a href="${formUrl }">클릭</a>
 
 		<!-- 페이지 넘버 -->
 			<div v-if="foods.length > 0" align="center">
 				<button @click="nextPage(-1)">←</button>
-				@click="prevPage"
+	
 
 				<template
 					v-for="i in pageSelector.slice(nowPages*10, nowPages*10+10)">
 				<a href="#" @click="loadData(i)" style="margin: 0 10px;">{{i}}</a> </template>
 
 				<button @click="nextPage(1)">→</button>
-				@click="nextPage"
+	
 			</div> 
 		</div>
 	</div>

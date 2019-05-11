@@ -20,47 +20,12 @@ import com.ssafy.model.dto.User;
 import com.ssafy.service.FoodService;
 
 @Controller
-@CrossOrigin(origins="*")
+@CrossOrigin(origins = "*")
 public class FoodController {
 	private static final Logger logger = LoggerFactory.getLogger(FoodController.class);
 
 	@Autowired
 	FoodService service;
-	
-	@GetMapping("/insert/food")
-	public String insertfood(Model model, String name, String calory, String carbo, String protein, String fat, 
-			String foodGroup, String code, String supportpereat, String transfat, String fattyacid, String chole, String natrium, String sugar, String maker) {
-		
-		double d[] = new double[10];
-		
-		if(calory.equals("N/A"))
-			d[1] =0;
-		if(carbo.equals("N/A"))
-			d[2] =0;
-		if(protein.equals("N/A"))
-			d[3] =0;
-		if(fat.equals("N/A"))
-			d[4] =0;
-		if(sugar.equals("N/A"))
-			d[5] =0;
-		if(natrium.equals("N/A"))
-			d[6] =0;
-		if(chole.equals("N/A"))
-			d[7] =0;
-		if(fattyacid.equals("N/A"))
-			d[8] =0;
-		if(transfat.equals("N/A"))
-			d[9] =0;
-		
-		Food food = new Food(Integer.parseInt(code),
-				name, 
-				Integer.parseInt(supportpereat), Double.valueOf(d[1]), Double.valueOf(d[2]), Double.valueOf(d[3]),
-				Double.valueOf(d[4]), Double.valueOf(d[5]), Double.valueOf(d[6]), Double.valueOf(d[7]),
-				Double.valueOf(d[8]), Double.valueOf(d[9]), maker, foodGroup);
-		service.insertfood(food);
-		return "index";
-	}
-	
 
 	@GetMapping("/search")
 	public String allInfo(Model model) {
@@ -75,7 +40,7 @@ public class FoodController {
 		model.addAttribute("food", service.selectCode(code));
 		return "food_detail";
 	}
-	
+
 	// pathvarable 방식 restful ip
 	@GetMapping("/detail/haccp/{code}")
 	public String getDetail(Model model, @PathVariable int code) {

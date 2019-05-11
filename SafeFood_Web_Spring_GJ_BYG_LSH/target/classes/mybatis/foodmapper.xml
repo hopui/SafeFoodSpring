@@ -51,22 +51,4 @@
 		delete from takenfood where  user_email =  #{email}
 	</delete>
 	
-	<insert id="insertfood" parameterType="food">
-		insert into food values(#{code},
-#{name},
-#{maker},
-#{foodGroup},
-null,
-#{supportpereat},
-#{calory},
-#{carbo},
-#{protein},
-#{fat},
-#{sugar},
-#{natrium},
-#{chole},
-#{fattyacid},
-#{transfat})
-	</insert>
-	
 </mapper>
