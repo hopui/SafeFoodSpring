@@ -160,13 +160,13 @@
 					}).finally(()=> ( this.isProcessing=false ));
 				},
 				goToModify(num) {
-					location.href="../session/modifyQna/"+num;
+					location.href="../session/modifyNotice/"+num;
 				},
 				doDelete() {
 					axios.delete("http://localhost:9090/api/delete/"+${num })
 					.then(response => {
 						if(response.status == 200) {
-							location.href="../qna";			
+							location.href="../notice";			
 						} 
 						console.log(this.board);
 					}).catch(error => {

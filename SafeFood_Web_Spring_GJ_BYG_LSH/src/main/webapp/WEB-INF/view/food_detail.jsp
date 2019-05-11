@@ -213,13 +213,13 @@ footer {
 				<tr>
 					<td class="titles text-center">알레르기 성분</td>
 					<td id="al">
-						<%
+<%-- 						<%
 							Food f = (Food) request.getAttribute("food");
 							if (f.getMaterial().indexOf("[") > 0) {
 								String s = f.getMaterial().substring(f.getMaterial().indexOf("[") + 1, f.getMaterial().length() - 1);
 								out.print(s);
 							}
-						%>
+						%> --%>
 					</td>
 				</tr>
 			</table>

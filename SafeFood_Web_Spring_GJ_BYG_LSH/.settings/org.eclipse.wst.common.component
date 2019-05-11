@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+        
     <wb-module deploy-name="SafeFood_Web_Spring_GJ_BYG_LSH-0.0.1-SNAPSHOT">
+                
         <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
+                
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
+                
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+                
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+                
         <property name="java-output-path" value="/SafeFood_Web_Spring_GJ_BYG_LSH/target/classes"/>
-        <property name="context-root" value="SafeFood_Web_SF_광주_02_BYG_LSH"/>
+        <property name="context-root" value="SafeFood_Web_Spring_GJ_BYG_LSH"/>
+            
     </wb-module>
+    
 </project-modules>
