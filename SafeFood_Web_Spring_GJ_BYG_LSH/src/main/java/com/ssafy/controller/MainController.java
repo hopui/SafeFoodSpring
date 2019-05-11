@@ -27,10 +27,10 @@ public class MainController
 		return "index";
 	}
 	
-	@GetMapping("/qna")
+	@GetMapping("/notice")
 	public String goQna(Model model)
 	{
-		return "/qna";
+		return "/notice";
 	}
 	
 	@GetMapping("/form")
@@ -39,23 +39,23 @@ public class MainController
 		return "form";
 	}
 
-	@GetMapping("/session/writeQna")
+	@GetMapping("/session/writeNotice")
 	public String goWriteQna(Model model)
 	{
-		return "session/writeQna";
+		return "session/writeNotice";
 	}
 	
 	@GetMapping("/readDetail/{num}")
 	public String goReadQnaDetail(Model model, @PathVariable int num)
 	{
 		model.addAttribute("num", num);
-		return "/readQnaDetail";
+		return "/readNoticeDetail";
 	}
 	
-	@GetMapping("/session/modifyQna/{num}")
+	@GetMapping("/session/modifyNotice/{num}")
 	public String goModifyQna(Model model, @PathVariable int num)
 	{
 		model.addAttribute("num", num);
-		return "/session/modifyQna";
+		return "/session/modifyNotice";
 	}
 }

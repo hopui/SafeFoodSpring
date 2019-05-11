@@ -72,11 +72,10 @@
 				style="margin-top: 10px;">
 				<ul class="nav navbar-nav navbar-right">
 
-					<li><span>공지사항</span></li>
 					<li>
 						<span>
-						<c:url value="/qna" var="qnaUrl"></c:url>
-							<a id="menu" href='${qnaUrl}'>Q&A</a>
+						<c:url value="/notice" var="notieUrl"></c:url>
+							<a id="menu" href='${notieUrl }'>공지사항</a>
 						</span>
 					</li>
 					<li>

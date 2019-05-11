@@ -7,7 +7,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>공지작성</title>
+		<title>공지수정</title>
 
 		<!-- jQuery & Bootstrap -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -26,7 +26,6 @@
 				width: 960px;
 				margin: 70px auto;
 				padding: 20px;
-				border-radius: 5px;
 			}
 			
 			h2 {
@@ -50,10 +49,17 @@
 				float: right;
 			}
 			
-			.content{
+			textarea 
+			{
+				margin-top: 10px;
 				font-size: 1.25em;
-				min-width: 920px;
-				min-height: 400px;
+				padding: 10px;
+				width: 920px;
+				height: 250px;
+			}
+			
+			.title{
+				width: 500px;
 			}
 		</style>
 	</head>
@@ -62,27 +68,29 @@
 		<jsp:include page="/WEB-INF/view/include/header.jsp"/>
 		
 		<div class="container2" id="container">
-			<h2 align="left">공지사항</h2>
+			<h2 align="left">수정하기</h2>
 			
-			<form method="post" @submit.prevent="doInsert">
+			<form method="post" @submit.prevent="doUpdate">
 				<div align="left">
 					<table>
 						<tr>
-							<th><b>제&nbsp; &nbsp; 목</b></th>
+							<th><b>제목</b></th>
 							<td class="title">
-								<input class="title" type="text" name="title" v-model:value="qna.title" required>
+								<input class="title" type="text" name="title" v-model:value="board.title" required>
 							</td>
 						</tr>
 						<tr>
 							<th><b>작성자</b></th>
-							<td><span id="name"><b>&nbsp;${loginUser.name }</b></span>
-						</tr>	
-					</table><input type="hidden" value="${loginUser.email }" id="userEmail"><br>
+							<td><span id="name"><b>${loginUser.name }</b></span>
+						</tr>
+					</table>
 					
-					<textarea class="content" name="content" v-model="qna.content"></textarea>
+					<input type="hidden" value="${loginUser.email }" id="userEmail">
 					
+					<textarea name="content" v-model="board.content"></textarea>
+
 					<div id="btns">
-						<input type="submit" class="btn btn-success btn-lg" value="올리기">
+						<input type="submit" class="btn btn-success btn-lg" value="수정하기">
 						<input type="reset" class="btn btn-warning btn-lg" value="다시작성">
 					</div>
 				</div>
@@ -97,15 +105,25 @@
 		let vi = new Vue({
 			el:"#container",
 			data:{
-				qna:{title:null, content:null, userEmail:null}
+				board:{}
+			},
+			mounted() {
+				this.reload();
 			},
 			methods:{
-				doInsert() {
-					this.qna.userEmail = $("#userEmail").val();
-					axios.post("http://localhost:9090/api/insert", this.qna)
+				reload() {
+					axios.get("http://localhost:9090/api/detail/"+${num })
+					.then(response => {
+						this.board = response.data.data;
+					}).catch(error => {
+						console.log(error);
+					}).finally(()=> ( this.isProcessing=false ));
+				},
+				doUpdate() {
+					axios.put("http://localhost:9090/api/update", this.board)
 					.then(response => {
 						if(response.status == 200) {
-							location.href="../qna";			
+							location.href="../../notice";			
 						} 
 						else {
 							alert("실패!");
