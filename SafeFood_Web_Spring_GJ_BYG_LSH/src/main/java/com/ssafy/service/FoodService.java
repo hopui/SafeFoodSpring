@@ -17,8 +17,8 @@ public class FoodService
 	public FoodService(FoodRepo repo) {
 		
 	}
-	public List<Food> selectAll() {
-		return dao.selectAll();
+	public List<Food> selectAll(int page) {
+		return dao.selectAll(page);
 	}
 
 	public List<Food> selectMyfoodAll(String email) {

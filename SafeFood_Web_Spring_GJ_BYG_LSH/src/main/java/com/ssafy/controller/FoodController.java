@@ -1,6 +1,8 @@
 package com.ssafy.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -13,8 +15,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.ssafy.model.dto.Food;
 import com.ssafy.model.dto.User;
 import com.ssafy.service.FoodService;
@@ -29,9 +31,17 @@ public class FoodController {
 
 	@GetMapping("/search")
 	public String allInfo(Model model) {
-		model.addAttribute("foods", service.selectAll());
-		model.addAttribute("foodlist", "전체");
+		
 		return "index";
+	}
+	
+	@ResponseBody
+	@GetMapping("/food/{page}")
+	public Map<String, List<Food>> foodDB(@PathVariable int page) {
+		
+		Map<String, List<Food>> map = new HashMap<>();
+		map.put("list", service.selectAll(page));
+		return map;
 	}
 
 	// pathvarable 방식 restful ip
@@ -57,24 +67,7 @@ public class FoodController {
 
 	@PostMapping("/search")
 	public String getSearch(Model model, String sort, String search_text) {
-		search_text = search_text.trim();
-
-		if (search_text == null || search_text.equals("")) {
-			model.addAttribute("foods", service.selectAll());
-		} else {
-			switch (sort) {
-			case "productname":
-				model.addAttribute("foods", service.selectName(search_text));
-				break;
-			case "maker":
-				model.addAttribute("foods", service.selectMaker(search_text));
-				break;
-			case "material":
-				model.addAttribute("foods", service.selectMaterial(search_text));
-				break;
-			}
-		}
-		model.addAttribute("foodlist", "검색");
+		
 		return "index";
 	}
 

@@ -4,7 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.model.mapper.Food">
 	<select id="selectAll" resultType="food">
-		select * from food
+		select * from food limit #{first} , 20
 	</select>
 
 	<select id="selectMyFoodAll" resultType="food" parameterType="String">

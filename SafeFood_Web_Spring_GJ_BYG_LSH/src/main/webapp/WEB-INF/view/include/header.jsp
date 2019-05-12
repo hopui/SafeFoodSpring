@@ -5,6 +5,7 @@
 <head>
 	<meta charset="UTF-8">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://unpkg.com/vue"></script>
 	
 	<!-- static CSS-->
 	<c:url value="/static/css/mainCSS.css" var="mainCSS"/>
@@ -80,8 +81,8 @@
 					</li>
 					<li>
 						<span>
-						<c:url value="/search" var="searchUrl"></c:url>
-							<a id="menu" href='${searchUrl}'>상품정보</a>
+						<c:url value="/table" var="tableUrl"></c:url>
+							<a id="menu" href='${tableUrl}'>상품정보</a>
 						</span>
 					</li>
 					<li><span>베스트 섭취 정보</span></li>

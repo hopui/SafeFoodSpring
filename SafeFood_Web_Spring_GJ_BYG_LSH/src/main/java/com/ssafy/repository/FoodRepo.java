@@ -21,9 +21,9 @@ public class FoodRepo {
 	@Autowired
 	SqlSessionTemplate tmp;
 
-	public List<Food> selectAll() {
+	public List<Food> selectAll(int page) {
 		String stmt = ns + "selectAll";
-		return tmp.selectList(stmt);
+		return tmp.selectList(stmt,page*20);
 	}
 
 	public List<Food> selectMyfoodAll(String email) {

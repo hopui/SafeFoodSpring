@@ -81,12 +81,29 @@ a:hover {
 	width: 50%;
 }
 
-#pagebar {
-	
+#foodtable {
+	align-self: center;
+	border: 1px solid gray;
+	align-content: center;
+}
+
+th {
+	border-bottom: 1px solid gray;
+	padding: 10px 10px;
+	font-weight: bold;
+	background: #eeeeee;
+}
+
+td {
+	border-bottom: 1px solid gray;
+	padding: 10px 10px;
+}
+
+#lastitem {
+	border-bottom: 2px solid gray;
 }
 </style>
 </head>
-<script src="https://unpkg.com/vue"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
 <body>
@@ -132,8 +149,66 @@ a:hover {
 		</div>
 		<div id="product">
 
-<%-- 			<table class="nutrition-result basic" oncontextmenu="return false;"
-				ondragstart="return false;">
+			<component v-bind:is="currentview"></component>
+
+		</div>
+	</div>
+	<!-- 상품정보 출력 끝 -->
+	<!-- 푸터 -->
+	<jsp:include page="/WEB-INF/view/include/footer.jsp" />
+	<script type="text/x-template" id="main-temp">
+<div>
+	<template v-for="food in foods">
+		<div class='col-sm-12 foodbox'>
+			<div class='col-sm-4'>
+				<div class = 'container'>
+						<c:url value="/detail/haccp/" var="detailUrl"></c:url>
+						<a v-bind:href='"${detailUrl }"+food.prdlstReportNo'>
+							<img class='prdtimg image' alt='Avatar' :src='food.imgurl2'>
+					</a>
+						<div class='overlay align-bottom'>
+							<div class='text'>{{food.prdlstNm}}<br>{{food.productGb}}</div>
+						</div>
+					</div>
+				</div>
+				<div class='col-sm-8 content'>
+					<h2>{{food.prdlstNm}}</h2>
+
+					<p v-if="checkAller(food.allergy)" id='rred'>알러지 주의</p>
+				 
+					<hr>
+					<span v-if="food.rawmtrl.length< 200">{{food.rawmtrl}}</span>
+					<span v-else v-html='food.rawmtrl.substring(0,200)+"..."'></span>
+					<br> 
+					<span>{{food.manufacture}}</span>
+					<br>
+					<button type='button' class='btn btn-primary'>
+						<span class='glyphicon glyphicon-shopping-cart' aria-hidden='true'></span>
+							찜
+					</button>
+					<img class="mark" alt="#" src="static/img/인증마크.jpg">
+				</div>
+			</div>
+		</template> 
+
+		<div v-if="foods.length == 0 " style='text-align: center;'>식품정보가
+				없습니다.</div>
+
+		<!-- 페이지 넘버 -->
+			 <div v-if="foods.length > 0" align="center" style="margin-top: 10px;">
+				<button @click="nextPage(-1)">←</button>
+				<template
+					v-for="i in pageSelector.slice(nowPages*10, nowPages*10+10)">
+				<a href="#" @click="loadData(i)" style="margin: 0 10px;">{{i}}</a> </template>
+
+				<button @click="nextPage(1)">→</button>
+	
+			</div> 
+</div> 
+</script>
+	<script type="text/x-template" id="table-temp">
+<div>
+	<table id="foodtable" align="center">
 				<caption>식품 간편검색</caption>
 				<colgroup>
 					<col style="width: 5%">
@@ -174,63 +249,33 @@ a:hover {
 					</tr>
 				</thead>
 				<tbody>
+				<template v-for="food in foods">
 					<tr>
-						<td rowspan="2">4907</td>
-						<th scope="row">곡류 및 그 제품</th>
-						<td>100</td>
-						<td></td>
-						<td>67.8</td>
-						<td>10.1</td>
-						<td>3.7</td>
+						<td rowspan="2">{{food.code}}</td>
+						<th scope="row">{{food.foodGroup}}</th>
+						<td>{{food.supportpereat}}</td>
+						<td>{{food.calory}}</td>
+						<td>{{food.carbo}}</td>
+						<td>{{food.protein}}</td>
+						<td>{{food.fat}}</td>
 					</tr>
-					<tr>
-						<th><a href="#"> 고량미,고량미, 알곡 </a></th>
-						<td>0</td>
-						<td>N/A</td>
-						<td>0</td>
-						<td>0</td>
-						<td>0</td>
+					<tr id="lastitem">
+						<td><a href="#">{{food.name}} </a></td>
+						<td>{{food.sugar}}</td>
+						<td>{{food.natrium}}</td>
+						<td>{{food.chole}}</td>
+						<td>{{food.fattyacid}}</td>
+						<td>{{food.transfat}}</td>
 					</tr>
+					</template>
 				</tbody>
-			</table> --%>
-			 <template v-for="food in foods">
-							<div class='col-sm-12 foodbox'>
-								<div class='col-sm-4'>
-									<div class = 'container'>
-										<c:url value="/detail/haccp/" var="detailUrl"></c:url>
-										<a v-bind:href='"${detailUrl }"+food.prdlstReportNo'>
-											<img class='prdtimg image' alt='Avatar' :src='food.imgurl2'>
-										</a>
-										<div class='overlay align-bottom'>
-											<div class='text'>{{food.prdlstNm}}<br>{{food.productGb}}</div>
-										</div>
-									</div>
-								</div>
-								<div class='col-sm-8 content'>
-									<h2>{{food.prdlstNm}}</h2>
+			</table> 
 
-									<p v-if="checkAller(food.allergy)" id='rred'>알러지 주의</p>
-				 
-									<hr>
-									<span v-if="food.rawmtrl.length< 200">{{food.rawmtrl}}</span>
-									<span v-else v-html='food.rawmtrl.substring(0,200)+"..."'></span>
-									<br> 
-									<span>{{food.manufacture}}</span>
-									<br>
-									<button type='button' class='btn btn-primary'>
-										<span class='glyphicon glyphicon-shopping-cart' aria-hidden='true'></span>
-											찜
-									</button>
-									<img class="mark" alt="#" src="static/img/인증마크.jpg">
-								</div>
-							</div>
-						</template>  
-
-			<div v-if="foods.length == 0 " style='text-align: center;'>식품정보가
+		<div v-if="foods.length == 0 " style='text-align: center;'>식품정보가
 				없습니다.</div>
 
 		<!-- 페이지 넘버 -->
-			<div v-if="foods.length > 0" align="center">
+			 <div v-if="foods.length > 0" align="center" style="margin-top: 10px;">
 				<button @click="nextPage(-1)">←</button>
 	
 
@@ -241,117 +286,20 @@ a:hover {
 				<button @click="nextPage(1)">→</button>
 	
 			</div> 
-		</div>
-	</div>
-	<!-- 상품정보 출력 끝 -->
-
-	<!-- 푸터 -->
-	<jsp:include page="/WEB-INF/view/include/footer.jsp" />
+</div>
+</script>
 </body>
-<script>
-		let alarm = "${alarm }";
-		if(alarm) {
-			alert(alarm);
-		}	
-		
-		let allergy = "${loginUser.allergy}";
-		
-	 	let vi = new Vue({
-			el:"#app",
-			data(){
-				return {
-					numOfRows:0,
-					foods:[],
-					pageNo:0,
-					totalCount:0,
-					pageSelector:[],
-					nowPages:0
-				}
-			},
-			mounted(){
-				this.loadData(1);
-			},
-			methods:{
-				loadData(num){
-					var userURL = "http://localhost:8080/SafeFood_Web_Spring_GJ_BYG_LSH";				
-					var url = userURL + "/AjaxRequest.jsp?getUrl=";
-					let apiurl = 'http://apis.data.go.kr/B553748/CertImgListService/getCertImgListService?ServiceKey=';
-					let key = 'JHiCkjVmT8kUFVm183Ggm3ln1sDuay3V2EWzhmda%2B4773P90DoYKR7iFlXsTGiD6EJlntiX9UsmMtGpOjVTxIA%3D%3D&returnType=json';
-					let page="&pageNo="+num;
-					url += encodeURIComponent(apiurl+key+page);
-					
-					axios
-					.get(url)
-					.then(response => {
-										this.foods = response.data.list;
-										this.numOfRows = response.data.numOfRows;
-										this.pageNo = response.data.pageNo;
-										this.totalCount = response.data.totalCount;	
-										
-										for(let i=1; i<Math.round(this.totalCount/this.numOfRows); i++)
-											this.pageSelector.push(i);
-					})
-					.catch(error =>{
-						console.log(error)
-						this.errored= true;
-					})
-					//함수에서의 this는 window, arrow 함수에서는 vue
-					.finally(() => {this.loading = false})
-				},
-				checkAller(aller){
-					if(allergy.length > 0){
-						let users = allergy.split(",");
-						for(let al of users){
-							if(aller.indexOf(al) > -1){
-								return true;	
-							}
-						}
-					}
-					return false;
-				},
-				nextPage(num){
-					if(this.nowPages+num >-1 &&
-							this.nowPages+num <=Math.round(this.totalCount/this.numOfRows)){
-						this.nowPages+=num
-					}
-				}
-			}
-		}) 
-		
-		/* let vi = new Vue({
-			el:"#app",
-			data(){
-				return {
-					foods:[],
-				}
-			},
-			mounted(){
-				//this.loadData(1,1000);
-			},
-			methods:{
-				loadData(first, end){
-					var userURL = "http://localhost:8080/SafeFood_Web_Spring_GJ_BYG_LSH";				
-					var url = userURL + "/AjaxRequest.jsp?getUrl=";
-					let apiurl = 'http://openapi.foodsafetykorea.go.kr/api/246deb010b9d41149b25/I0750/json';
-					let page="/"+first+"/"+end;
-					url += encodeURIComponent(apiurl+page);
-					
-					axios
-					.get(url)
-					.then(response => {
-										this.foods = response.data.I0750.row;
-										
-							
-					})
-					.catch(error =>{
-						console.log(error)
-						this.errored= true;
-					})
-					//함수에서의 this는 window, arrow 함수에서는 vue
-					.finally(() => {this.loading = false})
-				}
-			}
-		}) */
-		
-	</script>
+<!-- 인덱스 전용 js -->
+<c:url value="/static/script/index.js" var="indexJSurl"/>
+<script type="text/javascript">
+let alarm = "${alarm }";
+if(alarm) {
+	alert(alarm);
+}	
+
+let allergy = "${loginUser.allergy}";
+	let current = "${comp}";
+</script>
+<script src="${indexJSurl }">
+</script>
 </html>

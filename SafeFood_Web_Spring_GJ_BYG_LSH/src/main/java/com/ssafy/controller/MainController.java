@@ -23,7 +23,14 @@ public class MainController
 	@GetMapping("/main")
 	public String goMain(Model model)
 	{
-		model.addAttribute("foods",service.selectAll());
+		model.addAttribute("comp","maincomp");
+		return "index";
+	}
+	
+	@GetMapping("/table")
+	public String goTableFood(Model model)
+	{
+		model.addAttribute("comp","tablecomp");
 		return "index";
 	}
 	
@@ -31,12 +38,6 @@ public class MainController
 	public String goQna(Model model)
 	{
 		return "/notice";
-	}
-	
-	@GetMapping("/form")
-	public String goForm(Model model)
-	{
-		return "form";
 	}
 
 	@GetMapping("/session/writeNotice")
