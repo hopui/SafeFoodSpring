@@ -279,10 +279,6 @@
 	display: inline-block;
 }
 
-.container {
-	position: relative;
-	width: 50%;
-}
 
 .image {
 	display: block;
@@ -325,10 +321,6 @@
 
 .content{
 	height: 280px;
-}
-.container {
-	position: relative;
-	width: 50%;
 }
 
 .image {

@@ -260,7 +260,8 @@ td {
 						<td>{{food.fat}}</td>
 					</tr>
 					<tr id="lastitem">
-						<td><a href="#">{{food.name}} </a></td>
+						<c:url value="detail/" var="detailUrl"/>
+						<td><a :href="'${detailUrl}'+food.code">{{food.name}} </a></td>
 						<td>{{food.sugar}}</td>
 						<td>{{food.natrium}}</td>
 						<td>{{food.chole}}</td>

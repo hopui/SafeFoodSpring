@@ -53,9 +53,9 @@ public class FoodController {
 
 	// pathvarable 방식 restful ip
 	@GetMapping("/detail/haccp/{code}")
-	public String getDetail(Model model, @PathVariable int code) {
-		model.addAttribute("haccp", service.selectCode(code));
-		return "food_detail";
+	public String getDetail(Model model, @PathVariable String code) {
+		model.addAttribute("haccp", code);
+		return "food_haccp";
 	}
 
 	@GetMapping("/detail/{code}/modi")
