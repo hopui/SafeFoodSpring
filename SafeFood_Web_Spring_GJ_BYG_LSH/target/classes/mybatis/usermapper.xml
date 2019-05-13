@@ -16,7 +16,7 @@
 	</insert>
 
 	<update id="update" parameterType="user">
-		update user set password=#{password}, name=#{name}, address=#{address}, phone=#{phone}, allergy=#{allergy} where email=#{email}
+		update user set password=#{password}, name=#{name}, address=#{address}, phone=#{phone}, allergy=#{allergy}, authority=#{authority} where email=#{email}
 	</update>
 	
 	<delete id="delete" parameterType="string">

@@ -1,6 +1,6 @@
 package com.ssafy.model.dto;
 
-import java.util.Arrays;
+import java.util.StringTokenizer;
 
 //Java Beans - Data 전달용 객체
 public class User
@@ -14,17 +14,6 @@ public class User
 	private String authority;
 	public User()
 	{
-	}
-
-	public User(String email, String password, String name, String address, String phone, String allergy, String authority)
-	{
-		this.email = email;
-		this.password = password;
-		this.name = name;
-		this.address = address;
-		this.phone = phone;
-		this.allergy = allergy;
-		this.authority = authority;
 	}
 
 	public String getEmail()
@@ -77,10 +66,16 @@ public class User
 		this.phone = phone;
 	}
 
-	public void setAllergy(String[] allergy)
+	public void setAllergy(String allergy)
 	{
-		String temp = Arrays.toString(allergy);
-		this.allergy = temp.substring(1, temp.length()-1);
+		StringBuilder sb = new StringBuilder();
+		StringTokenizer st = new StringTokenizer(allergy, ",");
+		while(st.hasMoreTokens())
+			sb.append(st.nextToken()).append(",");
+		
+		if(sb.length() > 0)
+			this.allergy = sb.toString().substring(0, sb.length()-1);	
+		else this.allergy = "";
 	}
 
 	public String getAllergy()
@@ -102,6 +97,6 @@ public class User
 	public String toString()
 	{
 		return "Account [email=" + email + ", password=" + password + ", name=" + name + ", address=" + address
-				+ ", phone=" + phone + ", allergy=" + allergy + authority + "]";
+				+ ", phone=" + phone + ", allergy=" + allergy + ", authority=" + authority + "]";
 	}
 }

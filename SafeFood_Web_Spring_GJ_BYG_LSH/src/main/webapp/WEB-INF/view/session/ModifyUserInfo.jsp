@@ -80,7 +80,7 @@
 						<input type="checkbox" id="cb14" name="allergy" value="계란흰자"><label for="cb14">계란흰자</label>
 					</fieldset>
 				</div>
-				
+				<input type="hidden" value="${loginUser.authority }" name="authority">
 				<!-- 정보수정 버튼 및 리셋버튼  -->
 				<div class="form-group text-center"><c:url value="/main" var="main"/>
 					<input type="submit" class="btn btn-primary" value="정보수정">

@@ -91,9 +91,9 @@
 				</tbody>
 			</table>
 			<div align="right">
-				<span v-if="'${loginUser.authority }' === 'admin'"><c:url value="/session/writeNotie" var="writeNotieUrl"/>
+				<span v-if="'${loginUser.authority }' === 'admin'"><c:url value="/session/writeNotice" var="writeNoticeUrl"/>
 					<input class="btn btn-danger btn-sm" type="button" value="선택삭제" @click="deleteChecked">
-					<input class="btn btn-success btn-sm" type="button" value="글쓰기" onClick="location.href='${writeNotieUrl }'">
+					<input class="btn btn-success btn-sm" type="button" value="글쓰기" onClick="location.href='${writeNoticeUrl }'">
 				</span>			
 			</div>
 			

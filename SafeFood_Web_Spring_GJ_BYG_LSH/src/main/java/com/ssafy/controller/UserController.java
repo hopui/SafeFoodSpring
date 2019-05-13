@@ -67,6 +67,7 @@ public class UserController
 		{
 			HttpSession session = req.getSession();
 			session.setAttribute("loginUser", result);
+			System.err.println("로그인 시 알러지 정보: " + result.getAllergy());
 			redir.addFlashAttribute("alarm", "로그인 성공! 어세오세요~ "+result.getName()+"님");
 		} 
 		else redir.addFlashAttribute("alarm", "로그인 실패! 이메일과 비밀번호를 확인해주세요!");
