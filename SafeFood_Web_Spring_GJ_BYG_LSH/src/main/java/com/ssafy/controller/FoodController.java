@@ -1,5 +1,8 @@
 package com.ssafy.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,15 +31,9 @@ public class FoodController {
 
 	@Autowired
 	FoodService service;
-
-	@GetMapping("/search")
-	public String allInfo(Model model) {
-		
-		return "index";
-	}
 	
-	@ResponseBody
 	@GetMapping("/food/{page}")
+	@ResponseBody
 	public Map<String, List<Food>> foodDB(@PathVariable int page) {
 		
 		Map<String, List<Food>> map = new HashMap<>();
@@ -65,8 +62,24 @@ public class FoodController {
 		return "food_detail";
 	}
 
-	@PostMapping("/search")
-	public String getSearch(Model model, String sort, String search_text) {
+	@GetMapping("/search")
+	public String getSearch(Model model, String sort, String search_text, String kind) {
+		if(kind.equals("maincomp")) {
+			System.out.println(sort+":"+search_text);
+			String apiurl = "http://apis.data.go.kr/B553748/CertImgListService/getCertImgListService?ServiceKey=";
+			String key = "JHiCkjVmT8kUFVm183Ggm3ln1sDuay3V2EWzhmda%2B4773P90DoYKR7iFlXsTGiD6EJlntiX9UsmMtGpOjVTxIA%3D%3D&returnType=json";
+			String page="&pageNo=";
+			String option=null;
+			try {
+				option = "&"+sort+"="+URLEncoder.encode(search_text,"utf-8");
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			model.addAttribute("comp","maincomp");
+			model.addAttribute("methodurl",apiurl+key+option+page);
+		}
 		
 		return "index";
 	}

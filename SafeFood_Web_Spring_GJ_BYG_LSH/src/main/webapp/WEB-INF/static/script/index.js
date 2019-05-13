@@ -1,4 +1,4 @@
-	 	
+
 	 	var maincomp = Vue.component("maincomp", {
 			template:"#main-temp",
 			data(){
@@ -8,20 +8,19 @@
 					pageNo:0,
 					totalCount:0,
 					pageSelector:[],
-					nowPages:0
+					nowPages:0,
+					methodurl:''
 				}
 			},
 			mounted(){
+				this.methodurl = methodurl;
 				this.loadData(1);
 			},
 			methods:{
 				loadData(num){
 					var userURL = "http://localhost:8080/SafeFood_Web_Spring_GJ_BYG_LSH";				
 					var url = userURL + "/AjaxRequest.jsp?getUrl=";
-					let apiurl = 'http://apis.data.go.kr/B553748/CertImgListService/getCertImgListService?ServiceKey=';
-					let key = 'JHiCkjVmT8kUFVm183Ggm3ln1sDuay3V2EWzhmda%2B4773P90DoYKR7iFlXsTGiD6EJlntiX9UsmMtGpOjVTxIA%3D%3D&returnType=json';
-					let page="&pageNo="+num;
-					url += encodeURIComponent(apiurl+key+page);
+					url += encodeURIComponent(this.methodurl+num);
 					
 					axios
 					.get(url)
@@ -81,8 +80,8 @@
 					axios
 					.get("/SafeFood_Web_Spring_GJ_BYG_LSH/food/"+(first-1))
 					.then(response => {
-							this.foods = response.data.list;
-							
+						this.foods = response.data.list;
+						//	console.log(response);
 					})
 					.catch(error =>{
 						console.log(error)
@@ -103,7 +102,7 @@
 	 	 let vi = new Vue({
 				el:"#app",
 				data: {
-					  currentview: 'maincomp',
+					  currentview: '',
 				      allviews:['maincomp','tablecomp'],
 				   },
 				   components: {
@@ -112,6 +111,16 @@
 				     },
 				   mounted(){
 					   this.currentview = current;
+				   },
+				   methods:{
+					   getOptions(){
+						   if(current==='maincomp')
+							   return [{name: "prdlstNm", value: "제품명"},{name: "prdlstReportNo", value:"품목보고번호"}];
+						   else
+							   return [{name: "DESC_KOR", value: "제품명"},
+								   {name: "BGN_YEAR", value:"구축년도"},
+								   {name: "ANIMAL_PLANT", value:"가공업체명"}];
+					   }
 				   }
 			}
 		)

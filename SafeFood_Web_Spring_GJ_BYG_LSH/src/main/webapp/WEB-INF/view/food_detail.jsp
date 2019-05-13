@@ -321,7 +321,6 @@ footer {
 			alert(alarm);
 		}
 
-		let food = "${food}";
 		
 		$(".daily").text('${food.supportpereat}');
 		$(".kcal").text('${food.calory}');
