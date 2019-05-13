@@ -23,7 +23,11 @@ public class MainController
 	@GetMapping("/main")
 	public String goMain(Model model)
 	{
+		String apiurl = "http://apis.data.go.kr/B553748/CertImgListService/getCertImgListService?ServiceKey=";
+		String key = "JHiCkjVmT8kUFVm183Ggm3ln1sDuay3V2EWzhmda%2B4773P90DoYKR7iFlXsTGiD6EJlntiX9UsmMtGpOjVTxIA%3D%3D&returnType=json";
+		String page="&pageNo=";
 		model.addAttribute("comp","maincomp");
+		model.addAttribute("methodurl",apiurl+key+page);
 		return "index";
 	}
 	

@@ -109,48 +109,49 @@ td {
 <body>
 	<!-- 헤더 -->
 	<jsp:include page="/WEB-INF/view/include/header.jsp" />
-
-	<!-- 검색창 -->
-	<div class="jumbotron2 text-center">
-		<h1>WHAT WE PROVIDE</h1>
-		<p>건강한 삶을 위한 먹거리 프로젝트</p>
-
-		<!-- ※form action URL 수정필요※ -->
-		<c:url value="/search" var="searchUrl"></c:url>
-		<form class="form-inline" id="sendForm" method="post"
-			action="${searchUrl }">
-			<div class="input-group">
-				<div class="input-group-btn">
-					<div id="search-option" class="btn btn-danger2">검색조건</div>
-				</div>
-				<!-- 검색조건 -->
-				<select class="form-control" id="sorted" name="sort">
-					<option value="productname" selected="selected">상품명</option>
-					<option value="maker">제조사</option>
-					<option value="material">성분명</option>
-				</select>
-			</div>
-
-			<!-- 검색바 -->
-			<div class="input-group">
-				<input type="text" name="search_text" id="search-text"
-					class="form-control" size="50" placeholder="검색어를 입력하세요." required>
-				<div class="input-group-btn">
-					<button id="search" class="btn btn-danger2">검색</button>
-				</div>
-			</div>
-		</form>
-	</div>
-
-	<!-- 상품정보 출력 -->
-	<div class="container-fluid" id="app">
-		<div class="col-sm-12">
-			<h2>상품정보</h2>
+	<div id="app">
+		<!-- 검색창 -->
+		<div class="jumbotron2 text-center">
+			<h1>WHAT WE PROVIDE</h1>
+			<p>건강한 삶을 위한 먹거리 프로젝트</p>
 		</div>
-		<div id="product">
 
-			<component v-bind:is="currentview"></component>
+		<!-- 상품정보 출력 -->
+		<div class="container-fluid">
+			<div class="col-sm-12">
+				<h2>상품정보</h2>
+			</div>
+			<div id="product">
+				<!-- ※form action URL 수정필요※ -->
+				<c:url value="/search" var="searchUrl"></c:url>
+				<form class="form-inline" method="get"
+					action="${searchUrl }">
+					<input type="hidden" name="kind" value="${comp }">
+					<div align="center" class="col-sm-12"
+						style="border-bottom: 1px solid #eeeeee; padding-bottom: 30px">
+						<div class="input-group" class="col-sm-4">
+							<div class="input-group-btn">
+								<div id="search-option" class="btn btn-danger2">검색조건</div>
+							</div>
+							<!-- 검색조건 -->
+							<select class="form-control" name="sort">
+								<option v-for="option in getOptions()" :value="option.name">{{option.value}}</option>
+							</select>
+						</div>
 
+						<!-- 검색바 -->
+						<div class="input-group" class="col-sm-8">
+							<input type="text" name="search_text" id="search-text"
+								class="form-control" placeholder="검색어를 입력하세요." required>
+							<div class="input-group-btn">
+								<button id="search" class="btn btn-danger2">검색</button>
+							</div>
+						</div>
+					</div>
+				</form>
+				<component v-bind:is="currentview"></component>
+
+			</div>
 		</div>
 	</div>
 	<!-- 상품정보 출력 끝 -->
@@ -291,16 +292,18 @@ td {
 </script>
 </body>
 <!-- 인덱스 전용 js -->
-<c:url value="/static/script/index.js" var="indexJSurl"/>
+<c:url value="/static/script/index.js" var="indexJSurl" />
 <script type="text/javascript">
-let alarm = "${alarm }";
-if(alarm) {
-	alert(alarm);
-}	
+	let alarm = "${alarm }";
+	if (alarm) {
+		alert(alarm);
+	}
 
-let allergy = "${loginUser.allergy}";
+	let allergy = "${loginUser.allergy}";
 	let current = "${comp}";
+	let methodurl = "${methodurl}";
 </script>
 <script src="${indexJSurl }">
+	
 </script>
 </html>
