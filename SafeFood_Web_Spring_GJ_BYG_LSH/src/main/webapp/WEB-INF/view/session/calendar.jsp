@@ -304,7 +304,7 @@ body {
 			                                'today': date.today,
 			                                'blank': date.blank,
 			                                'no-border-right': date.key % 7 === 0,
-											'taken_day': date.isTakenDay === false 
+											'taken_day': date.isTakenDay === true 
                              			}"
                                  :key="date.key" 
                                  :data-date="date.date"
@@ -341,6 +341,7 @@ new moment.locale('ko', {
     monthsShort: "1월_2월_3월_4월_5월_6월_7월_8월_9월_10월_11월_12월".split("_")
 });
 let userEmail = "${loginUser.email }";
+let contextRoot = "SafeFood_Web_Spring_GJ_BYG_LSH";
 let vi = new Vue({
     el: "#app",
     data: {
@@ -355,16 +356,6 @@ let vi = new Vue({
     	this.loadTakenFoods();
     },
     computed: {
-    	loadTakenFoods() {
-    		axios.get("http://"+this.hostname+":8080/takenfoods/"+userEmail)
-			.then(response => {
-				this.takenInfos = response.data.takenFoodList;
-				console.log(this.takenInfos);
-			}).catch(error => {
-				console.log(error);
-			});
-    	},
-    	
         year: function () {
             return this.dateContext.format("Y");
         },
@@ -421,10 +412,6 @@ let vi = new Vue({
             let $this = this;
 
             let dateList = [];
-            // 1. axios로 섭취정보 가져와서 takenInfos 배열 채우기
-            // 2. 
-            
-
             let previousMonth = this.previousMonth;
             let nextMonth = this.nextMonth;
 
@@ -474,12 +461,13 @@ let vi = new Vue({
                 };
             });
 
-            //filling in dates from the current month
+            //현재 달의 정보를 채우는 부분
             while (countDayInCurrentMonth < this.firstDayOfMonth + this.daysInMonth) {
-                if (window.CP.shouldStopExecution(1)) break;
-                countDayInCurrentMonth++;
+                
+            	if (window.CP.shouldStopExecution(1)) break;
+                countDayInCurrentMonth++; 
 
-                let day = countDayInCurrentMonth - countDayInPreviousMonth;
+                let day = countDayInCurrentMonth - countDayInPreviousMonth; // 달력에 표시될 총 일수
                 let weekDay = this.getWeekDay(countDayInCurrentMonth);
                 let formattedDay = this.formattingDay(day);
 
@@ -496,6 +484,11 @@ let vi = new Vue({
                 };
             }
             window.CP.exitedLoop(1);
+            // 섭취한 적이 있는 날짜는 체크해준다.
+            for(let info of this.takenInfos) {
+				let d = new Date(info.takenTime);
+				dateList[d.getDate()+1].isTakenDay = true;
+			}
 
             let daysInNextMonth = 7 - countDayInCurrentMonth % 7;
             let countDayInCurrentMonthSaved = countDayInCurrentMonth;
@@ -564,10 +557,7 @@ let vi = new Vue({
             return this.today.format("Y");
         },
         todayInCurrentMonthAndYear: function () {
-            return (
-                this.month === this.initialMonth &&
-                this.year === this.initialYear);
-
+            return (this.month === this.initialMonth && this.year === this.initialYear);
         },
         selectedDayAndMonth: function () {
             let dayAndMonth = this.selectedDate.format("D MMMM");
@@ -577,7 +567,6 @@ let vi = new Vue({
                 month: dayAndMonth[1]
             };
 
-
             return dayAndMonth;
         },
         selectedWeekDay: function () {
@@ -585,18 +574,30 @@ let vi = new Vue({
         },
         todayIsEqualSelectDate: function () {
             return (
-                this.selectedDate.format("YYYYMMDD") ===
-                this.today.format("YYYYMMDD"));
-
+                this.selectedDate.format("YYYYMMDD") === this.today.format("YYYYMMDD"));
         }
     },
 
     methods: {
+    	loadTakenFoods() {
+    		let emailInfo = userEmail.split(".");
+    		let url = "http://"+this.hostname+":8080/"+contextRoot+"/session/takenfoods?";
+    		let param = "email="+emailInfo[0]+"&dot="+emailInfo[1]+"&year="+this.dateContext.format("YYYY")+"&month="+this.dateContext.format('M');
+    		console.log("url: ",url+param);
+    		axios.get(url+param)
+			.then(response => {
+				this.takenInfos = response.data.list;
+			}).catch(error => {
+				console.log(error);
+			});
+    	},
         addMonth: function () {
             this.dateContext = this.nextMonth;
+            this.loadTakenFoods();
         },
         subtractMonth: function () {
             this.dateContext = this.previousMonth;
+            this.loadTakenFoods();
         },
         setSelectedDate: function (moment) {
             this.selectedDate = moment;

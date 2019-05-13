@@ -61,7 +61,7 @@
 			<span class="titleFont">나의 섭취 달력</span>
 		</div>
 
-		<!-- 나의 섭취정보 iframe -->
+		<!-- 나의 섭취달력 iframe -->
 		<c:url value="/session/calendar" var="calendarUrl"/>
 		<div align="center">
 			<iframe width="1024" height="800" frameborder="0" scrolling="no" src="${calendarUrl }"></iframe>

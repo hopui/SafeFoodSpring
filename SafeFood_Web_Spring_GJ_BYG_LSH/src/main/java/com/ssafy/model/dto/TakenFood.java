@@ -6,12 +6,20 @@ public class TakenFood
 {
 	private String userEmail;
 	private Date takenTime;
-	private Integer quantity;
+	private int quantity;
 	private String foodCode;
-	private Integer haccp;
+	private int haccp;
 	
 	public TakenFood(){}
-
+	public TakenFood(String userEmail, Date takenTime, int quantity, String foodCode, int haccp)
+	{
+		this.userEmail = userEmail;
+		this.takenTime = takenTime;
+		this.quantity = quantity;
+		this.foodCode = foodCode;
+		this.haccp = haccp;
+	}
+	
 	public String getUserEmail()
 	{
 		return userEmail;
@@ -32,12 +40,12 @@ public class TakenFood
 		this.takenTime = takenTime;
 	}
 
-	public Integer getQuantity()
+	public int getQuantity()
 	{
 		return quantity;
 	}
 
-	public void setQuantity(Integer quantity)
+	public void setQuantity(int quantity)
 	{
 		this.quantity = quantity;
 	}
@@ -52,13 +60,20 @@ public class TakenFood
 		this.foodCode = foodCode;
 	}
 
-	public Integer getHaccp()
+	public int getHaccp()
 	{
 		return haccp;
 	}
 
-	public void setHaccp(Integer haccp)
+	public void setHaccp(int haccp)
 	{
 		this.haccp = haccp;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "TakenFood [userEmail=" + userEmail + ", takenTime=" + takenTime + ", quantity=" + quantity
+				+ ", foodCode=" + foodCode + ", haccp=" + haccp + "]";
 	}
 }

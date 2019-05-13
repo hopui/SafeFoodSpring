@@ -3,11 +3,14 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.model.mapper.TakenFood">
-	<select id="selectTakenFoods" resultType="takenFood">
-		select * from takenfood where user_email = #{userEmail}
+	<select id="selectTakenFoods" parameterType="map" resultType="takenFood">
+		select * from takenfood 
+		where user_email = #{userEmail} 
+			  and year(takenTime) = #{yyyy} 
+			  and month(takenTime) = #{m}
 	</select>
 	
-		<select id="selectMyFood" resultType="food" parameterType="map">
+	<select id="selectMyFood" resultType="food" parameterType="map">
 		select * from food f join takenfood t on t.user_email = #{email} where f.food_code = #{code}
 	</select>
 	

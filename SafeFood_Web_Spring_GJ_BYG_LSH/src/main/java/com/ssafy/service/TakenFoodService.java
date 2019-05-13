@@ -22,7 +22,11 @@ public class TakenFoodService
 		this.dao = dao;
 	}
 	
-	public List<TakenFood> selectTakenFoods(String userEmail) {
-		return dao.selectTakenFoods(userEmail);
+	public List<TakenFood> selectTakenFoods(String userEmail, String year, String month) {
+		return dao.selectTakenFoods(userEmail, year, month);
+	}
+	
+	public int insertTakenFood(String userEmail) {
+		return dao.insertTakenFood(userEmail);
 	}
 }
