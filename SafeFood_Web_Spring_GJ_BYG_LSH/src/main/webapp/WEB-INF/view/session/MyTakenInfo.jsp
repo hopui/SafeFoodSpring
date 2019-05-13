@@ -23,7 +23,7 @@
 		
 		<!-- local css -->
 		<style>
-		h1 {
+		.titleFont {
 			font-family: 'Do Hyeon', sans-serif;
 			font-size: -webkit-xxx-large;
 		}
@@ -56,18 +56,17 @@
 	
 		<!-- 제목 -->
 		<div class="text-center">
-			<h1>나의 섭취 정보</h1>
+			<c:url value="/static/img/check.png" var="checkImg"/>
+			<img src="${checkImg }" style="width:64px; margin-bottom:30px"id="prdt">
+			<span class="titleFont">나의 섭취 달력</span>
+		</div>
+
+		<!-- 나의 섭취정보 iframe -->
+		<c:url value="/session/calendar" var="calendarUrl"/>
+		<div align="center">
+			<iframe width="1024" height="800" frameborder="0" scrolling="no" src="${calendarUrl }"></iframe>
 		</div>
 		
-		<!-- 상단 이미지 -->
-		<c:url value="/static/img/check.png" var="checkImg"/>
-		<div class="text-center" id="ddd">
-			<img src="${checkImg }" id="prdt">
-		</div>
-		
-		<!-- 여백의 -->
-		<br><hr><br>
-		<!-- 아름다움 -->
 		
 		<div class="container">
 			<h3>하루 섭취량</h3>
@@ -89,10 +88,6 @@
 			</div>
 		</div>
 		<br><br>
-		
-		<!-- 나의 섭취정보 iframe -->
-		<c:url value="/WEB-INF/view/include/calendar.jsp" var="calendarUrl"/>
-		<iframe width="600" height="300" src="${calendarUrl }" name="test" id="test" frameborder="1" scrolling="yes" align="left"></iframe>
 		
 		<!-- footer -->
 		<jsp:include page="../include/footer.jsp"/>

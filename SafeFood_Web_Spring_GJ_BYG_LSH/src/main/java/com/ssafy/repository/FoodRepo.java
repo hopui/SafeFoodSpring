@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.model.dto.Food;
+import com.ssafy.model.dto.TakenFood;
 
 @Transactional
 @Repository
@@ -24,11 +25,6 @@ public class FoodRepo {
 	public List<Food> selectAll(int page) {
 		String stmt = ns + "selectAll";
 		return tmp.selectList(stmt,page*20);
-	}
-
-	public List<Food> selectMyfoodAll(String email) {
-		String stmt = ns + "selectMyFoodAll";
-		return tmp.selectList(stmt, email);
 	}
 
 	public Food selectCode(int code) {

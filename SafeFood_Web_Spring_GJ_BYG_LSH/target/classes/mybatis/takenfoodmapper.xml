@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.model.mapper.TakenFood">
+	<select id="selectTakenFoods" resultType="takenFood">
+		select * from takenfood where user_email = #{userEmail}
+	</select>
+	
+		<select id="selectMyFood" resultType="food" parameterType="map">
+		select * from food f join takenfood t on t.user_email = #{email} where f.food_code = #{code}
+	</select>
+	
+	<select id="selectQuantity" resultType="int" parameterType="map">
+		select quantity from takenfood where user_email = #{email} and food_code = #{code}
+	</select>
+	
+	<insert id="insertMyFood" parameterType="map">
+		insert into takenfood (user_email, food_code, quantity) values(#{email},#{code},#{quantity})
+	</insert>
+
+	<update id="updateMyFood" parameterType="map">
+		update takenfood set quantity = #{quantity} where user_email =#{email} and food_code=#{code}
+	</update>
+	
+	<delete id="deleteMyFood" parameterType="map">
+		delete from takenfood where  user_email =  #{email} and food_code = #{code}
+	</delete>
+	
+	<delete id="deleteMyfoods2" parameterType="String">
+		delete from takenfood where  user_email =  #{email}
+	</delete>
+</mapper>

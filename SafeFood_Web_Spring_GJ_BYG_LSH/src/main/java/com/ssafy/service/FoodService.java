@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.ssafy.model.dto.Food;
+import com.ssafy.model.dto.TakenFood;
 import com.ssafy.repository.FoodRepo;
 
 public class FoodService
@@ -19,10 +20,6 @@ public class FoodService
 	}
 	public List<Food> selectAll(int page) {
 		return dao.selectAll(page);
-	}
-
-	public List<Food> selectMyfoodAll(String email) {
-		return dao.selectMyfoodAll(email);
 	}
 
 	public Food selectCode(int code) {

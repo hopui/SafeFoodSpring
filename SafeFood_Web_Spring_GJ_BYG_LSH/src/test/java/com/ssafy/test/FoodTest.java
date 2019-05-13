@@ -26,16 +26,6 @@ public class FoodTest {
 	FoodService service;
 	
 	@Test
-	public void test() {
-		//fail("Not yet implemented");
-		//assertThat(service, is(notNullValue()));
-//		List<Food> list =service.selectAll();
-//		assertThat(list.size(), is(not(0)));
-		List<Food> list =service.selectMyfoodAll("ssafy@ssafy.com");
-		assertThat(list.size(), is(not(0)));
-	}
-	
-	@Test
 	public void insert() {
 		//fail("Not yet implemented");
 		//assertThat(service, is(notNullValue()));

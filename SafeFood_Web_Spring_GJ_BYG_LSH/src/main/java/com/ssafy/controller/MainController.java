@@ -63,4 +63,10 @@ public class MainController
 		model.addAttribute("num", num);
 		return "/session/modifyNotice";
 	}
+	
+	@GetMapping("/session/calendar")
+	public String goToCalendar(Model model)
+	{
+		return "/session/calendar";
+	}
 }
