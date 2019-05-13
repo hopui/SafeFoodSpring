@@ -183,10 +183,12 @@ td {
 					<br> 
 					<span>{{food.manufacture}}</span>
 					<br>
+					<c:if test="${not empty loginUser}">
 					<button type='button' class='btn btn-primary'>
 						<span class='glyphicon glyphicon-shopping-cart' aria-hidden='true'></span>
 							찜
 					</button>
+					</c:if>
 					<img class="mark" alt="#" src="static/img/인증마크.jpg">
 				</div>
 			</div>

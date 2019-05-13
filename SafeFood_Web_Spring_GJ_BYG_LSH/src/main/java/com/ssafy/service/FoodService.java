@@ -43,14 +43,10 @@ public class FoodService
 		return dao.selectMyFood(email, code);
 	}
 
-	public int insertMyfood(String email, String code, int quantity) {
-		return dao.insertMyfood(email, code, quantity);
+	public int insertMyfood(String email, String code, int quantity, int haccp) {
+		return dao.insertMyfood(email, code, quantity,haccp);
 	}
 	
-	public int insertfood( Food food) {
-		return dao.insertfood(food);
-	}
-
 	public int updateMyfood(String email, String code, int quantity) {
 		return dao.updateMyfood(email, code, quantity);
 	}

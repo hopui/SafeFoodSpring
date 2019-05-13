@@ -38,7 +38,7 @@
 	</select>
 	
 	<insert id="insertMyFood" parameterType="map">
-		insert into takenfood (user_email, food_code, quantity) values(#{email},#{code},#{quantity})
+		insert into takenfood (user_email, food_code, quantity, haccp) values(#{email},#{code},#{quantity},#{haccp})
 	</insert>
 
 	<update id="updateMyFood" parameterType="map">

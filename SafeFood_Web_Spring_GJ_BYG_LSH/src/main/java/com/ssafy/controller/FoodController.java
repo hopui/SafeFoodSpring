@@ -26,6 +26,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.ssafy.model.dto.Food;
 import com.ssafy.model.dto.User;
 import com.ssafy.service.FoodService;
+
 //
 @Controller
 @CrossOrigin(origins = "*")
@@ -34,15 +35,15 @@ public class FoodController {
 
 	@Autowired
 	FoodService service;
-	
+
 	@GetMapping("/food/{page}")
 	@ResponseBody
 	public Map<String, Object> foodDB(@PathVariable int page) {
-		
+
 		Map<String, Object> map = new HashMap<>();
-		List<Food> list =service.selectAll(page);
+		List<Food> list = service.selectAll(page);
 		map.put("list", list);
-		map.put("maxCount",list.size());
+		map.put("maxCount", list.size());
 		return map;
 	}
 
@@ -69,41 +70,41 @@ public class FoodController {
 
 	@GetMapping("/search")
 	public String getSearch(Model model, String sort, String search_text, String kind) {
-		if(kind.equals("maincomp")) {
-			System.out.println(sort+":"+search_text);
+		if (kind.equals("maincomp")) {
+			System.out.println(sort + ":" + search_text);
 			String apiurl = "http://apis.data.go.kr/B553748/CertImgListService/getCertImgListService?ServiceKey=";
 			String key = "JHiCkjVmT8kUFVm183Ggm3ln1sDuay3V2EWzhmda%2B4773P90DoYKR7iFlXsTGiD6EJlntiX9UsmMtGpOjVTxIA%3D%3D&returnType=json";
-			String page="&pageNo=";
-			String option=null;
+			String page = "&pageNo=";
+			String option = null;
 			try {
-				option = "&"+sort+"="+URLEncoder.encode(search_text,"utf-8");
+				option = "&" + sort + "=" + URLEncoder.encode(search_text, "utf-8");
 			} catch (UnsupportedEncodingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-			model.addAttribute("comp","maincomp");
-			model.addAttribute("methodurl",apiurl+key+option+page);
-		}else {
-			model.addAttribute("sort",sort);
-			model.addAttribute("search_text",search_text);
-			model.addAttribute("comp","tablecomp");
+
+			model.addAttribute("comp", "maincomp");
+			model.addAttribute("methodurl", apiurl + key + option + page);
+		} else {
+			model.addAttribute("sort", sort);
+			model.addAttribute("search_text", search_text);
+			model.addAttribute("comp", "tablecomp");
 		}
-		
+
 		return "index";
 	}
 
 	@GetMapping("/search/{sort}/{search_text}/{pageNo}")
 	@ResponseBody
-	public Map<String, Object> getSearchSort(Model model,@PathVariable String sort,
-			@PathVariable String search_text, @PathVariable int pageNo) {
+	public Map<String, Object> getSearchSort(Model model, @PathVariable String sort, @PathVariable String search_text,
+			@PathVariable int pageNo) {
 		Map<String, Object> map = new HashMap<>();
-		List<Food> list=new ArrayList<Food>();
+		List<Food> list = new ArrayList<Food>();
 		try {
-			
-			if(sort.equals("name"))
+
+			if (sort.equals("name"))
 				list = service.selectSortName(URLDecoder.decode(search_text, "utf-8"));
-			else if(sort.equals("food_group"))
+			else if (sort.equals("food_group"))
 				list = service.selectSortGroup(URLDecoder.decode(search_text, "utf-8"));
 			else
 				list = service.selectSortMaker(URLDecoder.decode(search_text, "utf-8"));
@@ -114,8 +115,7 @@ public class FoodController {
 		map.put("list", list);
 		return map;
 	}
-	
-	
+
 	@GetMapping("/session/myTakenInfo")
 	public String doMyTakenInfo(Model model, HttpSession session) {
 		User user = (User) session.getAttribute("loginUser");
@@ -141,23 +141,16 @@ public class FoodController {
 	}
 
 	@PostMapping("/session/modify")
-	public String doInsert(String eat, String quantity, String delete, HttpSession session, RedirectAttributes redir) {
+	public String doInsert(String eat, String quantity, String haccp , HttpSession session, RedirectAttributes redir) {
 		User user = (User) session.getAttribute("loginUser");
 
-		if (eat != null) {
-			if (quantity != null && !quantity.trim().equals("")) {
-				if (service.insertMyfood(user.getEmail(), eat, Integer.parseInt(quantity)) > 0)
-					redir.addFlashAttribute("alarm", "섭취 등록 성공했습니다.");
-				else
-					redir.addFlashAttribute("alarm", "섭취 등록 실패했습니다.");
-				return "redirect:/detail/" + eat;
-			}
+		if (quantity != null && !quantity.trim().equals("")) {
+			if (service.insertMyfood(user.getEmail(), eat, Integer.parseInt(quantity), Integer.parseInt(haccp)) > 0)
+				redir.addFlashAttribute("alarm", "섭취 등록 성공했습니다.");
+			else
+				redir.addFlashAttribute("alarm", "섭취 등록 실패했습니다.");
 		}
+		return "redirect:/detail/" + eat;
 
-		if (service.deleteMyfood(user.getEmail(), delete) > 0)
-			redir.addFlashAttribute("alarm", "식품 삭제 성공했습니다.");
-		else
-			redir.addFlashAttribute("alarm", "식품 삭제 실패했습니다.");
-		return "redirect:/session/myTakenInfo";
 	}
 }

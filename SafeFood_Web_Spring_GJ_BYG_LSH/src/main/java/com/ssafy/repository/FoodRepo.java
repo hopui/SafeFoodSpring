@@ -59,7 +59,7 @@ public class FoodRepo {
 		return tmp.selectOne(stmt, map);
 	}
 
-	public int insertMyfood(String email, String code, int quantity) {
+	public int insertMyfood(String email, String code, int quantity, int haccap) {
 		Integer food = (Integer)selectQuantity(email, code);
 		if (food<1) {
 			String stmt = ns + "insertMyFood";
@@ -67,21 +67,22 @@ public class FoodRepo {
 			map.put("email", email);
 			map.put("code", code);
 			map.put("quantity", String.valueOf(quantity));
+			map.put("haccp", String.valueOf(haccap));
 			return tmp.insert(stmt, map);
 		}else {
+			return updateMyfood(email, code, food+quantity);
+		}
+	}
+	
+	public int updateMyfood(String email, String code, int quantity) {
 			String stmt = ns + "updateMyFood";
 			Map<String, String> map = new HashMap<String, String>();
 			map.put("email", email);
 			map.put("code", code);
-			map.put("quantity", String.valueOf(food+quantity));
+			map.put("quantity", String.valueOf(quantity));
 			return tmp.update(stmt,map);
-		}
 	}
 	
-	public int insertfood(Food food) {
-		String stmt = ns + "insertfood";
-		return tmp.insert(stmt, food);
-	}
 	
 	public Object selectQuantity(String email, String code) {
 		String stmt = ns + "selectQuantity";
@@ -95,14 +96,6 @@ public class FoodRepo {
 			return quan;
 	}
 
-	public int updateMyfood(String email, String code, int quantity) {
-		String stmt = ns + "updateMyFood";
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("email", email);
-		map.put("code", code);
-		map.put("quantity", String.valueOf(quantity));
-		return tmp.update(stmt, map);
-	}
 	
 	public int deleteMyfood(String email, String code) {
 		String stmt = ns + "deleteMyFood";
