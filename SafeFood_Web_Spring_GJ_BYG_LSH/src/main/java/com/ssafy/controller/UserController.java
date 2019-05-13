@@ -17,7 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.ssafy.model.dto.User;
 import com.ssafy.service.FoodService;
 import com.ssafy.service.UserService;
-
+//
 @Controller
 @CrossOrigin(origins="*")
 public class UserController
