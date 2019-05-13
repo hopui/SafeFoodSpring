@@ -35,6 +35,7 @@ public class MainController
 	public String goTableFood(Model model)
 	{
 		model.addAttribute("comp","tablecomp");
+		model.addAttribute("search",new String[2]);
 		return "index";
 	}
 	

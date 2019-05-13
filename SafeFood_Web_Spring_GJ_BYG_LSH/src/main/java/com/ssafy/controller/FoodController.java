@@ -3,6 +3,7 @@ package com.ssafy.controller;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,8 +19,10 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.ssafy.model.dto.Food;
 import com.ssafy.model.dto.User;
 import com.ssafy.service.FoodService;
@@ -34,10 +37,12 @@ public class FoodController {
 	
 	@GetMapping("/food/{page}")
 	@ResponseBody
-	public Map<String, List<Food>> foodDB(@PathVariable int page) {
+	public Map<String, Object> foodDB(@PathVariable int page) {
 		
-		Map<String, List<Food>> map = new HashMap<>();
-		map.put("list", service.selectAll(page));
+		Map<String, Object> map = new HashMap<>();
+		List<Food> list =service.selectAll(page);
+		map.put("list", list);
+		map.put("maxCount",list.size());
 		return map;
 	}
 
@@ -79,11 +84,38 @@ public class FoodController {
 			
 			model.addAttribute("comp","maincomp");
 			model.addAttribute("methodurl",apiurl+key+option+page);
+		}else {
+			model.addAttribute("sort",sort);
+			model.addAttribute("search_text",search_text);
+			model.addAttribute("comp","tablecomp");
 		}
 		
 		return "index";
 	}
 
+	@GetMapping("/search/{sort}/{search_text}/{pageNo}")
+	@ResponseBody
+	public Map<String, Object> getSearchSort(Model model,@PathVariable String sort,
+			@PathVariable String search_text, @PathVariable int pageNo) {
+		Map<String, Object> map = new HashMap<>();
+		List<Food> list=new ArrayList<Food>();
+		try {
+			
+			if(sort.equals("name"))
+				list = service.selectSortName(URLDecoder.decode(search_text, "utf-8"));
+			else if(sort.equals("food_group"))
+				list = service.selectSortGroup(URLDecoder.decode(search_text, "utf-8"));
+			else
+				list = service.selectSortMaker(URLDecoder.decode(search_text, "utf-8"));
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		map.put("list", list);
+		return map;
+	}
+	
+	
 	@GetMapping("/session/myTakenInfo")
 	public String doMyTakenInfo(Model model, HttpSession session) {
 		User user = (User) session.getAttribute("loginUser");

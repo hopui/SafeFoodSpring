@@ -250,7 +250,7 @@ td {
 					</tr>
 				</thead>
 				<tbody>
-				<template v-for="food in foods">
+				<template v-for="food in foodSection">
 					<tr>
 						<td rowspan="2">{{food.code}}</td>
 						<th scope="row">{{food.foodGroup}}</th>
@@ -273,17 +273,15 @@ td {
 				</tbody>
 			</table> 
 
-		<div v-if="foods.length == 0 " style='text-align: center;'>식품정보가
+		<div v-if="foodSection.length == 0 " style='text-align: center;'>식품정보가
 				없습니다.</div>
 
 		<!-- 페이지 넘버 -->
-			 <div v-if="foods.length > 0" align="center" style="margin-top: 10px;">
+			 <div v-if="foodSection.length > 0" align="center" style="margin-top: 10px;">
 				<button @click="nextPage(-1)">←</button>
-	
-
 				<template
 					v-for="i in pageSelector.slice(nowPages*10, nowPages*10+10)">
-				<a href="#" @click="loadData(i)" style="margin: 0 10px;">{{i}}</a> </template>
+				<a href="#" @click="getPage(i)" style="margin: 0 10px;">{{i}}</a> </template>
 
 				<button @click="nextPage(1)">→</button>
 	
@@ -302,6 +300,8 @@ td {
 	let allergy = "${loginUser.allergy}";
 	let current = "${comp}";
 	let methodurl = "${methodurl}";
+	let sort ="${sort}";
+	let searchtext = "${search_text}";
 </script>
 <script src="${indexJSurl }">
 	

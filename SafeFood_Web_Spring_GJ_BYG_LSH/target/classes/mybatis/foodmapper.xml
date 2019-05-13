@@ -7,24 +7,26 @@
 		select * from food limit #{first} , 20
 	</select>
 
-	<select id="selectMyFoodAll" resultType="food" parameterType="String">
+	<select id="selectMyFoodAll" resultType="food">
 		select * from food f join takenfood t on t.user_email = #{email} where f.code = t.food_code
 	</select>
 	<select id="selectCode" resultType="food" parameterType="int">
 		select * from food where code=#{code}
 	</select>
-	<select id="selectMaker" resultType="food" parameterType="String">
+	
+	<select id="selectSortName" resultType="food">
+	 <bind name="pattern" value="'%' + _parameter + '%'" />
+		select * from food where name like #{pattern}
+	</select>
+	
+	<select id="selectSortMaker" resultType="food">
 	 <bind name="pattern" value="'%' + _parameter + '%'" />
 		select * from food where maker like #{pattern}
 	</select>
-	<select id="selectMaterial" resultType="food" parameterType="String">
-		<bind name="pattern" value="'%' + _parameter + '%'" />
-		select * from food where material like #{pattern}
-	</select>
 	
-	<select id="selectName" resultType="food" parameterType="String">
-		<bind name="pattern" value="'%' + _parameter + '%'" />
-		select * from food where name like #{pattern}
+	<select id="selectSortGroup" resultType="food" parameterType="map">
+	 <bind name="pattern" value="'%' + _parameter + '%'" />
+		select * from food where food_group like #{pattern}
 	</select>
 	
 	<select id="selectMyFood" resultType="food" parameterType="map">

@@ -28,19 +28,17 @@ public class FoodService
 	public Food selectCode(int code) {
 		return dao.selectCode(code);
 	}
-
-	public List<Food> selectMaker(String maker) {
-		return dao.selectMaker(maker);
+	
+	public List<Food> selectSortName(String search){
+		return dao.selectSortName(search);
 	}
 
-	public List<Food> selectName(String name) {
-		return dao.selectName(name);
+	public List<Food> selectSortMaker(String search){
+		return dao.selectSortMaker(search);
 	}
-
-	public List<Food> selectMaterial(String mater) {
-		return dao.selectMaterial(mater);
+	public List<Food> selectSortGroup(String search){
+		return dao.selectSortGroup(search);
 	}
-
 	public Food selectMyFood(String email, String code) {
 		return dao.selectMyFood(email, code);
 	}
