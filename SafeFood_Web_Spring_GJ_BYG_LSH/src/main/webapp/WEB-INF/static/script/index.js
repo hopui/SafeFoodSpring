@@ -37,7 +37,7 @@
 						console.log(error)
 						this.errored= true;
 					})
-					//함수에서의 this는 window, arrow 함수에서는 vue
+					// 함수에서의 this는 window, arrow 함수에서는 vue
 					.finally(() => {this.loading = false})
 				},
 				checkAller(aller){
@@ -65,6 +65,7 @@
 			data(){
 				return {
 					foods:[],
+					foodSection:[],
 					pageSelector:[],
 					nowPages:0,
 					totalCount:500
@@ -77,24 +78,54 @@
 			},
 			methods:{
 				loadData(first){
-					axios
-					.get("/SafeFood_Web_Spring_GJ_BYG_LSH/food/"+(first-1))
-					.then(response => {
-						this.foods = response.data.list;
-						//	console.log(response);
-					})
-					.catch(error =>{
-						console.log(error)
-						this.errored= true;
-					})
-					//함수에서의 this는 window, arrow 함수에서는 vue
-					.finally(() => {this.loading = false})
+					if(!sort){
+						axios
+						.get("/SafeFood_Web_Spring_GJ_BYG_LSH/food/"+(first-1))
+						.then(response => {
+							this.foodSection = response.data.list;
+						})
+						.catch(error =>{
+							console.log(error)
+							this.errored= true;
+						})
+						// 함수에서의 this는 window, arrow 함수에서는 vue
+						.finally(() => {this.loading = false})
+					}else{
+						axios
+						.get("/SafeFood_Web_Spring_GJ_BYG_LSH/search/"+sort+"/"+searchtext+"/"+(first-1))
+						.then(response => {
+							this.foods = response.data.list;
+							for(let i=0; i<20; i++ ){
+								if(this.foods.length ==i)
+									break;
+								this.foodSection.push(this.foods[i]);
+							}
+							this.totalCount = Math.round(this.foods.length/20);
+						})
+						.catch(error =>{
+							console.log(error)
+							this.errored= true;
+						})
+						// 함수에서의 this는 window, arrow 함수에서는 vue
+						.finally(() => {this.loading = false})
+					}
 				},
 				nextPage(num){
 					if(this.nowPages+num >-1 &&
-							this.nowPages+num <=this.totalCount){
+							(this.nowPages+num)*10 <=this.totalCount){
 						this.nowPages+=num
 					}
+				},
+				getPage(num){
+					if(this.foods.length>0){
+						this.foodSection=[];
+						for(let i=(num-1)*20; i<(num-1)*20+20; i++ ){
+							if(this.foods.length ==i)
+								break;
+							this.foodSection.push(this.foods[i]);
+						}
+					}else
+						this.loadData(num);
 				}
 			}
 		}) 
@@ -117,9 +148,9 @@
 						   if(current==='maincomp')
 							   return [{name: "prdlstNm", value: "제품명"},{name: "prdlstReportNo", value:"품목보고번호"}];
 						   else
-							   return [{name: "DESC_KOR", value: "제품명"},
-								   {name: "BGN_YEAR", value:"구축년도"},
-								   {name: "ANIMAL_PLANT", value:"가공업체명"}];
+							   return [{name: "name", value: "제품명"},
+								   {name: "food_group", value:"제품군"},
+								   {name: "maker", value:"가공업체명"}];
 					   }
 				   }
 			}

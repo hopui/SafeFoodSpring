@@ -12,7 +12,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.model.dto.Food;
-import com.ssafy.model.dto.TakenFood;
 
 @Transactional
 @Repository
@@ -26,25 +25,30 @@ public class FoodRepo {
 		String stmt = ns + "selectAll";
 		return tmp.selectList(stmt,page*20);
 	}
+	
+	public List<Food> selectSortName( String search){
+		String stmt = ns + "selectSortName";
+		return tmp.selectList(stmt,search);
+	}
+
+	public List<Food> selectSortMaker( String search){
+		String stmt = ns + "selectSortMaker";
+
+		return tmp.selectList(stmt,search);
+	}
+	public List<Food> selectSortGroup( String search){
+		String stmt = ns + "selectSortGroup";
+		
+		return tmp.selectList(stmt,search);
+	}
+	public List<Food> selectMyfoodAll(String email) {
+		String stmt = ns + "selectMyFoodAll";
+		return tmp.selectList(stmt, email);
+	}
 
 	public Food selectCode(int code) {
 		String stmt = ns + "selectCode";
 		return tmp.selectOne(stmt, code);
-	}
-
-	public List<Food> selectMaker(String maker) {
-		String stmt = ns + "selectMaker";
-		return tmp.selectList(stmt, maker);
-	}
-
-	public List<Food> selectName(String name) {
-		String stmt = ns + "selectName";
-		return tmp.selectList(stmt, name);
-	}
-
-	public List<Food> selectMaterial(String mater) {
-		String stmt = ns + "selectMaterial";
-		return tmp.selectList(stmt, mater);
 	}
 
 	public Food selectMyFood(String email, String code) {
@@ -55,7 +59,7 @@ public class FoodRepo {
 		return tmp.selectOne(stmt, map);
 	}
 
-	public int insertMyfood(String email, String code, int quantity) {
+	public int insertMyfood(String email, String code, int quantity, int haccap) {
 		Integer food = (Integer)selectQuantity(email, code);
 		if (food<1) {
 			String stmt = ns + "insertMyFood";
@@ -63,21 +67,22 @@ public class FoodRepo {
 			map.put("email", email);
 			map.put("code", code);
 			map.put("quantity", String.valueOf(quantity));
+			map.put("haccp", String.valueOf(haccap));
 			return tmp.insert(stmt, map);
 		}else {
+			return updateMyfood(email, code, food+quantity);
+		}
+	}
+	
+	public int updateMyfood(String email, String code, int quantity) {
 			String stmt = ns + "updateMyFood";
 			Map<String, String> map = new HashMap<String, String>();
 			map.put("email", email);
 			map.put("code", code);
-			map.put("quantity", String.valueOf(food+quantity));
+			map.put("quantity", String.valueOf(quantity));
 			return tmp.update(stmt,map);
-		}
 	}
 	
-	public int insertfood(Food food) {
-		String stmt = ns + "insertfood";
-		return tmp.insert(stmt, food);
-	}
 	
 	public Object selectQuantity(String email, String code) {
 		String stmt = ns + "selectQuantity";
@@ -91,14 +96,6 @@ public class FoodRepo {
 			return quan;
 	}
 
-	public int updateMyfood(String email, String code, int quantity) {
-		String stmt = ns + "updateMyFood";
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("email", email);
-		map.put("code", code);
-		map.put("quantity", String.valueOf(quantity));
-		return tmp.update(stmt, map);
-	}
 	
 	public int deleteMyfood(String email, String code) {
 		String stmt = ns + "deleteMyFood";

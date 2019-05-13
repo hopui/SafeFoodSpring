@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.ssafy.model.dto.Food;
-import com.ssafy.model.dto.TakenFood;
 import com.ssafy.repository.FoodRepo;
 
 public class FoodService
@@ -22,34 +21,32 @@ public class FoodService
 		return dao.selectAll(page);
 	}
 
+	public List<Food> selectMyfoodAll(String email) {
+		return dao.selectMyfoodAll(email);
+	}
+
 	public Food selectCode(int code) {
 		return dao.selectCode(code);
 	}
-
-	public List<Food> selectMaker(String maker) {
-		return dao.selectMaker(maker);
+	
+	public List<Food> selectSortName(String search){
+		return dao.selectSortName(search);
 	}
 
-	public List<Food> selectName(String name) {
-		return dao.selectName(name);
+	public List<Food> selectSortMaker(String search){
+		return dao.selectSortMaker(search);
 	}
-
-	public List<Food> selectMaterial(String mater) {
-		return dao.selectMaterial(mater);
+	public List<Food> selectSortGroup(String search){
+		return dao.selectSortGroup(search);
 	}
-
 	public Food selectMyFood(String email, String code) {
 		return dao.selectMyFood(email, code);
 	}
 
-	public int insertMyfood(String email, String code, int quantity) {
-		return dao.insertMyfood(email, code, quantity);
+	public int insertMyfood(String email, String code, int quantity, int haccp) {
+		return dao.insertMyfood(email, code, quantity,haccp);
 	}
 	
-	public int insertfood( Food food) {
-		return dao.insertfood(food);
-	}
-
 	public int updateMyfood(String email, String code, int quantity) {
 		return dao.updateMyfood(email, code, quantity);
 	}
