@@ -7,6 +7,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>사용자 정보</title>
+	
 	<!-- 부트스트랩 CDN -->
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet" />
@@ -16,18 +17,14 @@
 	<link href="https://fonts.googleapis.com/css?family=Black+Han+Sans" rel="stylesheet">
 	
 	<style>
-		.tableDiv
-		{
-			max-width: 500px;
-		}
 		th{
 			text-align: center;
 		}
 	</style>
 </head>
 <body>
-	<div class="container text-center table-responsive-md tableDiv">
-		<h2>사용자 정보</h2>
+	<div class="container text-center table-responsive-md">
+		<h1>사용자 정보</h1>
 		<c:if test="${!empty loginUser }">
 
 			<table class="table table-striped table-hover">
@@ -63,9 +60,9 @@
 			<c:url value="/main" var="main"/>
 			<c:url value="/session/modifyUserInfo" var="modifyUserInfo"/>
 			<c:url value="/session/dropUserInfo" var="dropUserInfo"/>
-			<input type="button" class="btn btn-success" value="메인으로" onClick="location.href='${main }'">
-			<input type="button" class="btn btn-primary" value="정보변경" onClick="location.href='${modifyUserInfo }'">
-			<input type="button" class="btn btn-danger" id="dropUserInfo" value="회원탈퇴">
+			<input type="button" class="btn btn-success btn-lg" value="메인으로" onClick="location.href='${main }'">
+			<input type="button" class="btn btn-primary btn-lg" value="정보변경" onClick="location.href='${modifyUserInfo }'">
+			<input type="button" class="btn btn-danger btn-lg" id="dropUserInfo" value="회원탈퇴">
 			<hr>
 			<div id="myfood"></div>
 			<div id="myfood_chart"></div>

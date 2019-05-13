@@ -26,7 +26,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.ssafy.model.dto.Food;
 import com.ssafy.model.dto.User;
 import com.ssafy.service.FoodService;
-
+//
 @Controller
 @CrossOrigin(origins = "*")
 public class FoodController {
