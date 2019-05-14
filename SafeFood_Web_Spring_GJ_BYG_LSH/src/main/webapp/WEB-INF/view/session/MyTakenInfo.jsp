@@ -72,7 +72,7 @@
 			<div id = "mylist">
 				<h3>나의 찜리스트</h3>
 				<div class="col-sm-12">
-					<c:forEach items="${mylist}" var="like">
+					<c:forEach items="${mylike}" var="like">
 						<div class="col-sm-4">
 							<h3>${like.foodName }</h3>
 						</div>

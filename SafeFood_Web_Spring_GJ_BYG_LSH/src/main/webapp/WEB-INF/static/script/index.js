@@ -30,7 +30,7 @@
 										this.pageNo = response.data.pageNo;
 										this.totalCount = response.data.totalCount;	
 										
-										for(let i=1; i<Math.round(this.totalCount/this.numOfRows); i++)
+										for(let i=1; i<Math.ceil(this.totalCount/this.numOfRows); i++)
 											this.pageSelector.push(i);
 					})
 					.catch(error =>{
@@ -53,10 +53,31 @@
 				},
 				nextPage(num){
 					if(this.nowPages+num >-1 &&
-							this.nowPages+num*10 <=Math.round(this.totalCount/this.numOfRows)){
+							this.nowPages+num*10 <=Math.ceil(this.totalCount/this.numOfRows)){
 						this.nowPages+=num
 					}
+				},
+				likefood(func,code,name){
+					axios
+					.get("/SafeFood_Web_Spring_GJ_BYG_LSH/session/likefood/haccp/"
+							+code+"/"
+							+name+func)
+					.then(response => {
+						if(response.data.result >0)
+							alert("찜리스트에 추가되었습니다.");
+						else
+							alert("찜을 해제했습니다.");
+						
+					})
+					.catch(error =>{
+						console.log(error)
+						this.errored= true;
+					})
+					//함수에서의 this는 window, arrow 함수에서는 vue
+					.finally(() => {this.loading = false})
+					
 				}
+				
 			}
 		}) 
 		
@@ -100,7 +121,11 @@
 									break;
 								this.foodSection.push(this.foods[i]);
 							}
-							this.totalCount = Math.round(this.foods.length/20);
+							this.totalCount = Math.ceil(this.foods.length/20);
+							
+							this.pageSelector=[];
+							for(let i=1; i<=this.totalCount; i++)
+								this.pageSelector.push(i);
 						})
 						.catch(error =>{
 							console.log(error)

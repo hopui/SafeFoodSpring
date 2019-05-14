@@ -8,7 +8,7 @@
 	</select>
 
 	<select id="selectLikeAll" resultType="likefood">
-		select * from likefood where user_id = #{email}
+		select * from likefood where user_email = #{email}
 	</select>
 	
 	<select id="selectMyFoodAll" resultType="food">

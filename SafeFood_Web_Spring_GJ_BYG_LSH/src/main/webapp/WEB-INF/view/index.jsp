@@ -188,7 +188,8 @@ td {
 					<span>{{food.manufacture}}</span>
 					<br>
 					<c:if test="${not empty loginUser}">
-					<button type='button' class='btn btn-primary'>
+					<button type='button' class='btn btn-primary' 
+						@click="likefood('i',food.prdlstReportNo,food.prdlstNm)">
 						<span class='glyphicon glyphicon-shopping-cart' aria-hidden='true'></span>
 							찜
 					</button>

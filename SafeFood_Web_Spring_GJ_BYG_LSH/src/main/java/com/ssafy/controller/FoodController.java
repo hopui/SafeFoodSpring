@@ -165,9 +165,6 @@ public class FoodController {
 			sum[3] += f.getFat() * quantity;
 			sum[4] += f.getSugar() * quantity;
 			sum[5] += f.getNatrium() * quantity;
-			sum[6] += f.getChole() * quantity;
-			sum[7] += f.getFattyacid() * quantity;
-			sum[8] += f.getTransfat() * quantity;
 		}
 		model.addAttribute("foods", list);
 		model.addAttribute("mylike",Llist);
