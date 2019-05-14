@@ -7,24 +7,33 @@
 		select * from food limit #{first} , 20
 	</select>
 
-	<select id="selectMyFoodAll" resultType="food" parameterType="String">
-		select * from food f join takenfood t on t.user_email = #{email} where f.code = t.food_code
+	<select id="selectLikeAll" resultType="likefood">
+		select * from likefood where user_email = #{email}
+	</select>
+	
+	<select id="selectMyFoodAll" resultType="food">
+		select * from food f join takenfood t on t.user_email = #{email} 
+		and month(now()) = month(t.taken_time)
+		and year(now()) = year(t.taken_time) 
+		where f.code = t.food_code
 	</select>
 	<select id="selectCode" resultType="food" parameterType="int">
 		select * from food where code=#{code}
 	</select>
-	<select id="selectMaker" resultType="food" parameterType="String">
+	
+	<select id="selectSortName" resultType="food">
+	 <bind name="pattern" value="'%' + _parameter + '%'" />
+		select * from food where name like #{pattern}
+	</select>
+	
+	<select id="selectSortMaker" resultType="food">
 	 <bind name="pattern" value="'%' + _parameter + '%'" />
 		select * from food where maker like #{pattern}
 	</select>
-	<select id="selectMaterial" resultType="food" parameterType="String">
-		<bind name="pattern" value="'%' + _parameter + '%'" />
-		select * from food where material like #{pattern}
-	</select>
 	
-	<select id="selectName" resultType="food" parameterType="String">
-		<bind name="pattern" value="'%' + _parameter + '%'" />
-		select * from food where name like #{pattern}
+	<select id="selectSortGroup" resultType="food" >
+	 <bind name="pattern" value="'%' + _parameter + '%'" />
+		select * from food where food_group like #{pattern}
 	</select>
 	
 	<select id="selectMyFood" resultType="food" parameterType="map">
@@ -34,14 +43,26 @@
 	<select id="selectQuantity" resultType="int" parameterType="map">
 		select quantity from takenfood where user_email = #{email} and food_code = #{code}
 	</select>
+	<select id="checkLikefood" resultType="int" parameterType="map">
+		select count(*) from likefood where user_email = #{email} and food_code = #{code}
+	</select>
 	
 	<insert id="insertMyFood" parameterType="map">
-		insert into takenfood (user_email, food_code, quantity) values(#{email},#{code},#{quantity})
+		insert into takenfood (user_email, food_code, quantity, haccp, etc)
+		values(#{email},#{code},#{quantity},#{haccp},#{etc})
+	</insert>
+	
+	<insert id="insertLikeFood" parameterType="map">
+		insert into likefood values(#{code},#{name},#{haccp},#{email})
 	</insert>
 
 	<update id="updateMyFood" parameterType="map">
 		update takenfood set quantity = #{quantity} where user_email =#{email} and food_code=#{code}
 	</update>
+	
+	<delete id="deletelikeFood" parameterType="map">
+		delete from likefood where  user_email =  #{email} and food_code = #{code}
+	</delete>
 	
 	<delete id="deleteMyFood" parameterType="map">
 		delete from takenfood where  user_email =  #{email} and food_code = #{code}

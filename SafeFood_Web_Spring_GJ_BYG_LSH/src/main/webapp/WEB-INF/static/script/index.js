@@ -1,4 +1,4 @@
-	 	
+
 	 	var maincomp = Vue.component("maincomp", {
 			template:"#main-temp",
 			data(){
@@ -8,20 +8,19 @@
 					pageNo:0,
 					totalCount:0,
 					pageSelector:[],
-					nowPages:0
+					nowPages:0,
+					methodurl:''
 				}
 			},
 			mounted(){
+				this.methodurl = methodurl;
 				this.loadData(1);
 			},
 			methods:{
 				loadData(num){
 					var userURL = "http://localhost:8080/SafeFood_Web_Spring_GJ_BYG_LSH";				
 					var url = userURL + "/AjaxRequest.jsp?getUrl=";
-					let apiurl = 'http://apis.data.go.kr/B553748/CertImgListService/getCertImgListService?ServiceKey=';
-					let key = 'JHiCkjVmT8kUFVm183Ggm3ln1sDuay3V2EWzhmda%2B4773P90DoYKR7iFlXsTGiD6EJlntiX9UsmMtGpOjVTxIA%3D%3D&returnType=json';
-					let page="&pageNo="+num;
-					url += encodeURIComponent(apiurl+key+page);
+					url += encodeURIComponent(this.methodurl+num);
 					
 					axios
 					.get(url)
@@ -31,14 +30,14 @@
 										this.pageNo = response.data.pageNo;
 										this.totalCount = response.data.totalCount;	
 										
-										for(let i=1; i<Math.round(this.totalCount/this.numOfRows); i++)
+										for(let i=1; i<Math.ceil(this.totalCount/this.numOfRows); i++)
 											this.pageSelector.push(i);
 					})
 					.catch(error =>{
 						console.log(error)
 						this.errored= true;
 					})
-					//함수에서의 this는 window, arrow 함수에서는 vue
+					// 함수에서의 this는 window, arrow 함수에서는 vue
 					.finally(() => {this.loading = false})
 				},
 				checkAller(aller){
@@ -54,10 +53,31 @@
 				},
 				nextPage(num){
 					if(this.nowPages+num >-1 &&
-							this.nowPages+num <=Math.round(this.totalCount/this.numOfRows)){
+							this.nowPages+num*10 <=Math.ceil(this.totalCount/this.numOfRows)){
 						this.nowPages+=num
 					}
+				},
+				likefood(func,code,name){
+					axios
+					.get("/SafeFood_Web_Spring_GJ_BYG_LSH/session/likefood/haccp/"
+							+code+"/"
+							+name+func)
+					.then(response => {
+						if(response.data.result >0)
+							alert("찜리스트에 추가되었습니다.");
+						else
+							alert("찜을 해제했습니다.");
+						
+					})
+					.catch(error =>{
+						console.log(error)
+						this.errored= true;
+					})
+					//함수에서의 this는 window, arrow 함수에서는 vue
+					.finally(() => {this.loading = false})
+					
 				}
+				
 			}
 		}) 
 		
@@ -66,6 +86,7 @@
 			data(){
 				return {
 					foods:[],
+					foodSection:[],
 					pageSelector:[],
 					nowPages:0,
 					totalCount:500
@@ -78,24 +99,58 @@
 			},
 			methods:{
 				loadData(first){
-					axios
-					.get("/SafeFood_Web_Spring_GJ_BYG_LSH/food/"+(first-1))
-					.then(response => {
+					if(!sort){
+						axios
+						.get("/SafeFood_Web_Spring_GJ_BYG_LSH/food/"+(first-1))
+						.then(response => {
+							this.foodSection = response.data.list;
+						})
+						.catch(error =>{
+							console.log(error)
+							this.errored= true;
+						})
+						// 함수에서의 this는 window, arrow 함수에서는 vue
+						.finally(() => {this.loading = false})
+					}else{
+						axios
+						.get("/SafeFood_Web_Spring_GJ_BYG_LSH/search/"+sort+"/"+searchtext+"/"+(first-1))
+						.then(response => {
 							this.foods = response.data.list;
+							for(let i=0; i<20; i++ ){
+								if(this.foods.length ==i)
+									break;
+								this.foodSection.push(this.foods[i]);
+							}
+							this.totalCount = Math.ceil(this.foods.length/20);
 							
-					})
-					.catch(error =>{
-						console.log(error)
-						this.errored= true;
-					})
-					//함수에서의 this는 window, arrow 함수에서는 vue
-					.finally(() => {this.loading = false})
+							this.pageSelector=[];
+							for(let i=1; i<=this.totalCount; i++)
+								this.pageSelector.push(i);
+						})
+						.catch(error =>{
+							console.log(error)
+							this.errored= true;
+						})
+						// 함수에서의 this는 window, arrow 함수에서는 vue
+						.finally(() => {this.loading = false})
+					}
 				},
 				nextPage(num){
 					if(this.nowPages+num >-1 &&
-							this.nowPages+num <=this.totalCount){
+							(this.nowPages+num)*10 <=this.totalCount){
 						this.nowPages+=num
 					}
+				},
+				getPage(num){
+					if(this.foods.length>0){
+						this.foodSection=[];
+						for(let i=(num-1)*20; i<(num-1)*20+20; i++ ){
+							if(this.foods.length ==i)
+								break;
+							this.foodSection.push(this.foods[i]);
+						}
+					}else
+						this.loadData(num);
 				}
 			}
 		}) 
@@ -103,7 +158,7 @@
 	 	 let vi = new Vue({
 				el:"#app",
 				data: {
-					  currentview: 'maincomp',
+					  currentview: '',
 				      allviews:['maincomp','tablecomp'],
 				   },
 				   components: {
@@ -112,6 +167,16 @@
 				     },
 				   mounted(){
 					   this.currentview = current;
+				   },
+				   methods:{
+					   getOptions(){
+						   if(current==='maincomp')
+							   return [{name: "prdlstNm", value: "제품명"},{name: "prdlstReportNo", value:"품목보고번호"}];
+						   else
+							   return [{name: "name", value: "제품명"},
+								   {name: "food_group", value:"제품군"},
+								   {name: "maker", value:"가공업체명"}];
+					   }
 				   }
 			}
 		)

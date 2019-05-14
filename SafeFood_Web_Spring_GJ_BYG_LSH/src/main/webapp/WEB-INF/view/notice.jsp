@@ -37,13 +37,19 @@
 			    overflow: hidden;
 			    outline:none;
 			}
+			[v-cloak]::before {
+				content: '로딩중...'
+			}
+			[v-cloak] > * {
+				display:none;
+			}
 		</style>
 	</head>
 	<body>
 		<!-- 헤더 -->
 		<jsp:include page="/WEB-INF/view/include/header.jsp"/>
 		
-		<div class="container" id="container" align="center" style="margin-bottom: 50px;">
+		<div class="container" id="container" align="center" style="margin-bottom: 50px;" v-cloak>
 			<br><br><br><br><br>
 			<!-- 본문 --><c:url value="/static/img/notice.png" var="noticeImgUrl"/>
 			<div align="left">
@@ -91,9 +97,9 @@
 				</tbody>
 			</table>
 			<div align="right">
-				<span v-if="'${loginUser.authority }' === 'admin'"><c:url value="/session/writeNotie" var="writeNotieUrl"/>
+				<span v-if="'${loginUser.authority }' === 'admin'"><c:url value="/session/writeNotice" var="writeNoticeUrl"/>
 					<input class="btn btn-danger btn-sm" type="button" value="선택삭제" @click="deleteChecked">
-					<input class="btn btn-success btn-sm" type="button" value="글쓰기" onClick="location.href='${writeNotieUrl }'">
+					<input class="btn btn-success btn-sm" type="button" value="글쓰기" onClick="location.href='${writeNoticeUrl }'">
 				</span>			
 			</div>
 			

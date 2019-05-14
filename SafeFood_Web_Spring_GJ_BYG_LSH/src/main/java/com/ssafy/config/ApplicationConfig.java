@@ -18,8 +18,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.ssafy.repository.UserRepo;
 import com.ssafy.repository.FoodRepo;
+import com.ssafy.repository.TakenFoodRepo;
 import com.ssafy.service.UserService;
 import com.ssafy.service.FoodService;
+import com.ssafy.service.TakenFoodService;
 
 @Configuration
 @ComponentScan(basePackageClasses = { UserRepo.class })
@@ -39,6 +41,13 @@ public class ApplicationConfig
 	public FoodService foodService(FoodRepo repo)
 	{
 		FoodService service = new FoodService(repo);
+		return service;
+	}
+	
+	@Bean
+	public TakenFoodService takenFoodService(TakenFoodRepo repo)
+	{
+		TakenFoodService service = new TakenFoodService(repo);
 		return service;
 	}
 

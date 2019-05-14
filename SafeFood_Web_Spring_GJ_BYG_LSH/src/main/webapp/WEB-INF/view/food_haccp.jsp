@@ -31,6 +31,11 @@
 	width: 250px;
 }
 
+.appleimg{
+width: 35px;
+    border: 0;
+    margin-top: 10px;
+}
 .titles {
 	width: 200px;
 	font-family: 'Jua', sans-serif;
@@ -52,7 +57,6 @@ h1 {
 	width: 970px;
 }
 
-
 #prdt {
 	width: 100px;
 	height: 50%;
@@ -62,6 +66,7 @@ h1 {
 	padding-top: 10px;
 	padding-bottom: 80px;
 }
+
 body {
 	font-family: "Jua", Arial;
 	background: #ffffff;
@@ -133,23 +138,28 @@ body {
 						<td id="name">{{food.capacity}}</td>
 					</tr>
 				</table>
-				<c:url value="/session/modify" var="modilUrl"></c:url>
-				<form id="eat_form" method="post" action="${modilUrl}">
-					<c:if test="${not empty loginUser}">
-						<label>Quantity</label>
-						<input type="number" class="form-control" name='quantity'>
-						<br>
-						<input hidden='true' name='eat' value='${food.code }'>
+				<c:if test="${not empty loginUser}">
+					<c:url value="/session/modify" var="modilUrl"></c:url>
+					<form id="eat_form" method="post" action="${modilUrl}">
+						<label>Quantity</label> 
+						<input type="number" class="form-control"name='quantity'> <br>
+						 <input hidden='true' name='like' :value='food.prdlstReportNo'>
+						 <input hidden='true' name='name' :value='food.prdlstNm'> 
+						 <input hidden='true' name='haccp' value=1>
 						<button class='btn btn-primary' id="button_insert">
 							<span id="insert" class='glyphicon glyphicon-plus'
 								aria-hidden='true'></span>추가
 						</button>
-						<button type='button' class='btn btn-primary'>
+						<button type='button' class="btn btn-primary" @click="likefood('i')">
+						
 							<span class='glyphicon glyphicon-shopping-cart'
 								aria-hidden='true'></span>찜
 						</button>
-					</c:if>
-				</form>
+						<c:url value="/static/img/" var="likeImg" />
+						<img class = "appleimg" :src="'${likeImg}'+image" alt="#">
+					</form>
+					
+				</c:if>
 			</div>
 		</div>
 		<br>
@@ -172,7 +182,8 @@ body {
 		el:"#foodapp",
 		data(){
 			return {
-				food:{}
+				food:{},
+				image:'apple_origin.png'
 			}
 		},
 		mounted(){
@@ -191,6 +202,7 @@ body {
 				.get(url)
 				.then(response => {
 					this.food = response.data.list[0];
+					this.likefood('c');
 				})
 				.catch(error =>{
 					console.log(error)
@@ -198,6 +210,30 @@ body {
 				})
 				//함수에서의 this는 window, arrow 함수에서는 vue
 				.finally(() => {this.loading = false})
+			},
+			likefood(func){
+				axios
+				.get("/SafeFood_Web_Spring_GJ_BYG_LSH/session/likefood/haccp/"
+						+this.food.prdlstReportNo+"/"
+						+this.food.prdlstNm+func)
+				.then(response => {
+						if(func ==='c'){
+							if(response.data.result >0)
+								this.image='apple_ate.png'; 
+						}else{
+							if(response.data.result >0)
+								this.image='apple_ate.png';
+							else
+								this.image='apple_origin.png';
+						}
+				})
+				.catch(error =>{
+					console.log(error)
+					this.errored= true;
+				})
+				//함수에서의 this는 window, arrow 함수에서는 vue
+				.finally(() => {this.loading = false})
+				
 			}
 		}
 

@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.ssafy.model.dto.Food;
+import com.ssafy.model.dto.LikeFood;
 import com.ssafy.repository.FoodRepo;
 
 public class FoodService
@@ -24,39 +25,46 @@ public class FoodService
 	public List<Food> selectMyfoodAll(String email) {
 		return dao.selectMyfoodAll(email);
 	}
+	
+	public List<LikeFood> selectLikeAll(String email) {
+		return dao.selectLikeAll(email);
+	}
 
 	public Food selectCode(int code) {
 		return dao.selectCode(code);
 	}
-
-	public List<Food> selectMaker(String maker) {
-		return dao.selectMaker(maker);
+	
+	public List<Food> selectSortName(String search){
+		return dao.selectSortName(search);
 	}
 
-	public List<Food> selectName(String name) {
-		return dao.selectName(name);
+	public List<Food> selectSortMaker(String search){
+		return dao.selectSortMaker(search);
 	}
-
-	public List<Food> selectMaterial(String mater) {
-		return dao.selectMaterial(mater);
+	public List<Food> selectSortGroup(String search){
+		return dao.selectSortGroup(search);
 	}
-
 	public Food selectMyFood(String email, String code) {
 		return dao.selectMyFood(email, code);
 	}
 
-	public int insertMyfood(String email, String code, int quantity) {
-		return dao.insertMyfood(email, code, quantity);
+	public Object checkLikefood(String email, String code) {
+		return dao.checkLikefood(email, code);
+	}
+	public int insertMyfood(String email, String code, int quantity, int haccp, String name) {
+		return dao.insertMyfood(email, code, quantity,haccp, name);
 	}
 	
-	public int insertfood( Food food) {
-		return dao.insertfood(food);
+	public int insertLikefood(String email, String name, String code, int haccp) {
+		return dao.insertLikefood(email, name, code, haccp);
 	}
-
 	public int updateMyfood(String email, String code, int quantity) {
 		return dao.updateMyfood(email, code, quantity);
 	}
 	
+	public int deleteLikefood(String email, String code) {
+		return dao.deleteLikefood(email, code);
+	}
 	public int deleteMyfood(String email, String code) {
 		return dao.deleteMyfood(email, code);
 	}

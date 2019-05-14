@@ -1,5 +1,9 @@
 package com.ssafy.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,12 +19,17 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.ssafy.model.dto.Food;
+import com.ssafy.model.dto.LikeFood;
 import com.ssafy.model.dto.User;
 import com.ssafy.service.FoodService;
 
+//
 @Controller
 @CrossOrigin(origins = "*")
 public class FoodController {
@@ -29,18 +38,14 @@ public class FoodController {
 	@Autowired
 	FoodService service;
 
-	@GetMapping("/search")
-	public String allInfo(Model model) {
-		
-		return "index";
-	}
-	
-	@ResponseBody
 	@GetMapping("/food/{page}")
-	public Map<String, List<Food>> foodDB(@PathVariable int page) {
-		
-		Map<String, List<Food>> map = new HashMap<>();
-		map.put("list", service.selectAll(page));
+	@ResponseBody
+	public Map<String, Object> foodDB(@PathVariable int page) {
+
+		Map<String, Object> map = new HashMap<>();
+		List<Food> list = service.selectAll(page);
+		map.put("list", list);
+		map.put("maxCount", list.size());
 		return map;
 	}
 
@@ -58,23 +63,97 @@ public class FoodController {
 		return "food_haccp";
 	}
 
-	@GetMapping("/detail/{code}/modi")
-	public String getDetailMy(Model model, @PathVariable int code) {
-		model.addAttribute("action", "modi");
-		model.addAttribute("food", service.selectCode(code));
-		return "food_detail";
+	@GetMapping("/search")
+	public String getSearch(Model model, String sort, String search_text, String kind) {
+		if (kind.equals("maincomp")) {
+			System.out.println(sort + ":" + search_text);
+			String apiurl = "http://apis.data.go.kr/B553748/CertImgListService/getCertImgListService?ServiceKey=";
+			String key = "JHiCkjVmT8kUFVm183Ggm3ln1sDuay3V2EWzhmda%2B4773P90DoYKR7iFlXsTGiD6EJlntiX9UsmMtGpOjVTxIA%3D%3D&returnType=json";
+			String page = "&pageNo=";
+			String option = null;
+			try {
+				option = "&" + sort + "=" + URLEncoder.encode(search_text, "utf-8");
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			model.addAttribute("comp", "maincomp");
+			model.addAttribute("methodurl", apiurl + key + option + page);
+		} else {
+			model.addAttribute("sort", sort);
+			model.addAttribute("search_text", search_text);
+			model.addAttribute("comp", "tablecomp");
+		}
+
+		return "index";
 	}
 
-	@PostMapping("/search")
-	public String getSearch(Model model, String sort, String search_text) {
-		
-		return "index";
+	@GetMapping("/search/{sort}/{search_text}/{pageNo}")
+	@ResponseBody
+	public Map<String, Object> getSearchSort(Model model, @PathVariable String sort, @PathVariable String search_text,
+			@PathVariable int pageNo) {
+		Map<String, Object> map = new HashMap<>();
+		List<Food> list = new ArrayList<Food>();
+		try {
+
+			if (sort.equals("name"))
+				list = service.selectSortName(URLDecoder.decode(search_text, "utf-8"));
+			else if (sort.equals("food_group"))
+				list = service.selectSortGroup(URLDecoder.decode(search_text, "utf-8"));
+			else
+				list = service.selectSortMaker(URLDecoder.decode(search_text, "utf-8"));
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		map.put("list", list);
+		return map;
+	}
+
+	@RequestMapping(value = "/session/likefood/haccp/{id}/{name}", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> doMyLikefood(HttpSession session, @PathVariable String id, @PathVariable String name) {
+		User user = (User) session.getAttribute("loginUser");
+		char c = name.charAt(name.length() - 1);
+		name = name.substring(0, name.length() - 1);
+
+		Map<String, Object> map = new HashMap<>();
+		int result = -1;
+
+		if (c == 'c') {
+			result = (int) service.checkLikefood(user.getEmail(), id);
+		} else
+			result = service.insertLikefood(user.getEmail(), name, id, 1);
+
+		map.put("result", result);
+		return map;
+	}
+
+	@GetMapping(value = "/session/likefood/{id}/{name}")
+	@ResponseBody
+	public Map<String, Object> doMyLikeFood2(HttpSession session, @PathVariable String id, @PathVariable String name) {
+		User user = (User) session.getAttribute("loginUser");
+		char c = name.charAt(name.length() - 1);
+		name = name.substring(0, name.length() - 1);
+
+		Map<String, Object> map = new HashMap<>();
+		int result = -1;
+
+		if (c == 'c') {
+			result = (int) service.checkLikefood(user.getEmail(), id);
+		} else
+			result = service.insertLikefood(user.getEmail(), name, id, 0);
+
+		map.put("result", result);
+		return map;
 	}
 
 	@GetMapping("/session/myTakenInfo")
 	public String doMyTakenInfo(Model model, HttpSession session) {
 		User user = (User) session.getAttribute("loginUser");
-		List<Food> list = service.selectMyfoodAll(user.getEmail());
+		List<Food> list =service.selectMyfoodAll(user.getEmail());
+		List<LikeFood> Llist = service.selectLikeAll(user.getEmail());
 		long sum[] = new long[9];
 
 		for (Food f : list) {
@@ -86,33 +165,31 @@ public class FoodController {
 			sum[3] += f.getFat() * quantity;
 			sum[4] += f.getSugar() * quantity;
 			sum[5] += f.getNatrium() * quantity;
-			sum[6] += f.getChole() * quantity;
-			sum[7] += f.getFattyacid() * quantity;
-			sum[8] += f.getTransfat() * quantity;
 		}
 		model.addAttribute("foods", list);
+		model.addAttribute("mylike",Llist);
 		model.addAttribute("nutriSum", sum);
 		return "session/MyTakenInfo";
 	}
 
 	@PostMapping("/session/modify")
-	public String doInsert(String eat, String quantity, String delete, HttpSession session, RedirectAttributes redir) {
+	public String doInsert(String eat, String quantity, int haccp, String name, HttpSession session,
+			RedirectAttributes redir) {
 		User user = (User) session.getAttribute("loginUser");
 
-		if (eat != null) {
-			if (quantity != null && !quantity.trim().equals("")) {
-				if (service.insertMyfood(user.getEmail(), eat, Integer.parseInt(quantity)) > 0)
-					redir.addFlashAttribute("alarm", "섭취 등록 성공했습니다.");
-				else
-					redir.addFlashAttribute("alarm", "섭취 등록 실패했습니다.");
-				return "redirect:/detail/" + eat;
-			}
+		if (quantity != null && !quantity.trim().equals("")) {
+			int result = service.insertMyfood(user.getEmail(), eat, Integer.parseInt(quantity), haccp, name);
+
+			if (result > 0)
+				redir.addFlashAttribute("alarm", "섭취 등록 성공했습니다.");
+			else
+				redir.addFlashAttribute("alarm", "섭취 등록 실패했습니다.");
 		}
 
-		if (service.deleteMyfood(user.getEmail(), delete) > 0)
-			redir.addFlashAttribute("alarm", "식품 삭제 성공했습니다.");
+		if (haccp > 0)
+			return "redirect:/detail/haccp/" + eat;
 		else
-			redir.addFlashAttribute("alarm", "식품 삭제 실패했습니다.");
-		return "redirect:/session/myTakenInfo";
+			return "redirect:/detail/" + eat;
+
 	}
 }

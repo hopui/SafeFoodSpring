@@ -30,6 +30,11 @@
 	padding-top: 50px;
 	width: 250px;
 }
+.appleimg{
+width: 35px;
+    border: 0;
+    margin-top: 10px;
+}
 
 .titles {
 	width: 200px;
@@ -221,23 +226,28 @@ footer {
 					</td> -->
 					</tr>
 				</table>
-				<c:url value="/session/modify" var="modilUrl"></c:url>
-				<form id="eat_form" method="post" action="${modilUrl}">
 					<c:if test="${not empty loginUser}">
+				<c:url value="/session/modify" var="modilUrl"></c:url>
+				<form id="eat_form" method="post" action="${modilUrl}" style="display: block;">
 						<label>Quantity</label>
 						<input type="number" class="form-control" name='quantity'>
 						<br>
-						<input hidden='true' name='eat' value='${food.code }'>
+						<input hidden='true' name='name' value='${food.name }'> 
+						<input hidden='true' name='eat' value=${food.code }>
+						<input hidden='true' name='haccp' value=0>
 						<button class='btn btn-primary' id="button_insert">
 							<span id="insert" class='glyphicon glyphicon-plus'
 								aria-hidden='true'></span>추가
 						</button>
-						<button type='button' class='btn btn-primary'>
+						<button type='button' class="btn btn-primary" @click="likefood('i')">
+						
 							<span class='glyphicon glyphicon-shopping-cart'
 								aria-hidden='true'></span>찜
 						</button>
-					</c:if>
+						<c:url value="/static/img/" var="likeImg" />
+						<img class = "appleimg" :src="'${likeImg}'+image" alt="#">				
 				</form>
+			</c:if>
 			</div>
 		</div>
 		<br>
@@ -320,8 +330,49 @@ footer {
 		if (alarm) {
 			alert(alarm);
 		}
+		
+		let code= '${food.code}';
+		let name= '${food.name}';
 
-		let food = "${food}";
+		let vi = new Vue({
+			el:"#foodapp",
+			data(){
+				return {
+					image:'apple_origin.png'
+				}
+			},
+			mounted(){
+				this.likefood('c');
+			},
+			methods:{
+				likefood(func){
+					axios
+					.get("/SafeFood_Web_Spring_GJ_BYG_LSH/session/likefood/"
+							+code+"/"
+							+name+func)
+							
+					.then(response => {
+							if(func ==='c'){
+								if(response.data.result >0)
+									this.image='apple_ate.png'; 
+							}else{
+								if(response.data.result >0)
+									this.image='apple_ate.png';
+								else
+									this.image='apple_origin.png';
+							}
+					})
+					.catch(error =>{
+						console.log(error)
+						this.errored= true;
+					})
+					//함수에서의 this는 window, arrow 함수에서는 vue
+					.finally(() => {this.loading = false})
+					
+				}
+			}
+
+		});
 		
 		$(".daily").text('${food.supportpereat}');
 		$(".kcal").text('${food.calory}');
