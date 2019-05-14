@@ -37,13 +37,19 @@
 			    overflow: hidden;
 			    outline:none;
 			}
+			[v-cloak]::before {
+				content: '로딩중...'
+			}
+			[v-cloak] > * {
+				display:none;
+			}
 		</style>
 	</head>
 	<body>
 		<!-- 헤더 -->
 		<jsp:include page="/WEB-INF/view/include/header.jsp"/>
 		
-		<div class="container" id="container" align="center" style="margin-bottom: 50px;">
+		<div class="container" id="container" align="center" style="margin-bottom: 50px;" v-cloak>
 			<br><br><br><br><br>
 			<!-- 본문 --><c:url value="/static/img/notice.png" var="noticeImgUrl"/>
 			<div align="left">
