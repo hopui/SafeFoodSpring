@@ -5,7 +5,7 @@
 <mapper namespace="com.ssafy.model.mapper.TakenFood">
 	<!-- userEmail 과 month(m), year(yyyy) 를 인풋으로 받는다. -->
 	<select id="selectTakenFoods" parameterType="map" resultType="takenFood">
-		select t.user_email, f.name, t.taken_time, t.quantity, f.code, t.haccp
+		select t.user_email, t.etc, t.taken_time, t.quantity, t.food_code, t.haccp
 		from takenfood t, food f 
 		where t.user_email = #{userEmail} 
 			  and year(t.taken_time) = #{yyyy} 

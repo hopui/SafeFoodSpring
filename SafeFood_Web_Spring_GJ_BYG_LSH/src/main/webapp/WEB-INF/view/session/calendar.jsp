@@ -59,6 +59,7 @@ body {
 	font-size: 5.5em;
 	font-weight: 600;
 	line-height: 1;
+	clear: both;
 }
 
 .b-calendar__information .today .month {
@@ -191,11 +192,12 @@ body {
 	margin-right: 9px;
 }
 .taken_list {
-	position: absolute;
+	overflow: auto;
+    position: absolute;
     top: 260px;
     background-color: white;
-    width: 270px;
-    height: 370px;
+    width: 320px;
+    height: 320px;
     border-radius: 1.0rem 0 0 1.0rem;
 }
 th, td{
@@ -271,7 +273,7 @@ th, td{
                             </b-tooltip>
                             
                             <!-- 섭취 리스트 -->
-                            <div class="taken_list" v-show="!todayInCurrentMonthAndYear || !todayIsEqualSelectDate">
+                            <div class="taken_list" v-if="showDetail" >
                             	<table class="table table-striped table-hover">
                             		<thead>
                             			<tr>
@@ -279,64 +281,14 @@ th, td{
                             			</tr>	
                             		</thead>
                             		<tbody>
-                            			<tr>
-                            				<td>1</td>
-                            				<td>케이크</td>
+                            			<tr v-for="(info, index) in selectedInfo">
+                            				<td><span>{{index+1}}</span></td>
+                            				<td><span>{{info.etc.substr(0,5)}}...</span></td>
                             				<td>
-                            					<input type="number" value="2" style="width:40px;">
+                            					<input type="number" v-model="info.quantity" style="width:40px;">
                             				</td>
                             				<td>
-                            					<input type="checkbox">
-                            				</td>
-                            			</tr>
-                            			<tr>
-                            				<td>1</td>
-                            				<td>케이크</td>
-                            				<td>
-                            					<input type="number" value="2" style="width:40px;">
-                            				</td>
-                            				<td>
-                            					<input type="checkbox">
-                            				</td>
-                            			</tr>
-                            			<tr>
-                            				<td>1</td>
-                            				<td>케이크</td>
-                            				<td>
-                            					<input type="number" value="2" style="width:40px;">
-                            				</td>
-                            				<td>
-                            					<input type="checkbox">
-                            				</td>
-                            			</tr>
-                            			<tr>
-                            				<td>1</td>
-                            				<td>케이크</td>
-                            				<td>
-                            					<input type="number" value="2" style="width:40px;">
-                            				</td>
-                            				<td>
-                            					<input type="checkbox">
-                            				</td>
-                            			</tr>
-                            			<tr>
-                            				<td>1</td>
-                            				<td>케이크</td>
-                            				<td>
-                            					<input type="number" value="2" style="width:40px;">
-                            				</td>
-                            				<td>
-                            					<input type="checkbox">
-                            				</td>
-                            			</tr>
-                            			<tr>
-                            				<td>1</td>
-                            				<td>케이크</td>
-                            				<td>
-                            					<input type="number" value="2" style="width:40px;">
-                            				</td>
-                            				<td>
-                            					<input type="checkbox">
+                            					<input type="checkbox" name="checked" v-model="info.foodCode">
                             				</td>
                             			</tr>
                             		</tbody>
@@ -445,6 +397,8 @@ let vi = new Vue({
         selectedDate: moment(),
         days: ["월", "화", "수", "목", "금", "토", "일"],
         takenInfos: [],
+        showDetail: false,
+        selectedInfo: []
     },
 	mounted() {
     	this.loadTakenFoods();
@@ -548,6 +502,7 @@ let vi = new Vue({
                     additional: additional,
                     weekDay: false,
                     isTakenDay: false,
+                    takenFoods: [],
                     moment: moment(
                         formattedPreviousYear +
                         formattedPreviousMonth +
@@ -573,15 +528,19 @@ let vi = new Vue({
                     today: formattedDay === this.initialDate && this.todayInCurrentMonthAndYear,
                     additional: false,
                     isTakenDay: false,
+                    takenFoods: [],
                     weekDay: weekDay,
                     moment: moment(formattedCurrentYear + formattedCurrentMonth + formattedDay)
                 };
             }
             window.CP.exitedLoop(1);
+            
             // 섭취한 적이 있는 날짜는 체크해준다.
             for(let info of this.takenInfos) {
 				let d = new Date(info.takenTime);
-				dateList[d.getDate()+2].isTakenDay = true;
+				let idx = d.getDate()+1;
+				dateList[idx].isTakenDay = true; // 섭취했음을 알려준다.
+				dateList[idx].takenFoods.push({name: info.etc, quantity: info.quantity, foodCode: info.foodCode}); 
 			}
 
             let daysInNextMonth = 7 - countDayInCurrentMonth % 7;
@@ -625,13 +584,12 @@ let vi = new Vue({
                         additional: additional,
                         weekDay: false,
                         isTakenDay: false,
+                        takenFoods: [],
                         moment: moment(
                             formattedNextYear +
                             formattedNextMonth +
                             formattedDay)
                     };
-
-
                 }
                 window.CP.exitedLoop(2);
             }
@@ -667,8 +625,7 @@ let vi = new Vue({
             return this.selectedDate.format("dddd");
         },
         todayIsEqualSelectDate: function () {
-            return (
-                this.selectedDate.format("YYYYMMDD") === this.today.format("YYYYMMDD"));
+            return (this.selectedDate.format("YYYYMMDD") === this.today.format("YYYYMMDD"));
         }
     },
 
@@ -688,13 +645,34 @@ let vi = new Vue({
         addMonth: function () {
             this.dateContext = this.nextMonth;
             this.loadTakenFoods();
+            this.showDetail = false;
         },
         subtractMonth: function () {
             this.dateContext = this.previousMonth;
             this.loadTakenFoods();
+            this.showDetail = false;
         },
         setSelectedDate: function (moment) {
             this.selectedDate = moment;
+            this.showDetail = true;
+            
+            // 선택한 날의 섭취 정보를 저장한다.
+            this.selectedInfo = [];
+            let selDay = this.selectedDate.format("DD");
+            console.log("선택한 날짜:", selDay);
+            for(let info of this.takenInfos) {
+            	let takenDay = this.convertToMoment(info.takenTime)-1;
+            	console.log("들어 있는 날짜:",takenDay);
+            	if(selDay == takenDay) {
+            		console.log("\t일치하는 상품을 발견했어요!", info);
+            		this.selectedInfo.push(info);           		
+            	}
+            }
+        },
+        convertToMoment(date) {
+        	let result = moment();
+        	result = moment(date);
+        	return result.format("DD");
         },
         goToday: function () {
             this.selectedDate = this.today;
