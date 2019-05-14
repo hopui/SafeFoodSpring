@@ -239,7 +239,7 @@ body {
         <main class="b-calendar">
             <b-row>
                 <b-col md="4">
-                    <!-- 왼쪽 파랑창 -->
+                    <!-- 왼쪽 파란색 정보창 -->
                     <div class="b-calendar__information">
                         <div class="today d-flex justify-content-center align-items-center">
                             <div class="weekDay">{{selectedWeekDay | capitalize}}</div>
@@ -262,14 +262,15 @@ body {
                 <b-col md="8">
                     <div class="b-calendar__calendar">
                         <div class="b-calendar__header">
+							<!-- 년도 -->
                             <b-row>
-                                <b-col class="year text-right" align-h="end">
+                                <b-col class="year text-right" align-h="end"> 
                                     <span>{{year}}</span>
                                 </b-col>
                             </b-row>
+							<!-- 달 넘기는 버튼과 툴팁들, 그 사이에 이번 달을 출력 -->
                             <b-row align-v="center">
                                 <b-col class="text-left" align-h="start">
-                                    <!-- 달 넘기는 버튼과 툴팁들 -->
                                     <b-button id="subtractMonthBtn" class="arrow arrow-left" variant="light" @click="subtractMonth">
                                         <i class="fa fa-fw fa-chevron-left"></i>
                                     </b-button>
@@ -279,7 +280,9 @@ body {
                                 </b-col>
                                 
                                 <b-col class="text-center" align-h="center">
-                                    <span class="month">{{month}}</span></b-col>
+                                    <span class="month">{{month}}</span>
+                                </b-col>
+                                
                                 <b-col class="text-right d-flex flex-row-reverse" align-h="end">
                                     <b-button id="addMonthBtn" class="arrow arrow-right" variant="light" @click="addMonth">
                                     	<i class="fa fa-fw fa-chevron-right"></i>
@@ -290,6 +293,8 @@ body {
                                 </b-col>
                             </b-row>
                         </div>
+                        
+                        <!-- 월화수목금토일 -->
                         <div class="b-calendar__weekdays">
                             <div class="weekday" v-for="(day, index) in days" :key="index">
                                 <strong>{{day}}</strong>
@@ -487,7 +492,7 @@ let vi = new Vue({
             // 섭취한 적이 있는 날짜는 체크해준다.
             for(let info of this.takenInfos) {
 				let d = new Date(info.takenTime);
-				dateList[d.getDate()+1].isTakenDay = true;
+				dateList[d.getDate()+2].isTakenDay = true;
 			}
 
             let daysInNextMonth = 7 - countDayInCurrentMonth % 7;
