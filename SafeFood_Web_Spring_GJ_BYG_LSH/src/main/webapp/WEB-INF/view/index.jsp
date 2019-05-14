@@ -45,6 +45,10 @@ h2 {
 	font-family: 'Jua', sans-serif;
 }
 
+hr{
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
 h1 {
 	font-size: -webkit-xxx-large;
 	font-family: cursive;
@@ -175,7 +179,7 @@ td {
 				<div class='col-sm-8 content'>
 					<h2>{{food.prdlstNm}}</h2>
 
-					<p v-if="checkAller(food.allergy)" id='rred'>알러지 주의</p>
+					<span v-if="checkAller(food.allergy)" id='rred'>알러지 주의</span>
 				 
 					<hr>
 					<span v-if="food.rawmtrl.length< 200">{{food.rawmtrl}}</span>
