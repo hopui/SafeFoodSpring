@@ -59,7 +59,7 @@ public class FoodRepo {
 		return tmp.selectOne(stmt, map);
 	}
 
-	public int insertMyfood(String email, String code, int quantity, int haccap) {
+	public int insertMyfood(String email, String code, int quantity, int haccap, String name) {
 		Integer food = (Integer)selectQuantity(email, code);
 		if (food<1) {
 			String stmt = ns + "insertMyFood";
@@ -68,6 +68,7 @@ public class FoodRepo {
 			map.put("code", code);
 			map.put("quantity", String.valueOf(quantity));
 			map.put("haccp", String.valueOf(haccap));
+			map.put("etc", String.valueOf(name));
 			return tmp.insert(stmt, map);
 		}else {
 			return updateMyfood(email, code, food+quantity);

@@ -141,11 +141,14 @@ public class FoodController {
 	}
 
 	@PostMapping("/session/modify")
-	public String doInsert(String eat, String quantity, int haccp , HttpSession session, RedirectAttributes redir) {
+	public String doInsert(String eat, String quantity, int haccp , String name,
+			HttpSession session, RedirectAttributes redir) {
 		User user = (User) session.getAttribute("loginUser");
 
 		if (quantity != null && !quantity.trim().equals("")) {
-			if (service.insertMyfood(user.getEmail(), eat, Integer.parseInt(quantity),haccp) > 0)
+			int result = service.insertMyfood(user.getEmail(), eat, Integer.parseInt(quantity),haccp,name);
+			
+			if (result > 0)
 				redir.addFlashAttribute("alarm", "섭취 등록 성공했습니다.");
 			else
 				redir.addFlashAttribute("alarm", "섭취 등록 실패했습니다.");

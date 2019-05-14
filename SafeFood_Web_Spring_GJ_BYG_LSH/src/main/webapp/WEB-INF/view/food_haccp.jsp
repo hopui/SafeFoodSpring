@@ -140,6 +140,7 @@ body {
 						<input type="number" class="form-control" name='quantity'>
 						<br>
 						<input hidden='true' name='eat' :value='food.prdlstReportNo'>
+						<input hidden='true' name='name' :value='food.prdlstNm'>
 						<input hidden='true' name='haccp' value=1>
 						<button class='btn btn-primary' id="button_insert">
 							<span id="insert" class='glyphicon glyphicon-plus'
