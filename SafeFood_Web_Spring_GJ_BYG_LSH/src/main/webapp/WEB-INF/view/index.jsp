@@ -296,7 +296,6 @@ td {
 </script>
 </body>
 <!-- 인덱스 전용 js -->
-<c:url value="/static/script/index.js" var="indexJSurl" />
 <script type="text/javascript">
 	let alarm = "${alarm }";
 	if (alarm) {
@@ -309,6 +308,7 @@ td {
 	let sort ="${sort}";
 	let searchtext = "${search_text}";
 </script>
+<c:url value="/static/script/index.js" var="indexJSurl" />
 <script src="${indexJSurl }">
 	
 </script>

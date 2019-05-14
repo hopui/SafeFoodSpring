@@ -31,6 +31,11 @@
 	width: 250px;
 }
 
+.appleimg{
+width: 35px;
+    border: 0;
+    margin-top: 10px;
+}
 .titles {
 	width: 200px;
 	font-family: 'Jua', sans-serif;
@@ -145,13 +150,13 @@ body {
 							<span id="insert" class='glyphicon glyphicon-plus'
 								aria-hidden='true'></span>추가
 						</button>
-						<button type='button' class="btn btn-primary" @click="likefood(i)">
+						<button type='button' class="btn btn-primary" @click="likefood('i')">
 						
 							<span class='glyphicon glyphicon-shopping-cart'
 								aria-hidden='true'></span>찜
 						</button>
 						<c:url value="/static/img/" var="likeImg" />
-						<img :scr="'${likeImg}'+image">
+						<img class = "appleimg" :src="'${likeImg}'+image" alt="#">
 					</form>
 					
 				</c:if>
@@ -178,12 +183,11 @@ body {
 		data(){
 			return {
 				food:{},
-				image:'apple.png'
+				image:'apple_origin.png'
 			}
 		},
 		mounted(){
 			this.loadData(haccp);
-			this.likefood(c);
 		},
 		methods:{
 			loadData(num){
@@ -198,6 +202,7 @@ body {
 				.get(url)
 				.then(response => {
 					this.food = response.data.list[0];
+					this.likefood('c');
 				})
 				.catch(error =>{
 					console.log(error)
@@ -212,11 +217,14 @@ body {
 						+this.food.prdlstReportNo+"/"
 						+this.food.prdlstNm+func)
 				.then(response => {
-						if(resonse.data.result >0)
-							this.image='apple.png';
-						else{
-							if(func ==='c')
-								this.image='';
+						if(func ==='c'){
+							if(response.data.result >0)
+								this.image='apple_ate.png'; 
+						}else{
+							if(response.data.result >0)
+								this.image='apple_ate.png';
+							else
+								this.image='apple_origin.png';
 						}
 				})
 				.catch(error =>{

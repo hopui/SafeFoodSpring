@@ -7,12 +7,15 @@
 		select * from food limit #{first} , 20
 	</select>
 
-	<select id="selectLikeAll" resultType="map">
+	<select id="selectLikeAll" resultType="likefood">
 		select * from likefood where user_id = #{email}
 	</select>
 	
 	<select id="selectMyFoodAll" resultType="food">
-		select * from food f join takenfood t on t.user_email = #{email} where f.code = t.food_code
+		select * from food f join takenfood t on t.user_email = #{email} 
+		and month(now()) = month(t.taken_time)
+		and year(now()) = year(t.taken_time) 
+		where f.code = t.food_code
 	</select>
 	<select id="selectCode" resultType="food" parameterType="int">
 		select * from food where code=#{code}

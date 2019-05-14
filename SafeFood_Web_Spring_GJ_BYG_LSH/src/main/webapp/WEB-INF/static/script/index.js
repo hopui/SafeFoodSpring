@@ -53,7 +53,7 @@
 				},
 				nextPage(num){
 					if(this.nowPages+num >-1 &&
-							this.nowPages+num <=Math.round(this.totalCount/this.numOfRows)){
+							this.nowPages+num*10 <=Math.round(this.totalCount/this.numOfRows)){
 						this.nowPages+=num
 					}
 				}

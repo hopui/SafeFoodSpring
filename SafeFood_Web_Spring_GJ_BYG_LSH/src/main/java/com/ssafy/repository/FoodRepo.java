@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.model.dto.Food;
+import com.ssafy.model.dto.LikeFood;
 
 @Transactional
 @Repository
@@ -42,6 +43,11 @@ public class FoodRepo {
 	}
 	public List<Food> selectMyfoodAll(String email) {
 		String stmt = ns + "selectMyFoodAll";
+		return tmp.selectList(stmt, email);
+	}
+	
+	public List<LikeFood> selectLikeAll(String email) {
+		String stmt = ns + "selectLikeAll";
 		return tmp.selectList(stmt, email);
 	}
 
@@ -85,8 +91,16 @@ public class FoodRepo {
 			map.put("haccp", haccp);
 			return tmp.insert(stmt, map);
 		}else {
-			return -1;
+			return -deleteLikefood(email, code);
 		}
+	}
+	
+	public int deleteLikefood(String email, String code) {
+		String stmt = ns + "deletelikeFood";
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("email", email);
+		map.put("code", code);
+		return tmp.delete(stmt, map);
 	}
 	
 	public Object checkLikefood(String email, String code) {

@@ -69,11 +69,20 @@
 		
 		
 		<div class="container">
-			<h3>하루 섭취량</h3>
-			<div class="col-sm-6" id="graph">
+			<div id = "mylist">
+				<h3>나의 찜리스트</h3>
+				<div class="col-sm-12">
+					<c:forEach items="${mylist}" var="like">
+						<div class="col-sm-4">
+							<h3>${like.foodName }</h3>
+						</div>
+					</c:forEach>
+				</div>
+			</div>
+			<!-- <div class="col-sm-6" id="graph">
 				<div class="pieID pie"></div>
 
-				<!--  도넛차트 -->
+				 도넛차트
 				<ul class="pieID legend">
 					<li><em class="ss">칼로리</em> <span class="kcal"></span></li>
 					<li><em class="ss">탄수화물</em> <span class="tan"></span></li>
@@ -85,7 +94,7 @@
 					<li><em class="ss">포화 지방산</em> <span class="fat"></span></li>
 					<li><em class="ss">트랜스지방</em> <span class="trans"></span></li>
 				</ul>
-			</div>
+			</div> -->
 		</div>
 		<br><br>
 		
@@ -98,6 +107,7 @@
 	if(alarm) {
 		alert(alarm);
 	}	
+	
 	//파이차트 생성
 	<% long[] sum = (long[]) request.getAttribute("nutriSum");%>
 

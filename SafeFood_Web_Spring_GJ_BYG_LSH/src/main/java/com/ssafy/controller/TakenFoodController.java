@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ssafy.model.dto.TakenFood;
+import com.ssafy.service.FoodService;
 import com.ssafy.service.TakenFoodService;
 
 @Controller
