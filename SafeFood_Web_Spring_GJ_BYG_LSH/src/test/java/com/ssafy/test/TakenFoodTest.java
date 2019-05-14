@@ -28,9 +28,4 @@ public class TakenFoodTest
 	{
 		assertThat(service, is(notNullValue()));
 	}
-	@Test
-	public void testInsert()
-	{
-		TakenFood food = new TakenFood("ssafy@ssafy.com", new Date(), 1, "201705484644", 1);
-	}
 }

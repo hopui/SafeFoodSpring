@@ -5,15 +5,17 @@ import java.util.Date;
 public class TakenFood
 {
 	private String userEmail;
+	private String foodName;
 	private Date takenTime;
 	private int quantity;
 	private String foodCode;
 	private int haccp;
 	
 	public TakenFood(){}
-	public TakenFood(String userEmail, Date takenTime, int quantity, String foodCode, int haccp)
+	public TakenFood(String userEmail, String foodName, Date takenTime, int quantity, String foodCode, int haccp)
 	{
 		this.userEmail = userEmail;
+		this.foodName = foodName;
 		this.takenTime = takenTime;
 		this.quantity = quantity;
 		this.foodCode = foodCode;
@@ -70,10 +72,20 @@ public class TakenFood
 		this.haccp = haccp;
 	}
 
+	public String getFoodName()
+	{
+		return foodName;
+	}
+	
+	public void setFoodName(String foodName)
+	{
+		this.foodName = foodName;
+	}
+
 	@Override
 	public String toString()
 	{
-		return "TakenFood [userEmail=" + userEmail + ", takenTime=" + takenTime + ", quantity=" + quantity
-				+ ", foodCode=" + foodCode + ", haccp=" + haccp + "]";
+		return "TakenFood [userEmail=" + userEmail + ", foodName=" + foodName + ", takenTime=" + takenTime
+				+ ", quantity=" + quantity + ", foodCode=" + foodCode + ", haccp=" + haccp + "]";
 	}
 }

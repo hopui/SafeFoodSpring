@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -39,7 +39,7 @@ body {
 }
 
 .b-calendar__information {
-	background-color: rgba(0, 123, 255, 0.2);
+	background-color: #ffede3;
 	border-radius: 1.2rem 0 0 1.2rem;
 	height: 100%;
 }
@@ -187,7 +187,20 @@ body {
 	/* background-color: #F4B1AE; */
 	background-color: rgba(189, 249, 166, 0.25);
 }
-
+.taken_img {
+	margin-right: 9px;
+}
+.taken_list {
+	position: absolute;
+    top: 260px;
+    background-color: white;
+    width: 270px;
+    height: 370px;
+    border-radius: 1.0rem 0 0 1.0rem;
+}
+th, td{
+	text-align: center!important;
+}
 @media ( max-width : 768px) {
 	.b-calendar__information {
 		min-height: auto;
@@ -251,10 +264,84 @@ body {
                                v-show="!todayInCurrentMonthAndYear || !todayIsEqualSelectDate"
                             >Today</a>
 
-                            <b-tooltip target="goTodayLink" placement="bottom"
+                            <b-tooltip target="goTodayLink"
+                            		   placement="bottom"
                                        v-show="!todayInCurrentMonthAndYear || !todayIsEqualSelectDate"
                             >오늘 날짜로 돌아가기
                             </b-tooltip>
+                            
+                            <!-- 섭취 리스트 -->
+                            <div class="taken_list" v-show="!todayInCurrentMonthAndYear || !todayIsEqualSelectDate">
+                            	<table class="table table-striped table-hover">
+                            		<thead>
+                            			<tr>
+                            				<th>#</th><th>이름</th><th>개수</th><th>삭제</th>
+                            			</tr>	
+                            		</thead>
+                            		<tbody>
+                            			<tr>
+                            				<td>1</td>
+                            				<td>케이크</td>
+                            				<td>
+                            					<input type="number" value="2" style="width:40px;">
+                            				</td>
+                            				<td>
+                            					<input type="checkbox">
+                            				</td>
+                            			</tr>
+                            			<tr>
+                            				<td>1</td>
+                            				<td>케이크</td>
+                            				<td>
+                            					<input type="number" value="2" style="width:40px;">
+                            				</td>
+                            				<td>
+                            					<input type="checkbox">
+                            				</td>
+                            			</tr>
+                            			<tr>
+                            				<td>1</td>
+                            				<td>케이크</td>
+                            				<td>
+                            					<input type="number" value="2" style="width:40px;">
+                            				</td>
+                            				<td>
+                            					<input type="checkbox">
+                            				</td>
+                            			</tr>
+                            			<tr>
+                            				<td>1</td>
+                            				<td>케이크</td>
+                            				<td>
+                            					<input type="number" value="2" style="width:40px;">
+                            				</td>
+                            				<td>
+                            					<input type="checkbox">
+                            				</td>
+                            			</tr>
+                            			<tr>
+                            				<td>1</td>
+                            				<td>케이크</td>
+                            				<td>
+                            					<input type="number" value="2" style="width:40px;">
+                            				</td>
+                            				<td>
+                            					<input type="checkbox">
+                            				</td>
+                            			</tr>
+                            			<tr>
+                            				<td>1</td>
+                            				<td>케이크</td>
+                            				<td>
+                            					<input type="number" value="2" style="width:40px;">
+                            				</td>
+                            				<td>
+                            					<input type="checkbox">
+                            				</td>
+                            			</tr>
+                            		</tbody>
+                            	</table>
+                            </div>
                         </div>
                     </div>
 
@@ -302,6 +389,7 @@ body {
                         </div>
 
                         <!-- 날짜 박스 -->
+						<c:url value="/static/img/takenFood.png" var="takenFoodImgUrl"/>
                         <div class="b-calendar__dates">
                             <div class="date text-right"
                             	 v-for="date in dateList" 
@@ -317,6 +405,7 @@ body {
                              >
                                 <span class="day">{{date.dayNumber}}</span> 
                                 <span class="weekday">{{date.weekDay}}</span>
+                                <img v-show="date.isTakenDay" src="${takenFoodImgUrl }" class="taken_img">
                                 <div class="additional" v-show="date.additional">
                                     <span class="year" v-show="date.additional.year">{{date.additional.year}}</span>
                                     <span class="month" v-show="date.additional.month">{{date.additional.month}}</span>
