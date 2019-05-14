@@ -13,6 +13,10 @@
 			  and f.code = t.food_code
 	</select>
 	
+	<delete id="deleteTakenFood" parameterType="map">
+		delete from takenFood where user_email=#{userEmail} and food_code=#{foodCode}
+	</delete>
+	
 	<select id="selectQuantity" resultType="int" parameterType="map">
 		select quantity from takenfood where user_email = #{email} and food_code = #{code}
 	</select>

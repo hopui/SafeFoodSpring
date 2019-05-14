@@ -29,4 +29,8 @@ public class TakenFoodService
 	public int insertTakenFood(String userEmail) {
 		return dao.insertTakenFood(userEmail);
 	}
+	
+	public int deleteTakenFood(String userEmail, String foodCode) {
+		return dao.deleteTakenFood(userEmail, foodCode);
+	}
 }
