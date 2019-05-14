@@ -19,7 +19,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -116,6 +117,26 @@ public class FoodController {
 		return map;
 	}
 
+	@RequestMapping(value="/session/likefood/haccp/{id}/{name}", method=RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> doMyLikefood(HttpSession session, @PathVariable String id,
+			@PathVariable String name) {
+		User user = (User) session.getAttribute("loginUser");
+		char c = name.charAt(name.length()-1);
+		name= name.substring(0, name.length());
+		
+		Map<String, Object> map = new HashMap<>();
+		int result = -1;
+				
+		if(c == 'c') {
+			result = (int)service.checkLikefood(user.getEmail(), id);
+		}else
+			result = service.insertLikefood(user.getEmail(), name, id, 1);
+		
+		map.put("result",result);
+		return map;
+	}
+
 	@GetMapping("/session/myTakenInfo")
 	public String doMyTakenInfo(Model model, HttpSession session) {
 		User user = (User) session.getAttribute("loginUser");
@@ -141,23 +162,23 @@ public class FoodController {
 	}
 
 	@PostMapping("/session/modify")
-	public String doInsert(String eat, String quantity, int haccp , String name,
-			HttpSession session, RedirectAttributes redir) {
+	public String doInsert(String eat, String quantity, int haccp, String name, HttpSession session,
+			RedirectAttributes redir) {
 		User user = (User) session.getAttribute("loginUser");
 
 		if (quantity != null && !quantity.trim().equals("")) {
-			int result = service.insertMyfood(user.getEmail(), eat, Integer.parseInt(quantity),haccp,name);
-			
+			int result = service.insertMyfood(user.getEmail(), eat, Integer.parseInt(quantity), haccp, name);
+
 			if (result > 0)
 				redir.addFlashAttribute("alarm", "섭취 등록 성공했습니다.");
 			else
 				redir.addFlashAttribute("alarm", "섭취 등록 실패했습니다.");
 		}
-		
-		if(haccp > 0)
+
+		if (haccp > 0)
 			return "redirect:/detail/haccp/" + eat;
-		else 
-			return "redirect:/detail/"+eat;
+		else
+			return "redirect:/detail/" + eat;
 
 	}
 }

@@ -221,9 +221,9 @@ footer {
 					</td> -->
 					</tr>
 				</table>
+					<c:if test="${not empty loginUser}">
 				<c:url value="/session/modify" var="modilUrl"></c:url>
 				<form id="eat_form" method="post" action="${modilUrl}">
-					<c:if test="${not empty loginUser}">
 						<label>Quantity</label>
 						<input type="number" class="form-control" name='quantity'>
 						<br>
@@ -233,12 +233,18 @@ footer {
 							<span id="insert" class='glyphicon glyphicon-plus'
 								aria-hidden='true'></span>추가
 						</button>
+				</form>
+				<c:url value="/session/likefood" var="likeUrl"></c:url>
+				<form method="post" action="${likeUrl}">
+						<input hidden='true' name='eat' value=${food.code }>
+						 <input hidden='true' name='name' value='${food.name }'> 
+						 <input hidden='true' name='haccp' value=0>
 						<button type='button' class='btn btn-primary'>
 							<span class='glyphicon glyphicon-shopping-cart'
 								aria-hidden='true'></span>찜
 						</button>
+					</form>
 					</c:if>
-				</form>
 			</div>
 		</div>
 		<br>

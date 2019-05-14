@@ -33,7 +33,6 @@ public class FoodRepo {
 
 	public List<Food> selectSortMaker( String search){
 		String stmt = ns + "selectSortMaker";
-
 		return tmp.selectList(stmt,search);
 	}
 	public List<Food> selectSortGroup( String search){
@@ -73,6 +72,33 @@ public class FoodRepo {
 		}else {
 			return updateMyfood(email, code, food+quantity);
 		}
+	}
+	
+	public int insertLikefood(String email, String name, String code, int haccp) {
+		Integer food = (Integer)checkLikefood(email, code);
+		if (food<1) {
+			String stmt = ns + "insertLikeFood";
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("email", email);
+			map.put("code", code);
+			map.put("name", name);
+			map.put("haccp", haccp);
+			return tmp.insert(stmt, map);
+		}else {
+			return -1;
+		}
+	}
+	
+	public Object checkLikefood(String email, String code) {
+		String stmt = ns + "checkLikefood";
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("email", email);
+		map.put("code", code);
+		Object quan= tmp.selectOne(stmt, map);
+		if (quan== null)
+			return 0;
+		else 
+			return quan;
 	}
 	
 	public int updateMyfood(String email, String code, int quantity) {

@@ -43,10 +43,16 @@ public class FoodService
 		return dao.selectMyFood(email, code);
 	}
 
+	public Object checkLikefood(String email, String code) {
+		return dao.checkLikefood(email, code);
+	}
 	public int insertMyfood(String email, String code, int quantity, int haccp, String name) {
 		return dao.insertMyfood(email, code, quantity,haccp, name);
 	}
 	
+	public int insertLikefood(String email, String name, String code, int haccp) {
+		return dao.insertLikefood(email, name, code, haccp);
+	}
 	public int updateMyfood(String email, String code, int quantity) {
 		return dao.updateMyfood(email, code, quantity);
 	}
