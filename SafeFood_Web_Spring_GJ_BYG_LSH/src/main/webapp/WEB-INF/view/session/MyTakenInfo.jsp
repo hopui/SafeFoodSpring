@@ -64,7 +64,7 @@
 		<!-- 나의 섭취달력 iframe -->
 		<c:url value="/session/calendar" var="calendarUrl"/>
 		<div align="center">
-			<iframe width="1024" height="800" frameborder="0" scrolling="no" src="${calendarUrl }"></iframe>
+			<iframe width="1280" height="800" frameborder="0" scrolling="no" src="${calendarUrl }"></iframe>
 		</div>
 		
 		
