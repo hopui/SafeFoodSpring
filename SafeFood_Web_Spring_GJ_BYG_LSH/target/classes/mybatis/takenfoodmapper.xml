@@ -6,19 +6,20 @@
 	<!-- userEmail 과 month(m), year(yyyy) 를 인풋으로 받는다. -->
 	<select id="selectTakenFoods" parameterType="map" resultType="takenFood">
 		select t.user_email, t.etc, t.taken_time, t.quantity, t.food_code, t.haccp
-		from takenfood t, food f 
+		from takenfood t
 		where t.user_email = #{userEmail} 
 			  and year(t.taken_time) = #{yyyy} 
 			  and month(t.taken_time) = #{m}
-			  and f.code = t.food_code
 	</select>
 	
 	<delete id="deleteTakenFood" parameterType="map">
 		delete from takenFood where user_email=#{userEmail} and food_code=#{foodCode}
+		and day(taken_time)=day(#{date}) and month(taken_time)=month(#{date})
 	</delete>
 	
 	<update id="updateTakenFood" parameterType="map">
 		update takenfood set quantity = #{quantity} where user_email =#{userEmail} and food_code=#{foodCode}
+		and day(taken_time)=day(#{date}) and month(taken_time)=month(#{date})
 	</update>
 	
 	<select id="selectTop5Foods" resultType="map">

@@ -41,7 +41,9 @@
 	</select>
 	
 	<select id="selectQuantity" resultType="int" parameterType="map">
-		select quantity from takenfood where user_email = #{email} and food_code = #{code}
+		select quantity from takenfood 
+		where user_email = #{email} and food_code = #{code} 
+		and day(taken_time)=day(#{date}) and month(taken_time)=month(#{date})
 	</select>
 	<select id="checkLikefood" resultType="int" parameterType="map">
 		select count(*) from likefood where user_email = #{email} and food_code = #{code}
@@ -57,7 +59,9 @@
 	</insert>
 
 	<update id="updateMyFood" parameterType="map">
-		update takenfood set quantity = #{quantity} where user_email =#{email} and food_code=#{code}
+		update takenfood set quantity = #{quantity} 
+		where user_email =#{email} and food_code=#{code}
+		and day(taken_time)=day(#{date}) and month(taken_time)=month(#{date})
 	</update>
 	
 	<delete id="deletelikeFood" parameterType="map">

@@ -1,5 +1,7 @@
 package com.ssafy.repository;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,7 +70,7 @@ public class FoodRepo {
 		Integer food = (Integer)selectQuantity(email, code);
 		if (food<1) {
 			String stmt = ns + "insertMyFood";
-			Map<String, String> map = new HashMap<String, String>();
+			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("email", email);
 			map.put("code", code);
 			map.put("quantity", String.valueOf(quantity));
@@ -118,9 +120,11 @@ public class FoodRepo {
 	
 	public int updateMyfood(String email, String code, int quantity) {
 			String stmt = ns + "updateMyFood";
-			Map<String, String> map = new HashMap<String, String>();
+			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("email", email);
 			map.put("code", code);
+			Date d = new Date();
+			map.put("date", d);
 			map.put("quantity", String.valueOf(quantity));
 			return tmp.update(stmt,map);
 	}
@@ -128,9 +132,12 @@ public class FoodRepo {
 	
 	public Object selectQuantity(String email, String code) {
 		String stmt = ns + "selectQuantity";
-		Map<String, String> map = new HashMap<String, String>();
+		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("email", email);
 		map.put("code", code);
+		
+		Date d = new Date();
+		map.put("date", d);
 		Object quan= tmp.selectOne(stmt, map);
 		if (quan== null)
 			return 0;

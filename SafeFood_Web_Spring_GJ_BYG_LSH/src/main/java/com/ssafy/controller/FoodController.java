@@ -180,9 +180,9 @@ public class FoodController {
 	public String doInsert(String eat, String quantity, int haccp, String name, HttpSession session,
 			RedirectAttributes redir) {
 		User user = (User) session.getAttribute("loginUser");
-
+		System.out.println(quantity);
 		boolean check = true;
-		if (quantity == "0") {
+		if (Integer.parseInt(quantity)<1) {
 			quantity = "1";
 			check = false;
 		}
@@ -196,12 +196,12 @@ public class FoodController {
 				redir.addFlashAttribute("alarm", "섭취 등록 실패했습니다.");
 		}
 
-		if (check)
+		if (check) {
 			if (haccp > 0)
 				return "redirect:/detail/haccp/" + eat;
 			else
 				return "redirect:/detail/" + eat;
-		else
+		}else
 			return "redirect:/session/myTakenInfo";
 
 	}
