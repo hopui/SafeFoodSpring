@@ -196,7 +196,7 @@ public class FoodController {
 				redir.addFlashAttribute("alarm", "섭취 등록 실패했습니다.");
 		}
 
-		if (!check)
+		if (check)
 			if (haccp > 0)
 				return "redirect:/detail/haccp/" + eat;
 			else
