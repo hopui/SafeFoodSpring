@@ -51,8 +51,8 @@ public class TakenFoodRepo
 		return tmp.update(stmt, map);
 	}
 	
-	public List<Map<String, Object> > selectTop5Foods(String userEmail) {
-		String stmt = ns + "selectTop5Foods";
+	public List<Map<String, Object> > selectTop3Foods(String userEmail) {
+		String stmt = ns + "selectTop3Foods";
 		return tmp.selectList(stmt, userEmail);
 	}
 }

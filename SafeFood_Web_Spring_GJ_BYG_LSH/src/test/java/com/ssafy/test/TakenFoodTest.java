@@ -32,8 +32,8 @@ public class TakenFoodTest
 		assertThat(service, is(notNullValue()));
 	}
 	@Test
-	public void testTop5() {
-		List<Map<String, Object> > list = service.selectTop5Foods("ssafy@ssafy.com");
+	public void testTop3() {
+		List<Map<String, Object> > list = service.selectTop3Foods("ssafy@ssafy.com");
 		for(Map<String, Object> item : list) {
 			item.entrySet().forEach(entry -> System.out.println(entry.getKey()+":"+entry.getValue()));
 		}

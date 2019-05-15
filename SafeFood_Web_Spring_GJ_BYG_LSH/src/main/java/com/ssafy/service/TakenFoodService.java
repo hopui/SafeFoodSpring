@@ -41,7 +41,7 @@ public class TakenFoodService
 		return dao.updateTakenFood(userEmail, quantity, foodCode, takenTime);
 	}
 	
-	public List<Map<String, Object> > selectTop5Foods(String userEmail) {
-		return dao.selectTop5Foods(userEmail);
+	public List<Map<String, Object> > selectTop3Foods(String userEmail) {
+		return dao.selectTop3Foods(userEmail);
 	}
 }

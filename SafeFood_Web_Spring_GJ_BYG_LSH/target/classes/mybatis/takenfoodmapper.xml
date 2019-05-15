@@ -21,15 +21,15 @@
 		update takenfood set quantity = #{quantity} where user_email =#{userEmail} and food_code=#{foodCode}
 	</update>
 	
-	<select id="selectTop5Foods" resultType="map">
-		select food_code, count(*) hit, food_group
+	<select id="selectTop3Foods" resultType="map">
+		select food_code, count(*) hit, food_group, etc
 		from takenfood left join food on food_code = code
 		where food_code in (select distinct food_code 
 							from takenfood 
 							where user_email = #{userEmail}) and user_email = #{userEmail}
 		group by food_code
 		order by hit desc
-		limit 0, 5;
+		limit 0, 3;
 	</select>
 	
 	<select id="selectQuantity" resultType="int" parameterType="map">

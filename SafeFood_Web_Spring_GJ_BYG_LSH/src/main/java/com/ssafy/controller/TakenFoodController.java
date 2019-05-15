@@ -86,10 +86,10 @@ public class TakenFoodController
 		return ent;
 	}
 	
-	@GetMapping("/session/takenfoods/top5foods")
+	@GetMapping("/session/takenfoods/top3foods")
 	@ResponseBody
 	public List<Map<String, Object> > getTop5Foods(HttpSession session) {
 		String userEmail = ((User)session.getAttribute("loginUser")).getEmail();
-		return service.selectTop5Foods(userEmail);
+		return service.selectTop3Foods(userEmail);
 	}
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
-  <display-name>SafeFood_Web_SF_&#xad11;&#xc8fc;_02_BYG_LSH</display-name>
+  <display-name>SafeFood_Web_Spring_GJ_BYG_LSH</display-name>
   <context-param>
     <param-name>contextConfigLocation</param-name>
     <param-value>classpath:spring/application-config.xml</param-value>
