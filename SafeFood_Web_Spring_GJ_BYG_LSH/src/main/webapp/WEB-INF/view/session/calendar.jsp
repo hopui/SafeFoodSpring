@@ -310,7 +310,7 @@ th, td{
                             	</table>
                             </div>
                             <div class="btnBar" v-show="showDetail">
-                            	<input class="btn btn-info" type="button" value="수정"><!--  @click="modifyQuantities" -->
+                            	<input class="btn btn-info" type="button" value="수정" @click="modifyQuantities">
                             	<input class="btn btn-danger" type="button" value="삭제" @click="deleteChecked">
                             </div>
                         </div>
@@ -418,7 +418,8 @@ let vi = new Vue({
         takenInfos: [],
         showDetail: false,
         selectedInfo: [],
-        deleteList: []
+        deleteList: [],
+        updateList: []
     },
 	mounted() {
     	this.loadTakenFoods();
@@ -704,6 +705,26 @@ let vi = new Vue({
 				});
 			}
     		console.log("갱신된 선택 정보: ", this.selectedInfo);
+    	},
+    	// 선택된 정보들을 업데이트 한다.
+    	modifyQuantities() {
+    		let url = "http://"+this.hostname+":8080/"+contextRoot+"/session/takenfoods/update?";
+    		for(let i = 0; i < this.selectedInfo.length; i++){
+				let params = "quantity="+this.selectedInfo[i].quantity+"&foodCode="+this.selectedInfo[i].foodCode+"&takenTime="+this.selectedInfo[i].takenTime;
+    			axios.get(url + params)
+				.then(response => {
+					console.log(response);
+					if(i == this.selectedInfo.length-1) {
+			    		// 1. 갱신 된 섭취정보를 가져온다.
+			    		this.deleteList=[];
+			            this.selectedInfo = [];
+			    		this.loadTakenFoods();
+			    		alert("수정 완료!");
+					}
+				}).catch(error => {
+					console.log(error);
+				});
+			}
     	},
         addMonth: function () {
             this.dateContext = this.nextMonth;
