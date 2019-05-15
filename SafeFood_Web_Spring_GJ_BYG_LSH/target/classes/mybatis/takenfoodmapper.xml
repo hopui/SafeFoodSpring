@@ -17,6 +17,10 @@
 		delete from takenFood where user_email=#{userEmail} and food_code=#{foodCode}
 	</delete>
 	
+	<update id="updateTakenFood" parameterType="map">
+		update takenfood set quantity = #{quantity} where user_email =#{userEmail} and food_code=#{foodCode}
+	</update>
+	
 	<select id="selectQuantity" resultType="int" parameterType="map">
 		select quantity from takenfood where user_email = #{email} and food_code = #{code}
 	</select>

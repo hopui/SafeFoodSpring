@@ -1,5 +1,6 @@
 package com.ssafy.controller;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ssafy.model.dto.TakenFood;
@@ -52,6 +54,28 @@ public class TakenFoodController
 	{
 		String email = ((User)session.getAttribute("loginUser")).getEmail();
 		Integer result = service.deleteTakenFood(email, foodCode);
+		
+		ResponseEntity<Integer> ent;
+		if( result>-1) {
+			ent=new ResponseEntity<>(result, HttpStatus.OK);	//200
+		}else {
+			ent=new ResponseEntity<>(result, HttpStatus.NO_CONTENT); //204
+		}
+		return ent;
+	}
+	
+	@GetMapping("/session/takenfoods/update")
+	public ResponseEntity<Integer> empDelete(Model model, HttpSession session, HttpServletRequest req)
+	{
+		String userEmail = ((User)session.getAttribute("loginUser")).getEmail();
+		String quantity = req.getParameter("quantity");
+		String foodCode = req.getParameter("foodCode");
+		String req_takenTime = req.getParameter("takenTime");
+		
+		System.err.println("takenTime 받아온 형식:" + req_takenTime);
+		
+		Date takenTime = new Date(Long.parseLong(req.getParameter("takenTime")));
+		Integer result = service.updateTakenFood(userEmail, quantity, foodCode, takenTime);
 		
 		ResponseEntity<Integer> ent;
 		if( result>-1) {

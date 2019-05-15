@@ -1,6 +1,9 @@
 package com.ssafy.service;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,5 +35,9 @@ public class TakenFoodService
 	
 	public int deleteTakenFood(String userEmail, String foodCode) {
 		return dao.deleteTakenFood(userEmail, foodCode);
+	}
+	
+	public int updateTakenFood(String userEmail, String quantity, String foodCode, Date takenTime) {
+		return dao.updateTakenFood(userEmail, quantity, foodCode, takenTime);
 	}
 }

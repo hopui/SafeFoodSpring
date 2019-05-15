@@ -1,5 +1,6 @@
 package com.ssafy.repository;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,5 +39,15 @@ public class TakenFoodRepo
 		map.put("userEmail", userEmail);
 		map.put("foodCode", foodCode);
 		return tmp.delete(stmt, map);
+	}
+
+	public int updateTakenFood(String userEmail, String quantity, String foodCode, Date takenTime) {
+		String stmt = ns + "updateTakenFood";
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("userEmail", userEmail);
+		map.put("quantity", quantity);
+		map.put("foodCode", foodCode);
+		map.put("takenTime", takenTime);
+		return tmp.update(stmt, map);
 	}
 }

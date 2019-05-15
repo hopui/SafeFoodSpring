@@ -289,7 +289,7 @@ th, td{
                             			</tr>	
                             		</thead>
                             		<tbody>
-                            			<tr v-for="(info, index) in selectedInfo">
+                            			<tr v-for="(info, index) in selectedInfo" v-model="selectedInfo">
                             				<td><span>{{index+1}}</span></td>
                             				<td>
                             					<span v-bind:id="'foodName'+(index+1)">
@@ -310,7 +310,7 @@ th, td{
                             	</table>
                             </div>
                             <div class="btnBar" v-show="showDetail">
-                            	<input class="btn btn-info" type="button" value="수정"><!--  @click="modifyQuantities" -->
+                            	<input class="btn btn-info" type="button" value="수정" @click="modifyQuantities">
                             	<input class="btn btn-danger" type="button" value="삭제" @click="deleteChecked">
                             </div>
                         </div>
@@ -418,7 +418,8 @@ let vi = new Vue({
         takenInfos: [],
         showDetail: false,
         selectedInfo: [],
-        deleteList: []
+        deleteList: [],
+        updateList: []
     },
 	mounted() {
     	this.loadTakenFoods();
@@ -559,7 +560,7 @@ let vi = new Vue({
             let d = moment();
             for(let info of this.takenInfos) {
 				d = new moment(info.takenTime);
-				let idx = d.get("date")+1;
+				let idx = d.get("date")+2;
 				dateList[idx].isTakenDay = true; // 섭취했음을 알려준다.
 				dateList[idx].takenFoods.push({name: info.etc, quantity: info.quantity, foodCode: info.foodCode}); 
 			}
@@ -659,7 +660,22 @@ let vi = new Vue({
 
     		axios.get(url+param)
 			.then(response => {
+				this.takenInfos = [];
 				this.takenInfos = response.data.list;
+				
+				// 선택 정보를 갱신한다.
+				let selectedDate = this.selectedDate.format("DD");	
+	            console.log("선택한 날짜: ", selectedDate);
+	            for(let info of this.takenInfos) {
+	            	// 2. db에서 가져온 먹은 정보들 안의 날짜는 unix 타임이다. 
+	            	let takenDate = moment();
+	            	takenDate = moment(info.takenTime).format("DD"); // 유닉스 타임을 모멘트로 바꾼다.
+	            	console.log("섭취한 식품에 있는 날짜: ", takenDate);
+	            	if(selectedDate == takenDate) {								
+	            		console.log(takenDate,"에 먹은 음식이 있습니다. ", info);
+	            		this.selectedInfo.push(info);           		
+	            	}
+	            }
 			}).catch(error => {
 				console.log(error);
 			});
@@ -672,20 +688,43 @@ let vi = new Vue({
     	},
     	deleteChecked() {
     		let url = "http://"+this.hostname+":8080/"+contextRoot+"/session/takenfoods/delete/";
-    		
-    		for(let checked of this.deleteList){
-				axios.delete(url + checked)
+    		// db에서 삭제
+    		for(let i = 0; i < this.deleteList.length; i++){
+				axios.delete(url + this.deleteList[i])
 				.then(response => {
 					console.log(response);
+					if(i == this.deleteList.length-1) {
+						this.deleteList=[];
+						// 1. 원래 있던 선택정보를 갱신한다.
+			            this.selectedInfo = [];
+			    		// 2. 갱신 된 섭취정보를 가져온다.
+			    		this.loadTakenFoods();
+					}
 				}).catch(error => {
 					console.log(error);
 				});
 			}
-    		
-    		this.loadTakenFoods();
-			this.updateSelectedInfo();
-			//선택목록 비우기
-			this.deleteList=[];
+    		console.log("갱신된 선택 정보: ", this.selectedInfo);
+    	},
+    	// 선택된 정보들을 업데이트 한다.
+    	modifyQuantities() {
+    		let url = "http://"+this.hostname+":8080/"+contextRoot+"/session/takenfoods/update?";
+    		for(let i = 0; i < this.selectedInfo.length; i++){
+				let params = "quantity="+this.selectedInfo[i].quantity+"&foodCode="+this.selectedInfo[i].foodCode+"&takenTime="+this.selectedInfo[i].takenTime;
+    			axios.get(url + params)
+				.then(response => {
+					console.log(response);
+					if(i == this.selectedInfo.length-1) {
+			    		// 1. 갱신 된 섭취정보를 가져온다.
+			    		this.deleteList=[];
+			            this.selectedInfo = [];
+			    		this.loadTakenFoods();
+			    		alert("수정 완료!");
+					}
+				}).catch(error => {
+					console.log(error);
+				});
+			}
     	},
         addMonth: function () {
             this.dateContext = this.nextMonth;
@@ -699,7 +738,8 @@ let vi = new Vue({
         },
         // 달력에서 칸을 선택할 때 발생하는 이벤트
         setSelectedDate: function (moment, isTakenDay) {
-			if(!isTakenDay) {
+			console.log("클릭한 날짜의 moment: ",moment,"섭취한 건지: ", isTakenDay);
+        	if(!isTakenDay) {
 				this.showDetail = false;
 				return;
 			}
@@ -708,22 +748,10 @@ let vi = new Vue({
             this.showDetail = true;
             
             // 선택한 날의 섭취 정보를 얻어와 출력할 준비를 한다.
-            this.updateSelectedInfo();
-        },
-        updateSelectedInfo() {
+         	// 1. 원래 있던 선택정보를 갱신한다.
             this.selectedInfo = [];
-            let selDay = this.selectedDate.format("DD");				/* console.log("선택한 날짜:", selDay); */
-            for(let info of this.takenInfos) {
-            	let takenDay = this.convertToMoment(info.takenTime)-1;	/* console.log("들어 있는 날짜:",takenDay); */
-            	if(selDay == takenDay) {								/* console.log("\t일치하는 상품을 발견했어요!", info); */
-            		this.selectedInfo.push(info);           		
-            	}
-            }
-        },
-        convertToMoment(date) {
-        	let result = moment();
-        	result = moment(date);
-        	return result.format("DD");
+            // 2. 갱신 된 섭취정보를 가져온다.
+        	this.loadTakenFoods();
         },
         goToday: function () {
             this.selectedDate = this.today;
