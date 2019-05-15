@@ -11,6 +11,7 @@
 		<typeAlias type="com.ssafy.model.dto.User" alias="user" />
 		<typeAlias type="com.ssafy.model.dto.Food" alias="food" />
 		<typeAlias type="com.ssafy.model.dto.TakenFood" alias="takenFood" />
+		<typeAlias type="com.ssafy.model.dto.LikeFood" alias="likefood" />
 	</typeAliases>
 
 	<mappers>

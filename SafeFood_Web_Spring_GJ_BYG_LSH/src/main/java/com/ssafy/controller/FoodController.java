@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ssafy.model.dto.Food;
+import com.ssafy.model.dto.LikeFood;
 import com.ssafy.model.dto.User;
 import com.ssafy.service.FoodService;
 
@@ -60,13 +61,6 @@ public class FoodController {
 	public String getDetail(Model model, @PathVariable String code) {
 		model.addAttribute("haccp", code);
 		return "food_haccp";
-	}
-
-	@GetMapping("/detail/{code}/modi")
-	public String getDetailMy(Model model, @PathVariable int code) {
-		model.addAttribute("action", "modi");
-		model.addAttribute("food", service.selectCode(code));
-		return "food_detail";
 	}
 
 	@GetMapping("/search")
@@ -117,30 +111,49 @@ public class FoodController {
 		return map;
 	}
 
-	@RequestMapping(value="/session/likefood/haccp/{id}/{name}", method=RequestMethod.GET)
+	@RequestMapping(value = "/session/likefood/haccp/{id}/{name}", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> doMyLikefood(HttpSession session, @PathVariable String id,
-			@PathVariable String name) {
+	public Map<String, Object> doMyLikefood(HttpSession session, @PathVariable String id, @PathVariable String name) {
 		User user = (User) session.getAttribute("loginUser");
-		char c = name.charAt(name.length()-1);
-		name= name.substring(0, name.length());
-		
+		char c = name.charAt(name.length() - 1);
+		name = name.substring(0, name.length() - 1);
+
 		Map<String, Object> map = new HashMap<>();
 		int result = -1;
-				
-		if(c == 'c') {
-			result = (int)service.checkLikefood(user.getEmail(), id);
-		}else
+
+		if (c == 'c') {
+			result = (int) service.checkLikefood(user.getEmail(), id);
+		} else
 			result = service.insertLikefood(user.getEmail(), name, id, 1);
-		
-		map.put("result",result);
+
+		map.put("result", result);
+		return map;
+	}
+
+	@GetMapping(value = "/session/likefood/{id}/{name}")
+	@ResponseBody
+	public Map<String, Object> doMyLikeFood2(HttpSession session, @PathVariable String id, @PathVariable String name) {
+		User user = (User) session.getAttribute("loginUser");
+		char c = name.charAt(name.length() - 1);
+		name = name.substring(0, name.length() - 1);
+
+		Map<String, Object> map = new HashMap<>();
+		int result = -1;
+
+		if (c == 'c') {
+			result = (int) service.checkLikefood(user.getEmail(), id);
+		} else
+			result = service.insertLikefood(user.getEmail(), name, id, 0);
+
+		map.put("result", result);
 		return map;
 	}
 
 	@GetMapping("/session/myTakenInfo")
 	public String doMyTakenInfo(Model model, HttpSession session) {
 		User user = (User) session.getAttribute("loginUser");
-		List<Food> list = service.selectMyfoodAll(user.getEmail());
+		List<Food> list =service.selectMyfoodAll(user.getEmail());
+		List<LikeFood> Llist = service.selectLikeAll(user.getEmail());
 		long sum[] = new long[9];
 
 		for (Food f : list) {
@@ -152,11 +165,9 @@ public class FoodController {
 			sum[3] += f.getFat() * quantity;
 			sum[4] += f.getSugar() * quantity;
 			sum[5] += f.getNatrium() * quantity;
-			sum[6] += f.getChole() * quantity;
-			sum[7] += f.getFattyacid() * quantity;
-			sum[8] += f.getTransfat() * quantity;
 		}
 		model.addAttribute("foods", list);
+		model.addAttribute("mylike",Llist);
 		model.addAttribute("nutriSum", sum);
 		return "session/MyTakenInfo";
 	}

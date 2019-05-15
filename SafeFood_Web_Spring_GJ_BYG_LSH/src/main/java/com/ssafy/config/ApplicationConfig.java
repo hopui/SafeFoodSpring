@@ -29,7 +29,7 @@ import com.ssafy.service.TakenFoodService;
 @EnableTransactionManagement
 @PropertySource({ "classpath:/config.properties" })
 public class ApplicationConfig
-{
+{//
 	@Bean
 	public UserService accountService(UserRepo repo)
 	{

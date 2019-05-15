@@ -188,7 +188,8 @@ td {
 					<span>{{food.manufacture}}</span>
 					<br>
 					<c:if test="${not empty loginUser}">
-					<button type='button' class='btn btn-primary'>
+					<button type='button' class='btn btn-primary' 
+						@click="likefood('i',food.prdlstReportNo,food.prdlstNm)">
 						<span class='glyphicon glyphicon-shopping-cart' aria-hidden='true'></span>
 							찜
 					</button>
@@ -296,7 +297,6 @@ td {
 </script>
 </body>
 <!-- 인덱스 전용 js -->
-<c:url value="/static/script/index.js" var="indexJSurl" />
 <script type="text/javascript">
 	let alarm = "${alarm }";
 	if (alarm) {
@@ -309,6 +309,7 @@ td {
 	let sort ="${sort}";
 	let searchtext = "${search_text}";
 </script>
+<c:url value="/static/script/index.js" var="indexJSurl" />
 <script src="${indexJSurl }">
 	
 </script>
