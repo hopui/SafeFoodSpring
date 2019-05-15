@@ -124,15 +124,16 @@ public class FoodController {
 		if (c == 'c') {
 			result = (int) service.checkLikefood(user.getEmail(), id);
 		} else
-			result = service.insertLikefood(user.getEmail(), name, id, 1);
+			result = service.insertLikefood(user.getEmail(), name, id, 1, null);
 
 		map.put("result", result);
 		return map;
 	}
 
-	@GetMapping(value = "/session/likefood/{id}/{name}")
+	@GetMapping(value = "/session/likefood/{id}/{name}/{group}")
 	@ResponseBody
-	public Map<String, Object> doMyLikeFood2(HttpSession session, @PathVariable String id, @PathVariable String name) {
+	public Map<String, Object> doMyLikeFood2(HttpSession session, @PathVariable String id, @PathVariable String name,
+			@PathVariable String group) {
 		User user = (User) session.getAttribute("loginUser");
 		char c = name.charAt(name.length() - 1);
 		name = name.substring(0, name.length() - 1);
@@ -143,7 +144,7 @@ public class FoodController {
 		if (c == 'c') {
 			result = (int) service.checkLikefood(user.getEmail(), id);
 		} else
-			result = service.insertLikefood(user.getEmail(), name, id, 0);
+			result = service.insertLikefood(user.getEmail(), name, id, 0, group);
 
 		map.put("result", result);
 		return map;
@@ -152,30 +153,39 @@ public class FoodController {
 	@GetMapping("/session/myTakenInfo")
 	public String doMyTakenInfo(Model model, HttpSession session) {
 		User user = (User) session.getAttribute("loginUser");
-		List<Food> list =service.selectMyfoodAll(user.getEmail());
-		List<LikeFood> Llist = service.selectLikeAll(user.getEmail());
-		long sum[] = new long[9];
-
-		for (Food f : list) {
-			Integer quantity = (Integer) service.selectQuantity(user.getEmail(), String.valueOf(f.getCode()));
-			f.setQuantity(quantity);
-			sum[0] += f.getCalory() * quantity;
-			sum[1] += f.getCarbo() * quantity;
-			sum[2] += f.getProtein() * quantity;
-			sum[3] += f.getFat() * quantity;
-			sum[4] += f.getSugar() * quantity;
-			sum[5] += f.getNatrium() * quantity;
-		}
+		List<Food> list = service.selectMyfoodAll(user.getEmail());
 		model.addAttribute("foods", list);
-		model.addAttribute("mylike",Llist);
-		model.addAttribute("nutriSum", sum);
 		return "session/MyTakenInfo";
+	}
+
+	@GetMapping("/session/likelist")
+	@ResponseBody
+	public Map<String, Object> doMyLike(Model model, HttpSession session) {
+		Map<String, Object> map = new HashMap<>();
+		User user = (User) session.getAttribute("loginUser");
+		List<LikeFood> Llist = service.selectLikeAll(user.getEmail());
+		List<String> img = new ArrayList<>();
+
+		for (int i = 0; i < Llist.size(); i++) {
+			LikeFood f = Llist.get(i);
+			img.add(f.getImg(f.getFoodGroup()));
+		}
+
+		map.put("mylike", Llist);
+		map.put("img", img);
+		return map;
 	}
 
 	@PostMapping("/session/modify")
 	public String doInsert(String eat, String quantity, int haccp, String name, HttpSession session,
 			RedirectAttributes redir) {
 		User user = (User) session.getAttribute("loginUser");
+
+		boolean check = true;
+		if (quantity == "0") {
+			quantity = "1";
+			check = false;
+		}
 
 		if (quantity != null && !quantity.trim().equals("")) {
 			int result = service.insertMyfood(user.getEmail(), eat, Integer.parseInt(quantity), haccp, name);
@@ -186,10 +196,13 @@ public class FoodController {
 				redir.addFlashAttribute("alarm", "섭취 등록 실패했습니다.");
 		}
 
-		if (haccp > 0)
-			return "redirect:/detail/haccp/" + eat;
+		if (!check)
+			if (haccp > 0)
+				return "redirect:/detail/haccp/" + eat;
+			else
+				return "redirect:/detail/" + eat;
 		else
-			return "redirect:/detail/" + eat;
+			return "redirect:/session/myTakenInfo";
 
 	}
 }

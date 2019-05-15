@@ -333,7 +333,7 @@ footer {
 		
 		let code= '${food.code}';
 		let name= '${food.name}';
-
+		let group= '${food.foodGroup}'; 
 		let vi = new Vue({
 			el:"#foodapp",
 			data(){
@@ -349,7 +349,7 @@ footer {
 					axios
 					.get("/SafeFood_Web_Spring_GJ_BYG_LSH/session/likefood/"
 							+code+"/"
-							+name+func)
+							+name+func+"/"+group)
 							
 					.then(response => {
 							if(func ==='c'){

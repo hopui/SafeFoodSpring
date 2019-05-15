@@ -53,7 +53,7 @@
 	</insert>
 	
 	<insert id="insertLikeFood" parameterType="map">
-		insert into likefood values(#{code},#{name},#{haccp},#{email})
+		insert into likefood values(#{code},#{name},#{haccp},#{email},#{group})
 	</insert>
 
 	<update id="updateMyFood" parameterType="map">

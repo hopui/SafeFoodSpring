@@ -55,8 +55,8 @@ public class FoodService
 		return dao.insertMyfood(email, code, quantity,haccp, name);
 	}
 	
-	public int insertLikefood(String email, String name, String code, int haccp) {
-		return dao.insertLikefood(email, name, code, haccp);
+	public int insertLikefood(String email, String name, String code, int haccp, String group) {
+		return dao.insertLikefood(email, name, code, haccp,group);
 	}
 	public int updateMyfood(String email, String code, int quantity) {
 		return dao.updateMyfood(email, code, quantity);

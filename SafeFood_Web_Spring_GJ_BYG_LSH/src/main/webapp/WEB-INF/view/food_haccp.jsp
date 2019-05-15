@@ -382,7 +382,7 @@ footer {
 								break;
 						}
 					}
-		
+		 
 					for(let i=0; i<count.length; i++){
 						if(count[i] !=0){
 							this.rank.push({name:nations[i], count:count[i]});
@@ -390,7 +390,7 @@ footer {
 					}
 					this.code = this.food.prdlstReportNo;
 					this.name = this.food.prdlstNm;
-					this.likefood('c');
+					this.likefood('c'); 
 				})
 				.catch(error =>{
 					console.log(error)
@@ -423,7 +423,7 @@ footer {
 					this.errored= true;
 				})
 				//함수에서의 this는 window, arrow 함수에서는 vue
-				.finally(() => {this.loading = false})
+				.finally(() => {this.loading = false});
 				
 			},
 			checkNations(mater){
