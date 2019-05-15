@@ -59,7 +59,6 @@ body {
 	font-size: 5.5em;
 	font-weight: 600;
 	line-height: 1;
-	clear: both;
 }
 
 .b-calendar__information .today .month {
@@ -145,7 +144,7 @@ body {
 	border-right: 1px solid rgba(0, 0, 0, 0.05);
 	border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 	font-weight: 200;
-	min-height: 5.75rem;
+	min-height: 6.25rem;
 	padding: 0.25rem 0.5rem;
 	position: relative;
 	width: calc(100%/ 7);
@@ -189,7 +188,8 @@ body {
 	background-color: rgba(189, 249, 166, 0.25);
 }
 .taken_img {
-	margin-right: 9px;
+	display: flex;
+	margin-left: 18px;
 }
 .taken_list {
 	overflow: auto;
@@ -197,11 +197,15 @@ body {
     top: 260px;
     background-color: white;
     width: 320px;
-    height: 320px;
+    height: 314px;
     border-radius: 1.0rem 0 0 1.0rem;
 }
 th, td{
 	text-align: center!important;
+}
+.btnBar {
+	position: absolute;
+	top: 600px;
 }
 @media ( max-width : 768px) {
 	.b-calendar__information {
@@ -276,6 +280,10 @@ th, td{
                             <div class="taken_list" v-if="showDetail" >
                             	<table class="table table-striped table-hover">
                             		<thead>
+                 						<col width="10%">
+										<col width="50%">
+										<col width="20%">
+										<col width="20%">
                             			<tr>
                             				<th>#</th><th>이름</th><th>개수</th><th>삭제</th>
                             			</tr>	
@@ -283,16 +291,27 @@ th, td{
                             		<tbody>
                             			<tr v-for="(info, index) in selectedInfo">
                             				<td><span>{{index+1}}</span></td>
-                            				<td><span>{{info.etc.substr(0,5)}}...</span></td>
                             				<td>
-                            					<input type="number" v-model="info.quantity" style="width:40px;">
+                            					<span v-bind:id="'foodName'+(index+1)">
+                            						{{info.etc.substr(0,6)}}<span v-if="info.etc.length > 6">..</span><!-- 길면 ..을 붙임 -->
+                            					</span>
+                            					<b-tooltip v-bind:target="'foodName'+(index+1)" placement="bottom" v-if="info.etc.length > 6">
+					                            	{{info.etc}}
+					                            </b-tooltip>
                             				</td>
                             				<td>
-                            					<input type="checkbox" name="checked" v-model="info.foodCode">
+                            					<input type="number" v-model="info.quantity" min=1 style="width:40px;">
+                            				</td>
+                            				<td>
+                            					<input type="checkbox" name="checked" :value="info.foodCode" @click="checkFoodCode(info.foodCode)">
                             				</td>
                             			</tr>
                             		</tbody>
                             	</table>
+                            </div>
+                            <div class="btnBar" v-show="showDetail">
+                            	<input class="btn btn-info" type="button" value="수정"><!--  @click="modifyQuantities" -->
+                            	<input class="btn btn-danger" type="button" value="삭제" @click="deleteChecked">
                             </div>
                         </div>
                     </div>
@@ -353,7 +372,7 @@ th, td{
                              			}"
                                  :key="date.key" 
                                  :data-date="date.date"
-                                 @click="setSelectedDate(date.moment)"
+                                 @click="setSelectedDate(date.moment, date.isTakenDay)"
                              >
                                 <span class="day">{{date.dayNumber}}</span> 
                                 <span class="weekday">{{date.weekDay}}</span>
@@ -381,10 +400,10 @@ th, td{
 
 <script id = "rendered-js" >
 new moment.locale('ko', {
-    weekdays: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
-    weekdaysShort: ["일", "월", "화", "수", "목", "금", "토"],
-    months: "1월_2월_3월_4월_5월_6월_7월_8월_9월_10월_11월_12월".split("_"),
-    monthsShort: "1월_2월_3월_4월_5월_6월_7월_8월_9월_10월_11월_12월".split("_")
+    weekdays: 		["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
+    weekdaysShort: 	["일", "월", "화", "수", "목", "금", "토"],
+    months: 		"1월_2월_3월_4월_5월_6월_7월_8월_9월_10월_11월_12월".split("_"),
+    monthsShort: 	"1월_2월_3월_4월_5월_6월_7월_8월_9월_10월_11월_12월".split("_")
 });
 let userEmail = "${loginUser.email }";
 let contextRoot = "SafeFood_Web_Spring_GJ_BYG_LSH";
@@ -398,7 +417,8 @@ let vi = new Vue({
         days: ["월", "화", "수", "목", "금", "토", "일"],
         takenInfos: [],
         showDetail: false,
-        selectedInfo: []
+        selectedInfo: [],
+        deleteList: []
     },
 	mounted() {
     	this.loadTakenFoods();
@@ -536,9 +556,10 @@ let vi = new Vue({
             window.CP.exitedLoop(1);
             
             // 섭취한 적이 있는 날짜는 체크해준다.
+            let d = moment();
             for(let info of this.takenInfos) {
-				let d = new Date(info.takenTime);
-				let idx = d.getDate()+1;
+				d = new moment(info.takenTime);
+				let idx = d.get("date")+1;
 				dateList[idx].isTakenDay = true; // 섭취했음을 알려준다.
 				dateList[idx].takenFoods.push({name: info.etc, quantity: info.quantity, foodCode: info.foodCode}); 
 			}
@@ -630,17 +651,41 @@ let vi = new Vue({
     },
 
     methods: {
+    	//해당 유저의 섭취정보를 가져옵니다.
     	loadTakenFoods() {
     		let emailInfo = userEmail.split(".");
     		let url = "http://"+this.hostname+":8080/"+contextRoot+"/session/takenfoods?";
-    		let param = "email="+emailInfo[0]+"&dot="+emailInfo[1]+"&year="+this.dateContext.format("YYYY")+"&month="+this.dateContext.format('M');
-    		console.log("url: ",url+param);
+    		let param = "year="+this.dateContext.format("YYYY")+"&month="+this.dateContext.format('M');
+
     		axios.get(url+param)
 			.then(response => {
 				this.takenInfos = response.data.list;
 			}).catch(error => {
 				console.log(error);
 			});
+    	},
+    	checkFoodCode(foodCode) {
+    		let idx = this.deleteList.indexOf(foodCode);
+    		if(idx > -1) this.deleteList.splice(idx, 1);
+    		else this.deleteList.push(foodCode);
+    		console.log("삭제할 목록: "+this.deleteList);
+    	},
+    	deleteChecked() {
+    		let url = "http://"+this.hostname+":8080/"+contextRoot+"/session/takenfoods/delete/";
+    		
+    		for(let checked of this.deleteList){
+				axios.delete(url + checked)
+				.then(response => {
+					console.log(response);
+				}).catch(error => {
+					console.log(error);
+				});
+			}
+    		
+    		this.loadTakenFoods();
+			this.updateSelectedInfo();
+			//선택목록 비우기
+			this.deleteList=[];
     	},
         addMonth: function () {
             this.dateContext = this.nextMonth;
@@ -652,19 +697,25 @@ let vi = new Vue({
             this.loadTakenFoods();
             this.showDetail = false;
         },
-        setSelectedDate: function (moment) {
+        // 달력에서 칸을 선택할 때 발생하는 이벤트
+        setSelectedDate: function (moment, isTakenDay) {
+			if(!isTakenDay) {
+				this.showDetail = false;
+				return;
+			}
+        	// 현재 날짜를 저장하고 디테일 뷰를 보여준다.
             this.selectedDate = moment;
             this.showDetail = true;
             
-            // 선택한 날의 섭취 정보를 저장한다.
+            // 선택한 날의 섭취 정보를 얻어와 출력할 준비를 한다.
+            this.updateSelectedInfo();
+        },
+        updateSelectedInfo() {
             this.selectedInfo = [];
-            let selDay = this.selectedDate.format("DD");
-            console.log("선택한 날짜:", selDay);
+            let selDay = this.selectedDate.format("DD");				/* console.log("선택한 날짜:", selDay); */
             for(let info of this.takenInfos) {
-            	let takenDay = this.convertToMoment(info.takenTime)-1;
-            	console.log("들어 있는 날짜:",takenDay);
-            	if(selDay == takenDay) {
-            		console.log("\t일치하는 상품을 발견했어요!", info);
+            	let takenDay = this.convertToMoment(info.takenTime)-1;	/* console.log("들어 있는 날짜:",takenDay); */
+            	if(selDay == takenDay) {								/* console.log("\t일치하는 상품을 발견했어요!", info); */
             		this.selectedInfo.push(info);           		
             	}
             }
@@ -677,6 +728,7 @@ let vi = new Vue({
         goToday: function () {
             this.selectedDate = this.today;
             this.dateContext = this.today;
+            this.setSelectedDate(this.selectedDate);
         },
         formattingDay(day) {
             return ("0" + day).slice(-2);

@@ -31,4 +31,12 @@ public class TakenFoodRepo
 		String stmt = ns + "insertTakenFood";
 		return tmp.insert(stmt, userEmail);
 	}
+	
+	public int deleteTakenFood(String userEmail, String foodCode) {
+		String stmt = ns + "deleteTakenFood";
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("userEmail", userEmail);
+		map.put("foodCode", foodCode);
+		return tmp.delete(stmt, map);
+	}
 }

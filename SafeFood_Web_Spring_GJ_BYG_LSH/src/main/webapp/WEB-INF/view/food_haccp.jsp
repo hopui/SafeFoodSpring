@@ -1,3 +1,4 @@
+<%@page import="com.ssafy.service.nation"%>
 <%@page import="com.ssafy.model.dto.Food"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
@@ -72,7 +73,139 @@ body {
 	background: #ffffff;
 }
 </style>
+<!-- 그래프 -->
+<style>
+@
+keyframes bake-pie {from { transform:rotate(0deg)translate3d(0, 0, 0);
+	
+}
 
+}
+body {
+	font-family: "Jua", Arial;
+	background: #ffffff;
+}
+
+main {
+	width: 400px;
+	margin: 30px auto;
+}
+
+section {
+	margin-top: 30px;
+}
+
+.pieID {
+	display: inline-block;
+}
+
+.pie {
+	height: 200px;
+	width: 200px;
+	position: relative;
+	margin: 0 30px 30px 0;
+}
+
+.pie::before {
+	content: "";
+	display: block;
+	position: absolute;
+	z-index: 1;
+	width: 100px;
+	height: 100px;
+	background: #EEE;
+	border-radius: 50%;
+	top: 50px;
+	left: 50px;
+}
+
+.pie::after {
+	content: "";
+	display: block;
+	width: 120px;
+	height: 2px;
+	background: rgba(0, 0, 0, 0.1);
+	border-radius: 50%;
+	box-shadow: 0 0 3px 4px rgba(0, 0, 0, 0.1);
+	margin: 220px auto;
+}
+
+.slice {
+	position: absolute;
+	width: 200px;
+	height: 200px;
+	clip: rect(0px, 200px, 200px, 100px);
+	animation: bake-pie 1s;
+}
+
+.slice span {
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	background-color: black;
+	width: 200px;
+	height: 200px;
+	border-radius: 50%;
+	clip: rect(0px, 200px, 200px, 100px);
+}
+
+.legend {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+	background: #FFF;
+	padding: 15px;
+	font-size: 13px;
+	box-shadow: 1px 1px 0 #DDD, 2px 2px 0 #BBB;
+	width: 180px;
+}
+
+.legend li {
+	height: 1.25em;
+	margin-bottom: 0.7em;
+	padding-left: 0.5em;
+	border-left: 1.25em solid black;
+}
+
+.legend em {
+	font-style: normal;
+}
+
+.legend span {
+	float: right;
+}
+
+footer {
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	font-size: 13px;
+	background: #DDD;
+	padding: 5px 10px;
+	margin: 5px;
+}
+
+.ss {
+	/* 	width:30px;
+	padding-right: 30px; */
+	
+}
+
+#graph {
+	padding-top: 70px;
+}
+
+#prdt {
+	width: 100px;
+	height: 50%;
+}
+
+#ddd {
+	padding-top: 10px;
+	padding-bottom: 80px;
+}
+</style>
 
 
 </head>
@@ -163,8 +296,30 @@ body {
 			</div>
 		</div>
 		<br>
-	</div>
 	<br>
+		<hr>
+		<br>
+		<div class="container">
+			<h3>원재료 국가별 통계</h3>
+			<div class="col-sm-6" id="graph">
+				<div class="pieID pie"></div>
+				<!--  도넛차트 -->
+				<ul class="pieID legend">
+					<li v-for="nation in rank"><em class="ss" v-text="nation.name"></em> <span class="kcal" v-text="nation.count"></span></li>
+				</ul>
+			</div>
+
+			<!--  도넛차트 옆 테이블 -->
+			<div class="col-sm-6" id="detail">
+				<table class="table text-center">
+					<tr  v-for="nation in rank">
+						<td>{{nation.name}}</td>
+						<td class="daily" v-html="nation.count+'개'"></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
 	<br>
 	<jsp:include page="/WEB-INF/view/include/footer.jsp" />
 
@@ -177,13 +332,20 @@ body {
 	}
 
 	let haccp = "${haccp}";
-	
+	let nations =[];
+	<%
+		nation n = new nation();
+		for(String na : n.nations){
+	%>
+		nations.push("<%=na%>");
+	<%}%>
 	let vi = new Vue({
 		el:"#foodapp",
 		data(){
 			return {
 				food:{},
-				image:'apple_origin.png'
+				image:'apple_origin.png',
+				rank:[]
 			}
 		},
 		mounted(){
@@ -202,6 +364,27 @@ body {
 				.get(url)
 				.then(response => {
 					this.food = response.data.list[0];
+					let count = new Array();
+					
+					for(let i=0; i<nations.length; i++)
+						count.push(0);
+					
+					for(let a=0; a<nations.length; a++) {
+						for(let i=0; i<this.food.rawmtrl.length; i++) {
+							let result=this.food.rawmtrl.indexOf(nations[a],i);
+							if(result >0) {
+								count[a]++;
+								i= result+nations[a].length;
+							}else
+								break;
+						}
+					}
+		
+					for(let i=0; i<count.length; i++){
+						if(count[i] !=0){
+							this.rank.push({name:nations[i], count:count[i]});
+						}
+					}
 					this.likefood('c');
 				})
 				.catch(error =>{
@@ -209,7 +392,9 @@ body {
 					this.errored= true;
 				})
 				//함수에서의 this는 window, arrow 함수에서는 vue
-				.finally(() => {this.loading = false})
+				.finally(() => {this.loading = false;
+					createPie(".pieID.legend", ".pieID.pie");
+				})
 			},
 			likefood(func){
 				axios
@@ -234,10 +419,64 @@ body {
 				//함수에서의 this는 window, arrow 함수에서는 vue
 				.finally(() => {this.loading = false})
 				
+			},
+			checkNations(mater){
+				
+				
 			}
 		}
 
 	});
+	
+
+	function sliceSize(dataNum, dataTotal) {
+		return (dataNum / dataTotal) * 360;
+	}
+	function addSlice(sliceSize, pieElement, offset, sliceID, color) {
+		$(pieElement).append(
+				"<div class='slice "+sliceID+"'><span></span></div>");
+		var offset = offset - 1;
+		var sizeRotation = -179 + sliceSize;
+		$("." + sliceID).css({
+			"transform" : "rotate(" + offset + "deg) translate3d(0,0,0)"
+		});
+		$("." + sliceID + " span").css({
+			"transform" : "rotate(" + sizeRotation + "deg) translate3d(0,0,0)",
+			"background-color" : color
+		});
+	}
+	function iterateSlices(sliceSize, pieElement, offset, dataCount,
+			sliceCount, color) {
+		var sliceID = "s" + dataCount + "-" + sliceCount;
+		var maxSize = 179;
+		if (sliceSize <= maxSize) {
+			addSlice(sliceSize, pieElement, offset, sliceID, color);
+		} else {
+			addSlice(maxSize, pieElement, offset, sliceID, color);
+			iterateSlices(sliceSize - maxSize, pieElement, offset + maxSize,
+					dataCount, sliceCount + 1, color);
+		}
+	}
+	function createPie(dataElement, pieElement) {
+		var listData = [];
+		$(dataElement + " span").each(function() {
+			listData.push(Number($(this).html()));
+		});
+		var listTotal = 0;
+		for (var i = 0; i < listData.length; i++) {
+			listTotal += listData[i];
+		}
+		var offset = 0;
+		var color = [ "cornflowerblue", "olivedrab", "orange", "tomato",
+				"crimson", "purple", "turquoise", "forestgreen", "navy", "gray" ];
+		for (var i = 0; i < listData.length; i++) {
+			var size = sliceSize(listData[i], listTotal);
+			iterateSlices(size, pieElement, offset, i, 0, color[i]);
+			$(dataElement + " li:nth-child(" + (i + 1) + ")").css(
+					"border-color", color[i]);
+			offset += size;
+		}
+	}
 </script>
 
 </html>
