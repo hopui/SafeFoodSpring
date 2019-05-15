@@ -276,8 +276,9 @@ footer {
 					<form id="eat_form" method="post" action="${modilUrl}">
 						<label>Quantity</label> 
 						<input type="number" class="form-control"name='quantity'> <br>
-						 <input hidden='true' name='like' :value='food.prdlstReportNo'>
-						 <input hidden='true' name='name' :value='food.prdlstNm'> 
+						
+						 <input type="hidden" name='like' v-model="code">
+						 <input type="hidden" name='name' v-model='name'> 
 						 <input hidden='true' name='haccp' value=1>
 						<button class='btn btn-primary' id="button_insert">
 							<span id="insert" class='glyphicon glyphicon-plus'
@@ -345,7 +346,9 @@ footer {
 			return {
 				food:{},
 				image:'apple_origin.png',
-				rank:[]
+				rank:[],
+				code:'',
+				name:''
 			}
 		},
 		mounted(){
@@ -385,6 +388,8 @@ footer {
 							this.rank.push({name:nations[i], count:count[i]});
 						}
 					}
+					this.code = this.food.prdlstReportNo;
+					this.name = this.food.prdlstNm;
 					this.likefood('c');
 				})
 				.catch(error =>{
@@ -399,8 +404,8 @@ footer {
 			likefood(func){
 				axios
 				.get("/SafeFood_Web_Spring_GJ_BYG_LSH/session/likefood/haccp/"
-						+this.food.prdlstReportNo+"/"
-						+this.food.prdlstNm+func)
+						+this.code+"/"
+						+this.name+func)
 				.then(response => {
 						if(func ==='c'){
 							if(response.data.result >0)
@@ -411,6 +416,7 @@ footer {
 							else
 								this.image='apple_origin.png';
 						}
+							console.log(this.food);
 				})
 				.catch(error =>{
 					console.log(error)

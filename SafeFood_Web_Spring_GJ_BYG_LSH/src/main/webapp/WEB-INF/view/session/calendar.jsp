@@ -559,7 +559,7 @@ let vi = new Vue({
             let d = moment();
             for(let info of this.takenInfos) {
 				d = new moment(info.takenTime);
-				let idx = d.get("date")+1;
+				let idx = d.get("date")+2;
 				dateList[idx].isTakenDay = true; // 섭취했음을 알려준다.
 				dateList[idx].takenFoods.push({name: info.etc, quantity: info.quantity, foodCode: info.foodCode}); 
 			}
@@ -673,6 +673,7 @@ let vi = new Vue({
     	deleteChecked() {
     		let url = "http://"+this.hostname+":8080/"+contextRoot+"/session/takenfoods/delete/";
     		
+    		// db에서 삭제
     		for(let checked of this.deleteList){
 				axios.delete(url + checked)
 				.then(response => {
@@ -699,7 +700,8 @@ let vi = new Vue({
         },
         // 달력에서 칸을 선택할 때 발생하는 이벤트
         setSelectedDate: function (moment, isTakenDay) {
-			if(!isTakenDay) {
+			console.log("클릭한 날짜의 moment: ",moment,"섭취한 건지: ", isTakenDay);
+        	if(!isTakenDay) {
 				this.showDetail = false;
 				return;
 			}
@@ -712,19 +714,25 @@ let vi = new Vue({
         },
         updateSelectedInfo() {
             this.selectedInfo = [];
-            let selDay = this.selectedDate.format("DD");				/* console.log("선택한 날짜:", selDay); */
+            // 선택한 날짜를 유닉스 타임스탬프로 바꾼다.
+            let selectedDate = this.selectedDate.format("DD");	
+            console.log("선택한 날짜: ", selectedDate);
             for(let info of this.takenInfos) {
-            	let takenDay = this.convertToMoment(info.takenTime)-1;	/* console.log("들어 있는 날짜:",takenDay); */
-            	if(selDay == takenDay) {								/* console.log("\t일치하는 상품을 발견했어요!", info); */
+            	/* let takenDate = this.convertToMoment(info.takenTime); */	
+            	let takenDate = moment();
+            	takenDate = moment(info.takenTime).format("DD"); // 유닉스 타임을 모멘트로 바꾼다.
+            	console.log("섭취한 식품에 있는 날짜: ", takenDate);
+            	if(selectedDate == takenDate) {								
+            		console.log(takenDate,"에 먹은 음식이 있습니다. ", info);
             		this.selectedInfo.push(info);           		
             	}
             }
         },
-        convertToMoment(date) {
+/*         convertToMoment(date) {
         	let result = moment();
         	result = moment(date);
         	return result.format("DD");
-        },
+        }, */
         goToday: function () {
             this.selectedDate = this.today;
             this.dateContext = this.today;
