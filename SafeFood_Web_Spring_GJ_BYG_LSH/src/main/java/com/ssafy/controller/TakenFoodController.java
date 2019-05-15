@@ -23,7 +23,7 @@ import com.ssafy.service.TakenFoodService;
 @Controller
 @CrossOrigin(origins = "*")
 public class TakenFoodController
-{
+{//
 	private static final Logger logger = LoggerFactory.getLogger(TakenFoodController.class);
 	
 	@Autowired
