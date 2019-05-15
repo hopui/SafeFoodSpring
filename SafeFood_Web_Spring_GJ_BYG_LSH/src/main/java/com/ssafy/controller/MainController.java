@@ -70,4 +70,10 @@ public class MainController
 	{
 		return "/session/calendar";
 	}
+	
+	@GetMapping("/session/myBestFoodInfo")
+	public String goToMyBestFoodInfo(Model model)
+	{
+		return "/session/MyBestFoodInfo";
+	}
 }

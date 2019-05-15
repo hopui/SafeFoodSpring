@@ -40,4 +40,8 @@ public class TakenFoodService
 	public int updateTakenFood(String userEmail, String quantity, String foodCode, Date takenTime) {
 		return dao.updateTakenFood(userEmail, quantity, foodCode, takenTime);
 	}
+	
+	public List<Map<String, Object> > selectTop5Foods(String userEmail) {
+		return dao.selectTop5Foods(userEmail);
+	}
 }
