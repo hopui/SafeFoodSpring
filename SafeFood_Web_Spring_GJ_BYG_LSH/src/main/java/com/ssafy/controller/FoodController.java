@@ -4,11 +4,11 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Base64.Decoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.jws.soap.SOAPBinding.Use;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -187,7 +187,7 @@ public class FoodController {
 	}
 
 	@PostMapping("/session/modify")
-	public String doInsert(String eat, String quantity, int haccp, String name, HttpSession session,
+	public String doInsert(String code, String quantity, int haccp, String name, HttpSession session,
 			RedirectAttributes redir) {
 		User user = (User) session.getAttribute("loginUser");
 		System.out.println(quantity);
@@ -196,9 +196,9 @@ public class FoodController {
 			quantity = "1";
 			check = false;
 		}
-
+		System.out.println(code+"!!!!!");
 		if (quantity != null && !quantity.trim().equals("")) {
-			int result = service.insertMyfood(user.getEmail(), eat, Integer.parseInt(quantity), haccp, name);
+			int result = service.insertMyfood(user.getEmail(), code, Integer.parseInt(quantity), haccp, name);
 
 			if (result > 0)
 				redir.addFlashAttribute("alarm", "섭취 등록 성공했습니다.");
@@ -207,10 +207,15 @@ public class FoodController {
 		}
 
 		if (check) {
-			if (haccp > 0)
-				return "redirect:/detail/haccp/" + eat;
+			if (haccp > 0) {
+				try {
+					return "redirect:/detail/haccp/" + code+"/"+URLEncoder.encode(name,"utf-8");
+				} catch (UnsupportedEncodingException e) {
+					return "redirect:/detail/haccp/" + code+"/";
+				}
+			}
 			else
-				return "redirect:/detail/" + eat;
+				return "redirect:/detail/" + code;
 		} else
 			return "redirect:/session/myTakenInfo";
 

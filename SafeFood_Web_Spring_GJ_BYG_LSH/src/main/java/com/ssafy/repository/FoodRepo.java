@@ -175,7 +175,7 @@ public class FoodRepo {
 			map.put("email", email);
 			map.put("code", code);
 			map.put("haccp", String.valueOf(haccap));
-			map.put("etc", String.valueOf(name));
+			map.put("name", String.valueOf(name));
 			return tmp.insert(stmt, map);
 		}else {
 			return updateHit(email, code, hit+1);

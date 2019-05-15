@@ -65,6 +65,7 @@ public class UserController
 		User result = userService.login(account.getEmail(), account.getPassword());
 		if (result != null)
 		{
+			
 			HttpSession session = req.getSession();
 			session.setAttribute("loginUser", result);
 			System.err.println("로그인 시 알러지 정보: " + result.getAllergy());

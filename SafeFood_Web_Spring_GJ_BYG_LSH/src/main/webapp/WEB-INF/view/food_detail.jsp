@@ -233,7 +233,7 @@ footer {
 						<input type="number" class="form-control" name='quantity'>
 						<br>
 						<input hidden='true' name='name' value='${food.name }'> 
-						<input hidden='true' name='eat' value=${food.code }>
+						<input hidden='true' name='code' value=${food.code }>
 						<input hidden='true' name='haccp' value=0>
 						<button class='btn btn-primary' id="button_insert">
 							<span id="insert" class='glyphicon glyphicon-plus'

@@ -45,10 +45,11 @@ h2 {
 	font-family: 'Jua', sans-serif;
 }
 
-hr{
+hr {
 	margin-top: 15px;
 	margin-bottom: 15px;
 }
+
 h1 {
 	font-size: -webkit-xxx-large;
 	font-family: cursive;
@@ -106,6 +107,23 @@ td {
 #lastitem {
 	border-bottom: 2px solid gray;
 }
+
+.hitbox{
+	margin-bottom: 10px;
+	clear: both;
+}
+.hitul {
+	list-style: none;
+	width: 500px;
+	height: 30px;
+}
+
+.hitli {
+	color: black;
+	font-weight: bold; margin-right : 5px;
+	float: left;
+	margin-right: 5px;
+}
 </style>
 </head>
 <script
@@ -128,8 +146,24 @@ td {
 			<div id="product">
 				<!-- ※form action URL 수정필요※ -->
 				<c:url value="/search" var="searchUrl"></c:url>
-				<form class="form-inline" method="get"
-					action="${searchUrl }">
+				<form class="form-inline" method="get" action="${searchUrl }">
+					<c:if test="${not empty history }">
+						<div class="hitbox" align="center">
+							<ul class="hitul">
+								<li class="hitli">자주찾는 검색 :</li>
+								<c:forEach items="${history }" var="hit">
+									<li class="hitli"><span> <c:url value="/detail/"
+												var="notieUrl"></c:url> <c:if test="${hit.haccp == '0' }">
+												<a href='${notieUrl}${hit.foodCode}'>${hit.foodName } | </a>
+											</c:if> <c:if test="${hit.haccp == '1' }">
+												<a href='${notieUrl}haccp/${hit.foodCode}/${hit.foodName}'>${hit.foodName } | </a>
+											</c:if>
+									</span></li>
+								</c:forEach>
+							</ul>
+						</div>
+					</c:if>
+				
 					<input type="hidden" name="kind" value="${comp }">
 					<div align="center" class="col-sm-12"
 						style="border-bottom: 1px solid #eeeeee; padding-bottom: 30px">
@@ -306,7 +340,7 @@ td {
 	let allergy = "${loginUser.allergy}";
 	let current = "${comp}";
 	let methodurl = "${methodurl}";
-	let sort ="${sort}";
+	let sort = "${sort}";
 	let searchtext = "${search_text}";
 </script>
 <c:url value="/static/script/index.js" var="indexJSurl" />

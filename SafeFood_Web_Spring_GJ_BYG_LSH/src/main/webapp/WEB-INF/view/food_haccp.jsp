@@ -277,7 +277,7 @@ footer {
 						<label>Quantity</label> 
 						<input type="number" class="form-control"name='quantity'> <br>
 						
-						 <input type="hidden" name='like' v-model="code">
+						 <input type="hidden" name='code' v-model="code">
 						 <input type="hidden" name='name' v-model='name'> 
 						 <input hidden='true' name='haccp' value=1>
 						<button class='btn btn-primary' id="button_insert">

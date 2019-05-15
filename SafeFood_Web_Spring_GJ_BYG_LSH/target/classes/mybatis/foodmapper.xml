@@ -20,6 +20,8 @@
 	<select id="selectHitAll" resultType="likefood">
 		select user_email, food_code, food_name, haccp from hitfood
 		where user_email = #{email}
+		order by hit desc
+		limit 0, 5
 	</select>
 	<select id="selectCode" resultType="food" parameterType="int">
 		select * from food where code=#{code}
