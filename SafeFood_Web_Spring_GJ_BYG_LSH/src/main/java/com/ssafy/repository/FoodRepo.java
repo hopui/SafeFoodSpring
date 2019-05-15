@@ -1,13 +1,9 @@
 package com.ssafy.repository;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.xml.namespace.QName;
-
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -144,19 +140,54 @@ public class FoodRepo {
 		else 
 			return quan;
 	}
-
-	
-	public int deleteMyfood(String email, String code) {
-		String stmt = ns + "deleteMyFood";
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("email", email);
-		map.put("code", code);
-		return tmp.delete(stmt, map);
-	}
-	
 	public int deleteMyfoodForUser(String email)
 	{
-		String stmt = ns + "deleteMyfoods2";
-		return tmp.delete(stmt, email);
+	String stmt = ns + "deleteMyfoods2";
+	return tmp.delete(stmt, email);
 	}
+	
+	/**
+	 * hitfood 테이블
+	 */
+	
+	public List<LikeFood> selectHitAll(String email) {
+		String stmt = ns + "selectHitAll";
+		return tmp.selectList(stmt,email);
+	}
+	
+	public Object selectHit(String email, String code) {
+		String stmt = ns + "selectHit";
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("email", email);
+		map.put("code", code);
+		Object hit= tmp.selectOne(stmt, map);
+		if (hit== null)
+			return 0;
+		else 
+			return hit;
+	}
+	
+	public int insertHit(String email, String code, int haccap, String name) {
+		Integer hit = (Integer)selectHit(email, code);
+		if (hit<1) {
+			String stmt = ns + "insertHit";
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("email", email);
+			map.put("code", code);
+			map.put("haccp", String.valueOf(haccap));
+			map.put("etc", String.valueOf(name));
+			return tmp.insert(stmt, map);
+		}else {
+			return updateHit(email, code, hit+1);
+		}
+	}
+	
+	public int updateHit(String email, String code, int hit) {
+		String stmt = ns + "updateHit";
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("email", email);
+		map.put("code", code);
+		map.put("hit", hit);
+		return tmp.update(stmt,map);
+}
 }

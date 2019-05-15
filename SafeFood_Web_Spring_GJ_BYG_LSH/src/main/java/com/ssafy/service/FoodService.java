@@ -1,7 +1,8 @@
 package com.ssafy.service;
 
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -65,9 +66,6 @@ public class FoodService
 	public int deleteLikefood(String email, String code) {
 		return dao.deleteLikefood(email, code);
 	}
-	public int deleteMyfood(String email, String code) {
-		return dao.deleteMyfood(email, code);
-	}
 	
 	public int deleteMyfoodForUser(String email) {
 		return dao.deleteMyfoodForUser(email);
@@ -76,5 +74,21 @@ public class FoodService
 	public Object selectQuantity(String email, String code) {
 		return dao.selectQuantity(email, code);
 	}
+	
+	public List<LikeFood> selectHitAll(String email) {
+		return dao.selectHitAll(email);
+	}
+	
+	public Object selectHit(String email, String code) {
+		return dao.selectHit(email, code);
+	}
+	
+	public int insertHit(String email, String code, int haccp, String name) {
+		return dao.insertHit(email, code,haccp,name);
+	}
+	
+	public int updateHit(String email, String code, int hit) {
+		return dao.updateHit(email, code,hit);
+}
 	
 }

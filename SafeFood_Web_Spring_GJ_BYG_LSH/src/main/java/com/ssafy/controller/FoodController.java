@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.jws.soap.SOAPBinding.Use;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -51,14 +52,23 @@ public class FoodController {
 
 	// pathvarable 방식 restful ip
 	@GetMapping("/detail/{code}")
-	public String getTest(Model model, @PathVariable int code) {
+	public String getTest(Model model, @PathVariable int code, HttpSession session) {
+		User user = (User) session.getAttribute("loginUser");
+		Food food = (Food)service.selectCode(code);
+		if (user != null) {
+			service.insertHit(user.getEmail(), String.valueOf(code), 0, food.getName());
+		}
 		model.addAttribute("food", service.selectCode(code));
 		return "food_detail";
 	}
 
 	// pathvarable 방식 restful ip
-	@GetMapping("/detail/haccp/{code}")
-	public String getDetail(Model model, @PathVariable String code) {
+	@GetMapping("/detail/haccp/{code}/{name}")
+	public String getDetail(Model model, @PathVariable String code,  @PathVariable String name,HttpSession session) {
+		User user = (User) session.getAttribute("loginUser");
+		if (user != null) {
+			service.insertHit(user.getEmail(), code, 1, name);
+		}
 		model.addAttribute("haccp", code);
 		return "food_haccp";
 	}
@@ -182,7 +192,7 @@ public class FoodController {
 		User user = (User) session.getAttribute("loginUser");
 		System.out.println(quantity);
 		boolean check = true;
-		if (Integer.parseInt(quantity)<1) {
+		if (Integer.parseInt(quantity) < 1) {
 			quantity = "1";
 			check = false;
 		}
@@ -201,7 +211,7 @@ public class FoodController {
 				return "redirect:/detail/haccp/" + eat;
 			else
 				return "redirect:/detail/" + eat;
-		}else
+		} else
 			return "redirect:/session/myTakenInfo";
 
 	}
