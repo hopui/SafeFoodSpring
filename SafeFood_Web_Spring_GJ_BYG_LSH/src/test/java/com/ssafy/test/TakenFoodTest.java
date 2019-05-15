@@ -1,10 +1,13 @@
 package com.ssafy.test;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.*;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,5 +30,13 @@ public class TakenFoodTest
 	public void testService()
 	{
 		assertThat(service, is(notNullValue()));
+	}
+	@Test
+	public void testTop5() {
+		List<Map<String, Object> > list = service.selectTop5Foods("ssafy@ssafy.com");
+		for(Map<String, Object> item : list) {
+			item.entrySet().forEach(entry -> System.out.println(entry.getKey()+":"+entry.getValue()));
+		}
+		assertThat(list.size(), not(0));
 	}
 }

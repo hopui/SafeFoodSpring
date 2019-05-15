@@ -75,17 +75,22 @@
 
 					<li>
 						<span>
-						<c:url value="/notice" var="notieUrl"></c:url>
+							<c:url value="/notice" var="notieUrl"></c:url>
 							<a id="menu" href='${notieUrl }'>공지사항</a>
 						</span>
 					</li>
 					<li>
 						<span>
-						<c:url value="/table" var="tableUrl"></c:url>
+							<c:url value="/table" var="tableUrl"></c:url>
 							<a id="menu" href='${tableUrl}'>상품정보</a>
 						</span>
 					</li>
-					<li><span>베스트 섭취 정보</span></li>
+					<li>
+						<span>
+							<c:url value="/session/myBestFoodInfo" var="bestFoodUrl"></c:url>
+							<a id="menu" href='${bestFoodUrl }'>베스트 섭취 정보</a>
+						</span>
+					</li>
 					<li>
 						<span>
 							<c:url value="/session/myTakenInfo" var="myTakenInfo"/>

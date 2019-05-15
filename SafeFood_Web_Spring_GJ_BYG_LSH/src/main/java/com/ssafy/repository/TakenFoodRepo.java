@@ -50,4 +50,9 @@ public class TakenFoodRepo
 		map.put("takenTime", takenTime);
 		return tmp.update(stmt, map);
 	}
+	
+	public List<Map<String, Object> > selectTop5Foods(String userEmail) {
+		String stmt = ns + "selectTop5Foods";
+		return tmp.selectList(stmt, userEmail);
+	}
 }
