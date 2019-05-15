@@ -27,6 +27,9 @@
 			.rainbow_anim {
 				-webkit-animation: rainbow infinite 3s;
 			}
+			.title_text {
+				font-size: 4rem;
+			}
 			@-webkit-keyframes rainbow {
 				0%{color:#B85656;}
 				9%{color:#C2795F;}
@@ -50,11 +53,11 @@
 				filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#7db9e8',GradientType=0 ); /* IE6-9 */
 			}
 			.jb-wrap {
-				width: 40%;
-				margin: 10px auto;
-				position: relative;
+				width: 30%;
+				margin: 0 auto;
+				position: relative;	/*부모는 상대좌표로 해준다.*/
 			}
-			.jb-wrap img {
+			.jb-wrap .jb-image {			/*자식들은 부모를 따라가므로 절대좌표로 해둔다.*/
 				width: 100%;
 				vertical-align: middle;
 				opacity: 0.1;
@@ -76,13 +79,20 @@
 		<!-- header --><br><br><br><br><br><br>
 		<jsp:include page="../include/header.jsp"/>
 		
+		<div align="center">
+			<c:url value="/static/img/bestFood.png" var="bestFoodImgUrl"/>
+			<img src="${bestFoodImgUrl }" style="margin-bottom: 50px;">
+			<span class="font_Jua title_text">베스트 섭취 식품</span>
+		</div>
 		<c:url value="/static/img/produce101.png" var="produceUrl"/>
 		<div class="jb-wrap" id="app" v-cloak>
-			<h1 class="font_Jua text-center">👑베스트 섭취 식품👑</h1>
-			<div class="jb-image"><img src="${produceUrl }" alt="우리는 꿈을 꾸는...ㅎ"></div>
-			<div class="jb-text" v-for="(food, idx) in top3" style="transform: translate( idx%, -50% );">
-				<h3 class="font_Jua">{{idx+1}}위</h3>
-				<input type="button" class="btn btn-lg grad font_Jua rank" v-model="food.etc">				
+			<div><img src="${produceUrl }" alt="우리는 꿈을 꾸는...ㅎ" class="jb-image"></div>
+			<div class="jb-text"><c:url value="/static/img/top1.png" var="top1ImgUrl"/>
+				<div v-for="(food, idx) in top3">
+					<img v-show="idx == 0" src="${top1ImgUrl }" style="margin-bottom: 10px;"><br v-show="idx == 0">
+					<h3 class="font_Jua title_text" v-if="idx != 0">{{idx+1}}위</h3>
+					<input type="button" class="btn btn-lg grad font_Jua rank" v-model="food.etc">				
+				</div>
 			</div>
 		</div>
 		
