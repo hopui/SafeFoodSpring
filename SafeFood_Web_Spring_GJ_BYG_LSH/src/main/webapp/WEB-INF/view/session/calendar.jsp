@@ -289,7 +289,7 @@ th, td{
                             			</tr>	
                             		</thead>
                             		<tbody>
-                            			<tr v-for="(info, index) in selectedInfo">
+                            			<tr v-for="(info, index) in selectedInfo" v-model="selectedInfo">
                             				<td><span>{{index+1}}</span></td>
                             				<td>
                             					<span v-bind:id="'foodName'+(index+1)">
@@ -659,7 +659,22 @@ let vi = new Vue({
 
     		axios.get(url+param)
 			.then(response => {
+				this.takenInfos = [];
 				this.takenInfos = response.data.list;
+				
+				// 선택 정보를 갱신한다.
+				let selectedDate = this.selectedDate.format("DD");	
+	            console.log("선택한 날짜: ", selectedDate);
+	            for(let info of this.takenInfos) {
+	            	// 2. db에서 가져온 먹은 정보들 안의 날짜는 unix 타임이다. 
+	            	let takenDate = moment();
+	            	takenDate = moment(info.takenTime).format("DD"); // 유닉스 타임을 모멘트로 바꾼다.
+	            	console.log("섭취한 식품에 있는 날짜: ", takenDate);
+	            	if(selectedDate == takenDate) {								
+	            		console.log(takenDate,"에 먹은 음식이 있습니다. ", info);
+	            		this.selectedInfo.push(info);           		
+	            	}
+	            }
 			}).catch(error => {
 				console.log(error);
 			});
@@ -672,21 +687,23 @@ let vi = new Vue({
     	},
     	deleteChecked() {
     		let url = "http://"+this.hostname+":8080/"+contextRoot+"/session/takenfoods/delete/";
-    		
     		// db에서 삭제
-    		for(let checked of this.deleteList){
-				axios.delete(url + checked)
+    		for(let i = 0; i < this.deleteList.length; i++){
+				axios.delete(url + this.deleteList[i])
 				.then(response => {
 					console.log(response);
+					if(i == this.deleteList.length-1) {
+						this.deleteList=[];
+						// 1. 원래 있던 선택정보를 갱신한다.
+			            this.selectedInfo = [];
+			    		// 2. 갱신 된 섭취정보를 가져온다.
+			    		this.loadTakenFoods();
+					}
 				}).catch(error => {
 					console.log(error);
 				});
 			}
-    		
-    		this.loadTakenFoods();
-			this.updateSelectedInfo();
-			//선택목록 비우기
-			this.deleteList=[];
+    		console.log("갱신된 선택 정보: ", this.selectedInfo);
     	},
         addMonth: function () {
             this.dateContext = this.nextMonth;
@@ -710,29 +727,11 @@ let vi = new Vue({
             this.showDetail = true;
             
             // 선택한 날의 섭취 정보를 얻어와 출력할 준비를 한다.
-            this.updateSelectedInfo();
-        },
-        updateSelectedInfo() {
+         	// 1. 원래 있던 선택정보를 갱신한다.
             this.selectedInfo = [];
-            // 선택한 날짜를 유닉스 타임스탬프로 바꾼다.
-            let selectedDate = this.selectedDate.format("DD");	
-            console.log("선택한 날짜: ", selectedDate);
-            for(let info of this.takenInfos) {
-            	/* let takenDate = this.convertToMoment(info.takenTime); */	
-            	let takenDate = moment();
-            	takenDate = moment(info.takenTime).format("DD"); // 유닉스 타임을 모멘트로 바꾼다.
-            	console.log("섭취한 식품에 있는 날짜: ", takenDate);
-            	if(selectedDate == takenDate) {								
-            		console.log(takenDate,"에 먹은 음식이 있습니다. ", info);
-            		this.selectedInfo.push(info);           		
-            	}
-            }
+            // 2. 갱신 된 섭취정보를 가져온다.
+        	this.loadTakenFoods();
         },
-/*         convertToMoment(date) {
-        	let result = moment();
-        	result = moment(date);
-        	return result.format("DD");
-        }, */
         goToday: function () {
             this.selectedDate = this.today;
             this.dateContext = this.today;
