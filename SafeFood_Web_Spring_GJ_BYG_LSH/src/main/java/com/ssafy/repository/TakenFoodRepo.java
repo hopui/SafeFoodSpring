@@ -35,9 +35,11 @@ public class TakenFoodRepo
 	
 	public int deleteTakenFood(String userEmail, String foodCode) {
 		String stmt = ns + "deleteTakenFood";
-		Map<String, String> map = new HashMap<String, String>();
+		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("userEmail", userEmail);
 		map.put("foodCode", foodCode);
+		Date d = new Date();
+		map.put("date", d);
 		return tmp.delete(stmt, map);
 	}
 
@@ -48,6 +50,8 @@ public class TakenFoodRepo
 		map.put("quantity", quantity);
 		map.put("foodCode", foodCode);
 		map.put("takenTime", takenTime);
+		Date d = new Date();
+		map.put("date", d);
 		return tmp.update(stmt, map);
 	}
 	

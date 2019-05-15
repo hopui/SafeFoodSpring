@@ -168,7 +168,7 @@ td {
 			<div class='col-sm-4'>
 				<div class = 'container'>
 						<c:url value="/detail/haccp/" var="detailUrl"></c:url>
-						<a v-bind:href='"${detailUrl }"+food.prdlstReportNo'>
+						<a v-bind:href='"${detailUrl }"+food.prdlstReportNo+"/"+food.prdlstNm'>
 							<img class='prdtimg image' alt='Avatar' :src='food.imgurl2'>
 					</a>
 						<div class='overlay align-bottom'>

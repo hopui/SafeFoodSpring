@@ -17,6 +17,10 @@
 		and year(now()) = year(t.taken_time) 
 		where f.code = t.food_code
 	</select>
+	<select id="selectHitAll" resultType="likefood">
+		select user_email, food_code, food_name, haccp from hitfood
+		where user_email = #{email}
+	</select>
 	<select id="selectCode" resultType="food" parameterType="int">
 		select * from food where code=#{code}
 	</select>
@@ -41,7 +45,13 @@
 	</select>
 	
 	<select id="selectQuantity" resultType="int" parameterType="map">
-		select quantity from takenfood where user_email = #{email} and food_code = #{code}
+		select quantity from takenfood 
+		where user_email = #{email} and food_code = #{code} 
+		and day(taken_time)=day(#{date}) and month(taken_time)=month(#{date})
+	</select>
+	<select id="selectHit" resultType="int" parameterType="map">
+		select hit from hitfood 
+		where user_email = #{email} and food_code=#{code} 
 	</select>
 	<select id="checkLikefood" resultType="int" parameterType="map">
 		select count(*) from likefood where user_email = #{email} and food_code = #{code}
@@ -56,20 +66,22 @@
 		insert into likefood values(#{code},#{name},#{haccp},#{email},#{group})
 	</insert>
 
+	<insert id="insertHit" parameterType="map">
+		insert into hitfood values(#{email}, #{code}, #{haccp}, #{name},1)
+	</insert>
 	<update id="updateMyFood" parameterType="map">
-		update takenfood set quantity = #{quantity} where user_email =#{email} and food_code=#{code}
+		update takenfood set quantity = #{quantity} 
+		where user_email =#{email} and food_code=#{code}
+		and day(taken_time)=day(#{date}) and month(taken_time)=month(#{date})
 	</update>
-	
+	<update id="updateHit" parameterType="map">
+		update hitfood set hit = #{hit} where food_code = #{code} and user_email= #{email} 
+	</update>
 	<delete id="deletelikeFood" parameterType="map">
 		delete from likefood where  user_email =  #{email} and food_code = #{code}
 	</delete>
-	
-	<delete id="deleteMyFood" parameterType="map">
-		delete from takenfood where  user_email =  #{email} and food_code = #{code}
-	</delete>
-	
 	<delete id="deleteMyfoods2" parameterType="String">
-		delete from takenfood where  user_email =  #{email}
-	</delete>
+delete from takenfood where user_email = #{email}
+</delete>
 	
 </mapper>

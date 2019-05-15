@@ -106,7 +106,7 @@ footer {
 						<c:url value="/static/img/" var="ImgUrl"></c:url>
 						<c:url value="/detail/haccp/" var="hdetailUrl"></c:url>
 						<a class="likeimg" v-if="item.haccp =='1'"
-							:href="'${hdetailUrl}'+item.foodCode"> <img alt="#"
+							:href="'${hdetailUrl}'+item.foodCode+'/'+item.foodName"> <img alt="#"
 							:src="'${ImgUrl }'+img[index]">
 						</a>
 
