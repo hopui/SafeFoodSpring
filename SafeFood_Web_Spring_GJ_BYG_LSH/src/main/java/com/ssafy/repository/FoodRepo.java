@@ -80,7 +80,7 @@ public class FoodRepo {
 		}
 	}
 	
-	public int insertLikefood(String email, String name, String code, int haccp) {
+	public int insertLikefood(String email, String name, String code, int haccp, String group) {
 		Integer food = (Integer)checkLikefood(email, code);
 		if (food<1) {
 			String stmt = ns + "insertLikeFood";
@@ -89,6 +89,7 @@ public class FoodRepo {
 			map.put("code", code);
 			map.put("name", name);
 			map.put("haccp", haccp);
+			map.put("group", group);
 			return tmp.insert(stmt, map);
 		}else {
 			return -deleteLikefood(email, code);
