@@ -73,6 +73,139 @@ footer {
 	box-shadow: 0 10px 15px 2px #C9C9C9;
 }
 </style>
+<!-- 그래프 -->
+<style>
+@
+keyframes bake-pie {from { transform:rotate(0deg)translate3d(0, 0, 0);
+	
+}
+
+}
+body {
+	font-family: "Jua", Arial;
+	background: #ffffff;
+}
+
+main {
+	width: 400px;
+	margin: 30px auto;
+}
+
+section {
+	margin-top: 30px;
+}
+
+.pieID {
+	display: inline-block;
+}
+
+.pie {
+	height: 200px;
+	width: 200px;
+	position: relative;
+	margin: 0 30px 30px 0;
+}
+
+.pie::before {
+	content: "";
+	display: block;
+	position: absolute;
+	z-index: 1;
+	width: 100px;
+	height: 100px;
+	background: #EEE;
+	border-radius: 50%;
+	top: 50px;
+	left: 50px;
+}
+
+.pie::after {
+	content: "";
+	display: block;
+	width: 120px;
+	height: 2px;
+	background: rgba(0, 0, 0, 0.1);
+	border-radius: 50%;
+	box-shadow: 0 0 3px 4px rgba(0, 0, 0, 0.1);
+	margin: 220px auto;
+}
+
+.slice {
+	position: absolute;
+	width: 200px;
+	height: 200px;
+	clip: rect(0px, 200px, 200px, 100px);
+	animation: bake-pie 1s;
+}
+
+.slice span {
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	background-color: black;
+	width: 200px;
+	height: 200px;
+	border-radius: 50%;
+	clip: rect(0px, 200px, 200px, 100px);
+}
+
+.legend {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+	background: #FFF;
+	padding: 15px;
+	font-size: 13px;
+	box-shadow: 1px 1px 0 #DDD, 2px 2px 0 #BBB;
+	width: 180px;
+}
+
+.legend li {
+	height: 1.25em;
+	margin-bottom: 0.7em;
+	padding-left: 0.5em;
+	border-left: 1.25em solid black;
+}
+
+.legend em {
+	font-style: normal;
+}
+
+.legend span {
+	float: right;
+}
+
+footer {
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	font-size: 13px;
+	background: #DDD;
+	padding: 5px 10px;
+	margin: 5px;
+}
+
+.ss {
+	/* 	width:30px;
+	padding-right: 30px; */
+	
+}
+
+#graph {
+	padding-top: 70px;
+}
+
+#prdt {
+	width: 100px;
+	height: 50%;
+}
+
+#ddd {
+	padding-top: 10px;
+	padding-bottom: 80px;
+}
+</style>
 </head>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
@@ -102,12 +235,18 @@ footer {
 			<br>
 			<div class="col-sm-12">
 				<div class="col-sm-2 likebox" v-for="(item, index) in mylist">
+					<div align="right" v-if="item.haccp =='0'"
+						style="margin-right: 5px; margin-top: 5px;">
+						<input type="checkbox" name="food" :value="item.foodCode"
+							v-model="checkList">
+					</div>
+
 					<div align="center">
 						<c:url value="/static/img/" var="ImgUrl"></c:url>
 						<c:url value="/detail/haccp/" var="hdetailUrl"></c:url>
 						<a class="likeimg" v-if="item.haccp =='1'"
-							:href="'${hdetailUrl}'+item.foodCode+'/'+item.foodName"> <img alt="#"
-							:src="'${ImgUrl }'+img[index]">
+							:href="'${hdetailUrl}'+item.foodCode+'/'+item.foodName"> <img
+							alt="#" :src="'${ImgUrl }'+img[index]">
 						</a>
 
 						<c:url value="/detail/" var="detailUrl"></c:url>
@@ -120,12 +259,10 @@ footer {
 					<div align="center">
 						<c:url value="/session/modify" var="modilUrl"></c:url>
 						<form method="post" action="${modilUrl}">
-								<input type="hidden"
-								name='quantity' value=0>
-								<input type="hidden"
-								name='name' :value='item.foodName'> <input type="hidden"
-								name='eat' :value='item.foodCode'> <input type="hidden"
-								name='haccp' :value='item.haccp'>
+							<input type="hidden" name='quantity' value=0> <input
+								type="hidden" name='name' :value='item.foodName'> <input
+								type="hidden" name='eat' :value='item.foodCode'> <input
+								type="hidden" name='haccp' :value='item.haccp'>
 							<button class='btn btn-primary' id="button_insert">
 								<span id="insert" class='glyphicon glyphicon-plus'
 									aria-hidden='true'></span>냠냠
@@ -140,23 +277,24 @@ footer {
 					</div>
 				</div>
 			</div>
+			<button @click="showChart">찜한 식품 예상 통계보기</button>
 		</div>
-		<!-- <div class="col-sm-6" id="graph">
-				<div class="pieID pie"></div>
-
-				 도넛차트
-				<ul class="pieID legend">
-					<li><em class="ss">칼로리</em> <span class="kcal"></span></li>
-					<li><em class="ss">탄수화물</em> <span class="tan"></span></li>
-					<li><em class="ss">단백질</em> <span class="dan"></span></li>
-					<li><em class="ss">지방</em> <span class="gi"></span></li>
-					<li><em class="ss">당류</em> <span class="dang"></span></li>
-					<li><em class="ss">나트륨</em> <span class="na"></span></li>
-					<li><em class="ss">콜레스테론</em> <span class="col"></span></li>
-					<li><em class="ss">포화 지방산</em> <span class="fat"></span></li>
-					<li><em class="ss">트랜스지방</em> <span class="trans"></span></li>
-				</ul>
-			</div> -->
+		<div class="col-sm-6" id="graph" v-if="isEat">
+			<div class="pieID pie"></div>
+			<%long[] nutri = (long[]) session.getAttribute("nutri");%>
+			<!--도넛차트-->
+			<ul class="pieID legend">
+				<li><em class="ss">칼로리</em> <span class="kcal"><%=nutri[0]%></span></li>
+				<li><em class="ss">탄수화물</em> <span class="tan"><%=nutri[1]%></span></li>
+				<li><em class="ss">단백질</em> <span class="dan"><%=nutri[2]%></span></li>
+				<li><em class="ss">지방</em> <span class="gi"><%=nutri[3]%></span></li>
+				<li><em class="ss">당류</em> <span class="dang"><%=nutri[4]%></span></li>
+				<li><em class="ss">나트륨</em> <span class="na"><%=nutri[5]%></span></li>
+				<li><em class="ss">콜레스테론</em> <span class="col"><%=nutri[6]%></span></li>
+				<li><em class="ss">포화 지방산</em> <span class="fat"><%=nutri[7]%></span></li>
+				<li><em class="ss">트랜스지방</em> <span class="trans"><%=nutri[8]%></span></li>
+			</ul>
+		</div>
 	</div>
 	<br>
 	<br>
@@ -171,13 +309,23 @@ footer {
 		alert(alarm);
 	}	
 	
-	
 	let vi = new Vue({
 		el:"#mylist",
 		data(){
 			return {
 				mylist:[],
-				img:[]
+				img:[],
+				kcal:<%=nutri[0]%>,
+				tan:<%=nutri[1]%>,
+				dan:<%=nutri[2]%>,
+				gi:<%=nutri[3]%>,
+				dang:<%=nutri[4]%>,
+				na:<%=nutri[5]%>,
+				col:<%=nutri[6]%>,
+				fat:<%=nutri[7]%>,
+				trans=<%=nutri[8]%>,
+				checkList:[],
+				isEat:false
 			}
 		},
 		mounted(){
@@ -219,6 +367,9 @@ footer {
 				})
 				//함수에서의 this는 window, arrow 함수에서는 vue
 				.finally(() => {this.loading = false});
+			},
+			showChart(){
+				
 			}
 		}
 	});

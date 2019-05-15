@@ -44,6 +44,11 @@ public class FoodRepo {
 		return tmp.selectList(stmt, email);
 	}
 	
+	public List<Food> selectMyFoodToday(String email) {
+		String stmt = ns + "selectMyFoodToday";
+		return tmp.selectList(stmt, email);
+	}
+	
 	public List<LikeFood> selectLikeAll(String email) {
 		String stmt = ns + "selectLikeAll";
 		return tmp.selectList(stmt, email);

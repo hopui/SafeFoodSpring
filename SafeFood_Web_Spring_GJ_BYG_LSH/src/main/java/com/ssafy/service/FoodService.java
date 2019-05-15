@@ -27,6 +27,9 @@ public class FoodService
 		return dao.selectMyfoodAll(email);
 	}
 	
+	public List<Food> selectMyFoodToday(String email) {
+		return dao.selectMyfoodAll(email);
+	}
 	public List<LikeFood> selectLikeAll(String email) {
 		return dao.selectLikeAll(email);
 	}

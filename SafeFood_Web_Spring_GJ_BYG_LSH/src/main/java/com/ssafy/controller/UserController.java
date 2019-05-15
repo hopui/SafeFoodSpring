@@ -1,5 +1,7 @@
 package com.ssafy.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -7,18 +9,17 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.ssafy.model.dto.Food;
 import com.ssafy.model.dto.User;
 import com.ssafy.service.FoodService;
 import com.ssafy.service.UserService;
-//
-@Controller
+//@Controller
 @CrossOrigin(origins="*")
 public class UserController
 {
@@ -65,9 +66,24 @@ public class UserController
 		User result = userService.login(account.getEmail(), account.getPassword());
 		if (result != null)
 		{
-			
+			List<Food> list = foodService.selectMyFoodToday(account.getEmail());
+			long nutriToday[] = new long[9];
+			for(Food f : list) {
+				Integer quan = (Integer)foodService.selectQuantity(account.getEmail(),String.valueOf( f.getCode()));
+				f.setQuantity(quan);
+				nutriToday[0]+=f.getCalory()+quan;
+				nutriToday[1]+=f.getCarbo()+quan;
+				nutriToday[2]+=f.getProtein()+quan;
+				nutriToday[3]+=f.getFat()+quan;
+				nutriToday[4]+=f.getSugar()+quan;
+				nutriToday[5]+=f.getNatrium()+quan;
+				nutriToday[6]+=f.getChole()+quan;
+				nutriToday[7]+=f.getFattyacid()+quan;
+				nutriToday[8]+=f.getTransfat()+quan;
+			}
 			HttpSession session = req.getSession();
 			session.setAttribute("loginUser", result);
+			session.setAttribute("nutri", nutriToday);
 			System.err.println("로그인 시 알러지 정보: " + result.getAllergy());
 			redir.addFlashAttribute("alarm", "로그인 성공! 어세오세요~ "+result.getName()+"님");
 		} 

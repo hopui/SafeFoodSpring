@@ -17,6 +17,15 @@
 		and year(now()) = year(t.taken_time) 
 		where f.code = t.food_code
 	</select>
+	
+	<select id="selectMyFoodToday" resultType="food">
+		select * from food f join takenfood t on t.user_email = #{email} 
+		and day(now()) = day(t.taken_time) 
+		and month(now()) = month(t.taken_time)
+		and year(now()) = year(t.taken_time) 
+		where f.code = t.food_code
+	</select>
+	
 	<select id="selectHitAll" resultType="likefood">
 		select user_email, food_code, food_name, haccp from hitfood
 		where user_email = #{email}
