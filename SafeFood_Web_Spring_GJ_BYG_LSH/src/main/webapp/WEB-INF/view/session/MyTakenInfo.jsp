@@ -323,7 +323,7 @@ footer {
 				na:<%=nutri[5]%>,
 				col:<%=nutri[6]%>,
 				fat:<%=nutri[7]%>,
-				trans=<%=nutri[8]%>,
+				trans:<%=nutri[8]%>,
 				checkList:[],
 				isEat:false
 			}

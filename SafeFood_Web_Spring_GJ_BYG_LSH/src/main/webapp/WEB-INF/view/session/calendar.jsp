@@ -200,10 +200,44 @@ body {
     height: 314px;
     border-radius: 1.0rem 0 0 1.0rem;
 }
+.btnBar {
+	position: absolute;
+	top: 600px;
+}
 th, td{
 	text-align: center!important;
 }
+@media ( max-width : 768px) {
+	.b-calendar__information {
+		min-height: auto;
+		padding-top: 2rem;
+		padding-bottom: 2rem;
+		border-radius: 2.5rem 2.5rem 0 0;
+	}
+	.b-calendar__information .today {
+		padding-top: 0;
+	}
+}
 
+@media ( max-width : 480px) {
+	.b-calendar__weekdays {
+		display: none;
+	}
+	.b-calendar__dates .date {
+		width: 100%;
+		text-align: left !important;
+		border: none;
+		border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+		display: flex;
+	}
+	.b-calendar__dates .date.blank {
+		display: none;
+	}
+	.b-calendar__dates .date .weekday {
+		display: block;
+		margin-left: 0.25rem;
+	}
+}
 </style>
 
 
