@@ -287,7 +287,7 @@ footer {
 					<tr>
 						<td>칼로리</td>
 						<td>
-						<%if(nutri[0] > 1300) {%>
+						<%if(nutri !=null && nutri[0] > 1300) {%>
 						<span style="color: red">과다섭취 주의</span>
 						<% }%></td>
 						<td>
@@ -296,7 +296,7 @@ footer {
 					<tr>
 						<td>탄수화물</td>
 						<td>
-						<%if(nutri[1] > 230) {%>
+						<%if(nutri !=null && nutri[1] > 230) {%>
 						<span style="color: red">과다섭취 주의</span>
 						<% }%></td>
 						<td>
@@ -305,7 +305,7 @@ footer {
 					<tr>
 						<td>단백질</td>
 						<td>
-						<%if(nutri[2] > 27.5) {%>
+						<%if(nutri !=null && nutri[2] > 27.5) {%>
 						<span style="color: red">과다섭취 주의</span>
 						<% }%></td>
 						<td>
@@ -314,7 +314,7 @@ footer {
 					<tr>
 						<td>지방</td>
 						<td>
-						<%if(nutri[3] > 800) {%>
+						<%if(nutri !=null && nutri[3] > 800) {%>
 						<span style="color: red">과다섭취 주의</span>
 						<% }%>
 						</td>
@@ -324,7 +324,7 @@ footer {
 					<tr>
 						<td>당류</td>
 						<td>
-						<%if(nutri[4] > 12.5) {%>
+						<%if(nutri !=null && nutri[4] > 12.5) {%>
 						<span style="color: red">과다섭취 주의</span>
 						<% }%></td>
 						<td>
@@ -333,7 +333,7 @@ footer {
 					<tr>
 						<td>나트륨</td>
 						<td>
-							<%if(nutri[5] > 750) {%>
+							<%if(nutri !=null && nutri[5] > 750) {%>
 						<span style="color: red">과다섭취 주의</span>
 							<% }%>
 						</td>

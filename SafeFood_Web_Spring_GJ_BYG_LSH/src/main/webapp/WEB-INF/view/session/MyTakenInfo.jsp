@@ -461,7 +461,7 @@ footer {
 			<h3 class="titleFont">나의 찜리스트</h3>
 			<br>
 			<div class="col-sm-12" style="margin-bottom: 20px;">
-				<div class="col-sm-2 likebox" v-for="(item, index) in mylist">
+				<div class="col-sm-4 likebox" v-for="(item, index) in mylist">
 					<div align="right"
 						style="margin-right: 5px; width: 18px; height: 13px;">
 						<input v-if="item.haccp =='0'" type="checkbox" name="food"
