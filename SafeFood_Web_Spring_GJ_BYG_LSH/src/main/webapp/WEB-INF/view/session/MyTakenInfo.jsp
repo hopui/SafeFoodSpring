@@ -289,6 +289,13 @@ footer {
 			src="${calendarUrl }"></iframe>
 	</div>
 
+	<!-- 실험용 그래프 출력 -->
+	<c:url value="/session/takenFoodChart" var="takenFoodChartUrl" />
+	<div align="center">
+		<iframe width="1280" height="800" frameborder="0" scrolling="no"
+			src="${takenFoodChartUrl }">
+		</iframe>
+	</div>
 
 	<div class="container" id="mylist">
 		<div>
@@ -377,7 +384,7 @@ footer {
 	</div>
 	<br>
 	<br>
-
+	
 	<!-- footer -->
 	<jsp:include page="../include/footer.jsp" />
 </body>
