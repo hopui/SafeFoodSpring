@@ -66,6 +66,11 @@ public class FoodRepo {
 		map.put("code", code);
 		return tmp.selectOne(stmt, map);
 	}
+	
+	public List<String> selectAllergy(String email){
+		String stmt = ns + "selectAllergy";
+		return tmp.selectList(stmt,email);
+	}
 
 	public int insertMyfood(String email, String code, int quantity, int haccap, String name, String aller) {
 		Integer food = (Integer)selectQuantity(email, code);

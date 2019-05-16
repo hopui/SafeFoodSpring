@@ -4,10 +4,10 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Base64.Decoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.servlet.http.HttpSession;
 
@@ -199,6 +199,37 @@ public class FoodController {
 
 		map.put("mylike", Llist);
 		map.put("img", img);
+		return map;
+	}
+	
+	@GetMapping("/session/allerglist")
+	@ResponseBody
+	public Map<String, Object> doMyAllergy(Model model, HttpSession session) {
+		Map<String, Object> map = new HashMap<>();
+		User user = (User) session.getAttribute("loginUser");
+		List<String> list = service.selectAllergy(user.getEmail());
+		List<String> alName =new ArrayList<>();
+		List<Integer> alCount = new ArrayList<>();
+		
+		Map<String, Integer> allergy = new TreeMap<>();
+		for(String str : list) {
+			String al[] = str.split(",");
+			for(String a : al) {
+				String tmp = a.trim();
+				if(allergy.containsKey(tmp))
+					allergy.put(tmp,allergy.get(tmp)+1);
+				else
+					allergy.put(tmp,1);
+			}
+		}
+		
+		for(String str : allergy.keySet())
+			alName.add(str);
+		for(int count : allergy.values())
+			alCount.add(count);
+		
+		map.put("alName",alName);
+		map.put("alCount",alCount);
 		return map;
 	}
 	

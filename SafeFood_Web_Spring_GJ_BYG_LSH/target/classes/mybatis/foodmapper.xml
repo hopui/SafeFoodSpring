@@ -55,6 +55,12 @@
 		select * from food f join takenfood t on t.user_email = #{email} where f.food_code = #{code}
 	</select>
 	
+	<select id="selectAllergy" resultType="String">
+		select allergy from takenfood 
+		where allergy !='null' and allergy !='알수없음' 
+		and user_email = #{email}
+		and year(taken_time)=year(now()) and month(taken_time)=month(now())
+	</select>
 	<select id="selectQuantity" resultType="int" parameterType="map">
 		select quantity from takenfood 
 		where user_email = #{email} and food_code = #{code} 

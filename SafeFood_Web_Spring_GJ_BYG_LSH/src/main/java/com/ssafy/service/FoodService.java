@@ -48,6 +48,9 @@ public class FoodService
 	public List<Food> selectSortGroup(String search){
 		return dao.selectSortGroup(search);
 	}
+	public List<String> selectAllergy(String email){
+		return dao.selectAllergy(email);
+	}
 	public Food selectMyFood(String email, String code) {
 		return dao.selectMyFood(email, code);
 	}

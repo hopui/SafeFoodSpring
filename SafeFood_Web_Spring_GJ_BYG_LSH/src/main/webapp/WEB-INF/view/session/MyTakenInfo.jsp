@@ -72,6 +72,41 @@ footer {
 	-webkit-box-shadow: 0 10px 15px 2px #C9C9C9;
 	box-shadow: 0 10px 15px 2px #C9C9C9;
 }
+
+#mylist {
+	width: 1024px;
+	height: 100%;
+}
+
+dl {
+	width: 1024px;
+}
+
+dt {
+	-webkit-border-radius: 100px 100px 0 0;
+	border-radius: 100px 100px 0 0;
+	background: #ffede3; padding : 10px 10px;
+	height: 40px;
+	float: left;
+	width: 150px;
+	z-index: 9;
+	text-align: center;
+	position: relative;
+	padding: 10px 10px;
+}
+
+dd {
+	padding: 10px 10px;
+	position: absolute;
+	padding-top: 50px;
+	width: 960px;
+	height: 0 auto;
+	border-bottom: 2px solid #ffede3;
+}
+
+dd.hidden {
+	display: none;
+}
 </style>
 <!-- 그래프 -->
 <style>
@@ -237,6 +272,67 @@ section {
 	float: right;
 }
 
+.fpieID {
+	display: inline-block;
+}
+
+.fpie {
+	height: 200px;
+	width: 200px;
+	position: relative;
+	margin: 0 30px 30px 0;
+}
+
+.fpie::before {
+	content: "";
+	display: block;
+	position: absolute;
+	z-index: 1;
+	width: 100px;
+	height: 100px;
+	background: #EEE;
+	border-radius: 50%;
+	top: 50px;
+	left: 50px;
+}
+
+.fpie::after {
+	content: "";
+	display: block;
+	width: 120px;
+	height: 2px;
+	background: rgba(0, 0, 0, 0.1);
+	border-radius: 50%;
+	box-shadow: 0 0 3px 4px rgba(0, 0, 0, 0.1);
+	margin: 220px auto;
+}
+
+.flegend {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+	background: #FFF;
+	padding: 15px;
+	font-size: 13px;
+	box-shadow: 1px 1px 0 #DDD, 2px 2px 0 #BBB;
+	width: 180px;
+}
+
+.flegend li {
+	height: 1.25em;
+	margin-bottom: 0.7em;
+	padding-left: 0.5em;
+	border-left: 1.25em solid black;
+}
+
+.flegend em {
+	font-style: normal;
+}
+
+.flegend span {
+	float: right;
+}
+
 footer {
 	position: fixed;
 	bottom: 0;
@@ -288,16 +384,80 @@ footer {
 		<iframe width="1280" height="800" frameborder="0" scrolling="no"
 			src="${calendarUrl }"></iframe>
 	</div>
-
-	<!-- 실험용 그래프 출력 -->
-	<c:url value="/session/takenFoodChart" var="takenFoodChartUrl" />
-	<div align="center">
-		<iframe width="1280" height="800" frameborder="0" scrolling="no"
-			src="${takenFoodChartUrl }"> </iframe>
-	</div>
-
 	<div class="container" id="mylist">
-		<div>
+		<!-- 탭메뉴 만들기 -->
+		<dl>
+			<dt>나의 찜리스트</dt>
+			<dd>
+				<maincomp></maincomp>
+			</dd>
+
+			<dt>나의 섭취 알레르기</dt>
+			<dd class="hidden">
+				<graphcomp></graphcomp>
+			</dd>
+
+			<dt>나의 영양 그래프</dt>
+			<dd class="hidden">
+				<!-- 실험용 그래프 출력 -->
+				<c:url value="/session/takenFoodChart" var="takenFoodChartUrl" />
+				<div align="center">
+					<iframe width="1000" height="700" frameborder="0" scrolling="no"
+						src="${takenFoodChartUrl }"> </iframe>
+				</div>
+			</dd>
+		</dl>
+		<div style="width: 1024px; height: 900px;"></div>
+		<div align="center" style="position: absolute; top: 1550px;">
+		<div class="col-sm-6" id="graph" v-show="isEat">
+			<%
+				long[] nutri = (long[]) session.getAttribute("nutri");
+			%>
+			<!--도넛차트-->
+			<div align="center" style="margin-bottom: 20px">
+				<div class="pieID pie"></div>
+				<ul class="pieID legend">
+					<li><em class="ss">칼로리</em> <span class="kcal"><%=nutri[0]%></span></li>
+					<li><em class="ss">탄수화물</em> <span class="tan"><%=nutri[1]%></span></li>
+					<li><em class="ss">단백질</em> <span class="dan"><%=nutri[2]%></span></li>
+					<li><em class="ss">지방</em> <span class="gi"><%=nutri[3]%></span></li>
+					<li><em class="ss">당류</em> <span class="dang"><%=nutri[4]%></span></li>
+					<li><em class="ss">나트륨</em> <span class="na"><%=nutri[5]%></span></li>
+					<li><em class="ss">콜레스테론</em> <span class="col"><%=nutri[6]%></span></li>
+					<li><em class="ss">포화 지방산</em> <span class="fat"><%=nutri[7]%></span></li>
+					<li><em class="ss">트랜스지방</em> <span class="trans"><%=nutri[8]%></span></li>
+				</ul>
+			</div>
+			<h4 align="center">섭취 전</h4>
+		</div>
+
+		<div class="col-sm-6" id="graph" v-show="isEat">
+			<div align="center" style="margin-bottom: 20px">
+				<div class="npieID npie"></div>
+				<ul class="npieID nlegend">
+					<li><em class="ss">칼로리</em> <span v-text="kcal"></span></li>
+					<li><em class="ss">탄수화물</em> <span v-text="tan"></span></li>
+					<li><em class="ss">단백질</em> <span v-text="dan"></span></li>
+					<li><em class="ss">지방</em> <span v-text="gi"></span></li>
+					<li><em class="ss">당류</em> <span v-text="dang"></span></li>
+					<li><em class="ss">나트륨</em> <span v-text="na"></span></li>
+					<li><em class="ss">콜레스테론</em> <span v-text="col"></span></li>
+					<li><em class="ss">포화 지방산</em> <span v-text="fat"></span></li>
+					<li><em class="ss">트랜스지방</em> <span v-text="trans"></span></li>
+				</ul>
+			</div>
+			<h4 align="center">섭취 후</h4>
+		</div>
+		</div>
+	</div>
+	<br>
+	<br>
+
+	<!-- footer -->
+	<jsp:include page="../include/footer.jsp" />
+</body>
+<script type="text/x-template" id="main-temp">
+<div>
 			<h3 class="titleFont">나의 찜리스트</h3>
 			<br>
 			<div class="col-sm-12" style="margin-bottom: 20px;">
@@ -349,58 +509,34 @@ footer {
 			</div>
 			<button class="btn btn-success" @click="showChart">찜한 식품 예상 통계보기</button>
 		</div>
-		<div class="col-sm-6" id="graph" v-show="isEat">
-			<%
-				long[] nutri = (long[]) session.getAttribute("nutri");
-			%>
-			<!--도넛차트-->
-			<div align="center" style="margin-bottom: 20px">
-				<div class="pieID pie"></div>
-				<ul class="pieID legend">
-					<li><em class="ss">칼로리</em> <span class="kcal"><%=nutri[0]%></span></li>
-					<li><em class="ss">탄수화물</em> <span class="tan"><%=nutri[1]%></span></li>
-					<li><em class="ss">단백질</em> <span class="dan"><%=nutri[2]%></span></li>
-					<li><em class="ss">지방</em> <span class="gi"><%=nutri[3]%></span></li>
-					<li><em class="ss">당류</em> <span class="dang"><%=nutri[4]%></span></li>
-					<li><em class="ss">나트륨</em> <span class="na"><%=nutri[5]%></span></li>
-					<li><em class="ss">콜레스테론</em> <span class="col"><%=nutri[6]%></span></li>
-					<li><em class="ss">포화 지방산</em> <span class="fat"><%=nutri[7]%></span></li>
-					<li><em class="ss">트랜스지방</em> <span class="trans"><%=nutri[8]%></span></li>
+</script>
+<script type="text/x-template" id="graph-temp">
+<div>
+<h3>섭취 알레르기 정보</h3>
+			<div class="col-sm-6" id="graph">
+				<div class="fpieID fpie"></div>
+				<ul class="fpieID flegend">
+					<li v-for="(item, index) in allergyName">
+					<em class="ss">{{item}}</em>
+					<span v-text="allergyCount[index]"></span></li>
 				</ul>
 			</div>
-			<h4 align="center">섭취 전</h4>
-		</div>
-
-		<div class="col-sm-6" id="graph" v-show="isEat">
-			<div align="center" style="margin-bottom: 20px">
-				<div class="npieID npie"></div>
-				<ul class="npieID nlegend">
-					<li><em class="ss">칼로리</em> <span v-text="kcal"></span></li>
-					<li><em class="ss">탄수화물</em> <span v-text="tan"></span></li>
-					<li><em class="ss">단백질</em> <span v-text="dan"></span></li>
-					<li><em class="ss">지방</em> <span v-text="gi"></span></li>
-					<li><em class="ss">당류</em> <span v-text="dang"></span></li>
-					<li><em class="ss">나트륨</em> <span v-text="na"></span></li>
-					<li><em class="ss">콜레스테론</em> <span v-text="col"></span></li>
-					<li><em class="ss">포화 지방산</em> <span v-text="fat"></span></li>
-					<li><em class="ss">트랜스지방</em> <span v-text="trans"></span></li>
-				</ul>
-			</div>
-				<h4 align="center">섭취 후</h4>
-		</div>
-	</div>
-	<br>
-	<br>
-
-	<!-- footer -->
-	<jsp:include page="../include/footer.jsp" />
-</body>
-
+</div>
+</script>
 <script>
 	let alarm = "${alarm }";
 	if(alarm) {
 		alert(alarm);
 	}	
+
+	$(document).on("click", "dt" , function(){
+		 $('dd').addClass('hidden');
+		 $(this).next().removeClass('hidden');
+		 if(vi.isEat)
+			 vi.isEat = !vi.isEat;
+	});
+	
+	
 	
 	function sliceSize(dataNum, dataTotal) {
 		return (dataNum / dataTotal) * 360;
@@ -451,30 +587,20 @@ footer {
 		}
 	}
 	
-	let vi = new Vue({
-		el:"#mylist",
+	var maincomp = Vue.component("maincomp", {
+		template:"#main-temp",
 		data(){
 			return {
 				mylist:[],
 				img:[],
-				kcal:<%=nutri[0]%>,
-				tan:<%=nutri[1]%>,
-				dan:<%=nutri[2]%>,
-				gi:<%=nutri[3]%>,
-				dang:<%=nutri[4]%>,
-				na:<%=nutri[5]%>,
-				col:<%=nutri[6]%>,
-				fat:<%=nutri[7]%>,
-				trans:<%=nutri[8]%>,
-				checkList:[],
-				isEat:false
+				checkList:[]
 			}
 		},
 		mounted(){
 			this.loadData();
 		},
 		methods:{
-			loadData(){
+			loadData(){				
 				axios
 				.get("/SafeFood_Web_Spring_GJ_BYG_LSH/session/likelist")
 				.then(response => {
@@ -511,7 +637,7 @@ footer {
 				.finally(() => {this.loading = false});
 			},
 			showChart(){
-				this.isEat = !this.isEat;
+				vi.isEat = !vi.isEat;
 				createPie(".pieID.legend", ".pieID.pie");
 				
 				for(let i=0; i<this.checkList.length; i++){
@@ -519,15 +645,15 @@ footer {
 					.get("/SafeFood_Web_Spring_GJ_BYG_LSH/session/nextfood/"+this.checkList[i])
 					.then(response => {
 						let data = response.data;
-						this.kcal+=data.kcal;
-						this.tan+=data.tan;
-						this.dan+=data.dan;
-						this.gi+=data.gi;
-						this.dang+=data.dang;
-						this.na+=data.na;
-						this.col+=data.col;
-						this.fat+=data.fat;
-						this.trans+=data.trans;
+						vi.kcal+=data.kcal;
+						vi.tan+=data.tan;
+						vi.dan+=data.dan;
+						vi.gi+=data.gi;
+						vi.dang+=data.dang;
+						vi.na+=data.na;
+						vi.col+=data.col;
+						vi.fat+=data.fat;
+						vi.trans+=data.trans;
 						if(i == this.checkList.length-1){
 							createPie(".npieID.nlegend", ".npieID.npie");
 						}
@@ -541,6 +667,69 @@ footer {
 				}
 			}
 		}
+	});
+	
+	var graphcomp = Vue.component("graphcomp", {
+		template:"#graph-temp",
+		data(){
+			return {
+				allergyName:[],
+				allergyCount:[]
+			}
+		},
+		mounted(){
+			this.loadData();
+		},
+		methods:{
+			loadData(){
+				axios
+				.get("/SafeFood_Web_Spring_GJ_BYG_LSH/session/allerglist")
+				.then(response => {
+					this.allergyCount = response.data.alCount;
+					this.allergyName = response.data.alName;
+				})
+				.catch(error =>{
+					console.log(error)
+					this.errored= true;
+				})
+				//함수에서의 this는 window, arrow 함수에서는 vue
+				.finally(() => {this.loading = false;
+				createPie(".fpieID.flegend", ".fpieID.fpie");
+				});
+			}
+		}
+	});
+	
+	let vi = new Vue({
+		el:"#mylist",
+		data: {
+			  currentview: 'maincomp',
+		      allviews:['maincomp','graphcomp'],
+		      kcal:<%=nutri[0]%>,
+				tan:<%=nutri[1]%>,
+				dan:<%=nutri[2]%>,
+				gi:<%=nutri[3]%>,
+				dang:<%=nutri[4]%>,
+				na:<%=nutri[5]%>,
+				col:<%=nutri[6]%>,
+				fat:<%=nutri[7]%>,
+				trans:<%=nutri[8]%>, 
+		      isEat:false
+		   },
+		   components: {
+			   maincomp: maincomp,
+			   graphcomp: graphcomp,
+		     },
+		   methods:{
+			   clickTab(){
+				   if(this.currentview == 'maincomp'){
+					   currentview ='graphcomp';
+				   }
+				   else{
+					   currentview ='maincomp';
+				   }
+			   }
+		   }
 	});
 	</script>
 </html>
