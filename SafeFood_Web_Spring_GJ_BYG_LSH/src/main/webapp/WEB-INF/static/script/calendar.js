@@ -4,7 +4,6 @@ new moment.locale('ko', {
     months: 		"1월_2월_3월_4월_5월_6월_7월_8월_9월_10월_11월_12월".split("_"),
     monthsShort: 	"1월_2월_3월_4월_5월_6월_7월_8월_9월_10월_11월_12월".split("_")
 });
-let userEmail = "${loginUser.email }";
 let contextRoot = "SafeFood_Web_Spring_GJ_BYG_LSH";
 let vi = new Vue({
     el: "#app",
@@ -253,7 +252,6 @@ let vi = new Vue({
     methods: {
     	//해당 유저의 섭취정보를 가져옵니다.
     	loadTakenFoods() {
-    		let emailInfo = userEmail.split(".");
     		let url = "http://"+this.hostname+":8080/"+contextRoot+"/session/takenfoods?";
     		let param = "year="+this.dateContext.format("YYYY")+"&month="+this.dateContext.format('M');
 

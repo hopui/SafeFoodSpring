@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssafy.model.dto.Food;
 import com.ssafy.model.dto.TakenFood;
 import com.ssafy.repository.TakenFoodRepo;
 
@@ -43,5 +44,9 @@ public class TakenFoodService
 	
 	public List<Map<String, Object> > selectTop3Foods(String userEmail) {
 		return dao.selectTop3Foods(userEmail);
+	}
+	
+	public List<Map<String, Object> > selectMyAllFoods(String userEmail) {
+		return dao.selectMyAllFoods(userEmail);
 	}
 }

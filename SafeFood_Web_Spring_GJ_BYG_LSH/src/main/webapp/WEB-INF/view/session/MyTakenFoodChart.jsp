@@ -33,8 +33,42 @@
 
 	<script src="https://unpkg.com/vue"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
-	
 	<script>
+	let chartVi = new Vue({
+		el:"#takenChartApp",
+		data() {
+			return {
+				contextRoot: "SafeFood_Web_Spring_GJ_BYG_LSH",
+				hostname: "localhost",
+				foods: []
+			}
+		},
+		mounted() {
+			this.loadTakenFoods();
+		},
+		methods: {
+			// 사용자가 섭취한 식품 정보를 가져온다.
+			loadTakenFoods() {
+	    		let url = "http://"+this.hostname+":8080/"+this.contextRoot+"/session/takenfoods/foodChart";
+	    		
+	    		axios.get(url)
+				.then(response => {
+					this.foods = [];
+					this.foods = response.data;
+					
+					// 출력해보기
+		            for(let i=0; i < this.foods.length; i++) {
+		            	console.log(i," : ",this.foods[i]);
+		            }
+				}).catch(error => {
+					console.log(error);
+				});
+	    	}
+		}
+	});
+	
+	<!--------------------------------- chart ----------------------------------->
+	
 	var chartDrowFun = {
 	
 	    chartDrow: function () {
@@ -53,22 +87,27 @@
 	            var data = new google.visualization.DataTable();
 	            //그래프에 표시할 컬럼 추가
 	            data.addColumn('datetime', '날짜');
-	            data.addColumn('number', '남성');
-	            data.addColumn('number', '여성');
-	            data.addColumn('number', '전체');
-	
+	            data.addColumn('number', '탄수화물');
+	            data.addColumn('number', '단백질');
+	            data.addColumn('number', '지방');
+	            data.addColumn('number', '당류');
+	            data.addColumn('number', '나트륨');
+	            
 	            //그래프에 표시할 데이터
 	            var dataRow = [];
 	
-	            for (var i = 0; i <= 29; i++) { //랜덤 데이터 생성
-	                var total = Math.floor(Math.random() * 300) + 1;
-	                var man = Math.floor(Math.random() * total) + 1;
-	                var woman = total - man;
-	
-	                dataRow = [new Date('2019', '05', i, '16'), man, woman, total];
+	            //데이터 삽입
+	            for (let food of chartVi.foods) { 
+					let datetime = food.taken_time;
+	            	let carbo = food.carbo;
+	            	let protein = food.protein; 
+	            	let fat = food.fat;
+	            	let sugar = food.sugar;
+	            	let natrium = food.natrium;
+	            	console.log("\t먹은 날짜: ",new Date(datetime));
+	                dataRow = [new Date(datetime), carbo, protein, fat, sugar, natrium];
 	                data.addRow(dataRow);
 	            }
-	
 	
 	            var chart = new google.visualization.ChartWrapper({
 	                chartType: 'LineChart',

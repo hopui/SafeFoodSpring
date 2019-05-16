@@ -9,6 +9,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.ssafy.model.dto.Food;
 import com.ssafy.model.dto.TakenFood;
 
 @Repository
@@ -57,6 +58,11 @@ public class TakenFoodRepo
 	
 	public List<Map<String, Object> > selectTop3Foods(String userEmail) {
 		String stmt = ns + "selectTop3Foods";
+		return tmp.selectList(stmt, userEmail);
+	}
+	
+	public List<Map<String, Object> > selectMyAllFoods(String userEmail) {
+		String stmt = ns + "selectMyAllFoods";
 		return tmp.selectList(stmt, userEmail);
 	}
 }

@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ssafy.model.dto.Food;
 import com.ssafy.model.dto.TakenFood;
 import com.ssafy.model.dto.User;
 import com.ssafy.service.TakenFoodService;
@@ -91,5 +92,12 @@ public class TakenFoodController
 	public List<Map<String, Object> > getTop5Foods(HttpSession session) {
 		String userEmail = ((User)session.getAttribute("loginUser")).getEmail();
 		return service.selectTop3Foods(userEmail);
+	}
+	
+	@GetMapping("/session/takenfoods/foodChart")
+	@ResponseBody
+	public List<Map<String, Object> > getMyTakenFoods(HttpSession session) {
+		String userEmail = ((User)session.getAttribute("loginUser")).getEmail();
+		return service.selectMyAllFoods(userEmail);
 	}
 }
