@@ -30,7 +30,7 @@ import com.ssafy.model.dto.LikeFood;
 import com.ssafy.model.dto.User;
 import com.ssafy.service.FoodService;
 
-//
+
 @Controller
 @CrossOrigin(origins = "*")
 public class FoodController {

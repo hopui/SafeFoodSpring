@@ -387,9 +387,14 @@ footer {
 	<div class="container" id="mylist">
 		<!-- 탭메뉴 만들기 -->
 		<dl>
-			<dt>나의 찜리스트</dt>
+			<dt>나의 영양 그래프</dt>
 			<dd>
-				<maincomp></maincomp>
+			<!-- 실험용 그래프 출력 -->
+				<c:url value="/session/takenFoodChart" var="takenFoodChartUrl" />
+				<div align="center">
+					<iframe width="1000" height="700" frameborder="0" scrolling="no"
+						src="${takenFoodChartUrl }"> </iframe>
+				</div>
 			</dd>
 
 			<dt>나의 섭취 알레르기</dt>
@@ -397,14 +402,9 @@ footer {
 				<graphcomp></graphcomp>
 			</dd>
 
-			<dt>나의 영양 그래프</dt>
+			<dt>나의 찜리스트</dt>
 			<dd class="hidden">
-				<!-- 실험용 그래프 출력 -->
-				<c:url value="/session/takenFoodChart" var="takenFoodChartUrl" />
-				<div align="center">
-					<iframe width="1000" height="700" frameborder="0" scrolling="no"
-						src="${takenFoodChartUrl }"> </iframe>
-				</div>
+				<maincomp></maincomp>
 			</dd>
 		</dl>
 		<div style="width: 1024px; height: 900px;"></div>
@@ -487,7 +487,7 @@ footer {
 						<h5 align="center" v-text="item.foodName"></h5>
 						<div align="center">
 							<c:url value="/session/modify" var="modilUrl"></c:url>
-							<form method="post" action="${modilUrl}">
+							<form method="post" action="${modilUrl}" style="width:68px; display:inline-block;">
 								<input type="hidden" name='quantity' value=0> <input
 									type="hidden" name='name' :value='item.foodName'> <input
 									type="hidden" name='code' :value='item.foodCode'> <input
@@ -496,13 +496,13 @@ footer {
 									<span id="insert" class='glyphicon glyphicon-plus'
 										aria-hidden='true'></span>냠냠
 								</button>
+							</form>
 								<button class='btn btn-danger' id="button_delete"
 									@click="deleteLike(item)">
 
 									<span id="delete" class='glyphicon glyphicon-minus'
 										aria-hidden='true'></span>찜해제
 								</button>
-							</form>
 						</div>
 					</div>
 				</div>
@@ -625,7 +625,7 @@ footer {
 				axios
 				.get("/SafeFood_Web_Spring_GJ_BYG_LSH/session/likefood/"+compare
 						+item.foodCode+"/"
-						+item.foodName+"i")
+						+item.foodName+"i/none")
 				.then(response => {
 						this.loadData();
 				})
