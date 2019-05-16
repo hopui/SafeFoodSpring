@@ -72,15 +72,15 @@ public class UserController
 			for(Food f : list) {
 				Integer quan = (Integer)foodService.selectQuantity(account.getEmail(),String.valueOf( f.getCode()));
 				f.setQuantity(quan);
-				nutriToday[0]+=f.getCalory()+quan;
-				nutriToday[1]+=f.getCarbo()+quan;
-				nutriToday[2]+=f.getProtein()+quan;
-				nutriToday[3]+=f.getFat()+quan;
-				nutriToday[4]+=f.getSugar()+quan;
-				nutriToday[5]+=f.getNatrium()+quan;
-				nutriToday[6]+=f.getChole()+quan;
-				nutriToday[7]+=f.getFattyacid()+quan;
-				nutriToday[8]+=f.getTransfat()+quan;
+				nutriToday[0]+=(f.getCalory()*quan);
+				nutriToday[1]+=(f.getCarbo()*quan);
+				nutriToday[2]+=(f.getProtein()*quan);
+				nutriToday[3]+=(f.getFat()*quan);
+				nutriToday[4]+=(f.getSugar()*quan);
+				nutriToday[5]+=(f.getNatrium()*quan);
+				nutriToday[6]+=(f.getChole()*quan);
+				nutriToday[7]+=(f.getFattyacid()*quan);
+				nutriToday[8]+=(f.getTransfat()*quan);
 			}
 			HttpSession session = req.getSession();
 			session.setAttribute("loginUser", result);

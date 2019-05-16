@@ -164,6 +164,23 @@ public class FoodController {
 	public String doMyTakenInfo(Model model, HttpSession session) {
 		User user = (User) session.getAttribute("loginUser");
 		List<Food> list = service.selectMyfoodAll(user.getEmail());
+		List<Food> flist = service.selectMyFoodToday(user.getEmail());
+		long nutriToday[] = new long[9];
+		for(Food f : flist) {
+			Integer quan = (Integer)service.selectQuantity(user.getEmail(),String.valueOf( f.getCode()));
+			f.setQuantity(quan);
+			nutriToday[0]+=(f.getCalory()*quan);
+			nutriToday[1]+=(f.getCarbo()*quan);
+			nutriToday[2]+=(f.getProtein()*quan);
+			nutriToday[3]+=(f.getFat()*quan);
+			nutriToday[4]+=(f.getSugar()*quan);
+			nutriToday[5]+=(f.getNatrium()*quan);
+			nutriToday[6]+=(f.getChole()*quan);
+			nutriToday[7]+=(f.getFattyacid()*quan);
+			nutriToday[8]+=(f.getTransfat()*quan);
+		}
+		
+		session.setAttribute("nutri", nutriToday);
 		model.addAttribute("foods", list);
 		return "session/MyTakenInfo";
 	}
@@ -183,6 +200,25 @@ public class FoodController {
 
 		map.put("mylike", Llist);
 		map.put("img", img);
+		return map;
+	}
+	
+	@GetMapping("/session/nextfood/{code}")
+	@ResponseBody
+	public Map<String, Object> likeChart(Model model, @PathVariable int code) {
+
+		Map<String, Object> map = new HashMap<>();
+		Food f = (Food) service.selectCode(code);
+		map.put("kcal",f.getCalory());
+		map.put("tan",f.getCarbo());
+		map.put("dan",f.getProtein());
+		map.put("gi",f.getFat());
+		map.put("dang",f.getSugar());
+		map.put("na",f.getNatrium());
+		map.put("col",f.getChole());
+		map.put("fat",f.getFattyacid());
+		map.put("trans",f.getTransfat());
+		
 		return map;
 	}
 

@@ -63,8 +63,8 @@ footer {
 }
 
 .likebox {
-	width: 200px;
-	height: 210px;
+	width: 210px;
+	height: 250px;
 	border-radius: 1.2rem 1.2rem 1.2rem 1.2rem;
 	border: 1px solid #eeeeee;
 	margin-right: 10px;
@@ -176,6 +176,67 @@ section {
 	float: right;
 }
 
+.npieID {
+	display: inline-block;
+}
+
+.npie {
+	height: 200px;
+	width: 200px;
+	position: relative;
+	margin: 0 30px 30px 0;
+}
+
+.npie::before {
+	content: "";
+	display: block;
+	position: absolute;
+	z-index: 1;
+	width: 100px;
+	height: 100px;
+	background: #EEE;
+	border-radius: 50%;
+	top: 50px;
+	left: 50px;
+}
+
+.npie::after {
+	content: "";
+	display: block;
+	width: 120px;
+	height: 2px;
+	background: rgba(0, 0, 0, 0.1);
+	border-radius: 50%;
+	box-shadow: 0 0 3px 4px rgba(0, 0, 0, 0.1);
+	margin: 220px auto;
+}
+
+.nlegend {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+	background: #FFF;
+	padding: 15px;
+	font-size: 13px;
+	box-shadow: 1px 1px 0 #DDD, 2px 2px 0 #BBB;
+	width: 180px;
+}
+
+.nlegend li {
+	height: 1.25em;
+	margin-bottom: 0.7em;
+	padding-left: 0.5em;
+	border-left: 1.25em solid black;
+}
+
+.nlegend em {
+	font-style: normal;
+}
+
+.nlegend span {
+	float: right;
+}
+
 footer {
 	position: fixed;
 	bottom: 0;
@@ -233,14 +294,14 @@ footer {
 		<div>
 			<h3 class="titleFont">나의 찜리스트</h3>
 			<br>
-			<div class="col-sm-12">
+			<div class="col-sm-12" style="margin-bottom: 20px;">
 				<div class="col-sm-2 likebox" v-for="(item, index) in mylist">
-					<div align="right" v-if="item.haccp =='0'"
-						style="margin-right: 5px; margin-top: 5px;">
-						<input type="checkbox" name="food" :value="item.foodCode"
+				<div align="right" style="margin-right: 5px; width: 18px; height: 13px;">
+						<input  v-if="item.haccp =='0'" type="checkbox" name="food" :value="item.foodCode"
 							v-model="checkList">
 					</div>
-
+				
+				<div align="center" style="absolute; width: 200px;height: 250px; padding: 20px 20px;">
 					<div align="center">
 						<c:url value="/static/img/" var="ImgUrl"></c:url>
 						<c:url value="/detail/haccp/" var="hdetailUrl"></c:url>
@@ -261,27 +322,30 @@ footer {
 						<form method="post" action="${modilUrl}">
 							<input type="hidden" name='quantity' value=0> <input
 								type="hidden" name='name' :value='item.foodName'> <input
-								type="hidden" name='eat' :value='item.foodCode'> <input
+								type="hidden" name='code' :value='item.foodCode'> <input
 								type="hidden" name='haccp' :value='item.haccp'>
 							<button class='btn btn-primary' id="button_insert">
 								<span id="insert" class='glyphicon glyphicon-plus'
 									aria-hidden='true'></span>냠냠
 							</button>
-							<button class='btn btn-danger' id="button_insert"
+							<button class='btn btn-danger' id="button_delete"
 								@click="deleteLike(item)">
 
-								<span id="insert" class='glyphicon glyphicon-minus'
+								<span id="delete" class='glyphicon glyphicon-minus'
 									aria-hidden='true'></span>찜해제
 							</button>
 						</form>
 					</div>
 				</div>
 			</div>
+			</div>
 			<button @click="showChart">찜한 식품 예상 통계보기</button>
 		</div>
-		<div class="col-sm-6" id="graph" v-if="isEat">
+		<div class="col-sm-6" id="graph" v-show="isEat">
 			<div class="pieID pie"></div>
-			<%long[] nutri = (long[]) session.getAttribute("nutri");%>
+			<%
+				long[] nutri = (long[]) session.getAttribute("nutri");
+			%>
 			<!--도넛차트-->
 			<ul class="pieID legend">
 				<li><em class="ss">칼로리</em> <span class="kcal"><%=nutri[0]%></span></li>
@@ -293,6 +357,21 @@ footer {
 				<li><em class="ss">콜레스테론</em> <span class="col"><%=nutri[6]%></span></li>
 				<li><em class="ss">포화 지방산</em> <span class="fat"><%=nutri[7]%></span></li>
 				<li><em class="ss">트랜스지방</em> <span class="trans"><%=nutri[8]%></span></li>
+			</ul>
+		</div>
+
+		<div class="col-sm-6" id="graph" v-show="isEat">
+			<div class="npieID npie"></div>
+			<ul class="npieID nlegend">
+				<li><em class="ss">칼로리</em> <span v-text="kcal"></span></li>
+				<li><em class="ss">탄수화물</em> <span v-text="tan"></span></li>
+				<li><em class="ss">단백질</em> <span v-text="dan"></span></li>
+				<li><em class="ss">지방</em> <span v-text="gi"></span></li>
+				<li><em class="ss">당류</em> <span v-text="dang"></span></li>
+				<li><em class="ss">나트륨</em> <span v-text="na"></span></li>
+				<li><em class="ss">콜레스테론</em> <span v-text="col"></span></li>
+				<li><em class="ss">포화 지방산</em> <span v-text="fat"></span></li>
+				<li><em class="ss">트랜스지방</em> <span v-text="trans"></span></li>
 			</ul>
 		</div>
 	</div>
@@ -308,6 +387,55 @@ footer {
 	if(alarm) {
 		alert(alarm);
 	}	
+	
+	function sliceSize(dataNum, dataTotal) {
+		return (dataNum / dataTotal) * 360;
+	}
+	function addSlice(sliceSize, pieElement, offset, sliceID, color) {
+		$(pieElement).append(
+				"<div class='slice "+sliceID+"'><span></span></div>");
+		var offset = offset - 1;
+		var sizeRotation = -179 + sliceSize;
+		$("." + sliceID).css({
+			"transform" : "rotate(" + offset + "deg) translate3d(0,0,0)"
+		});
+		$("." + sliceID + " span").css({
+			"transform" : "rotate(" + sizeRotation + "deg) translate3d(0,0,0)",
+			"background-color" : color
+		});
+	}
+	function iterateSlices(sliceSize, pieElement, offset, dataCount,
+			sliceCount, color) {
+		var sliceID = "s" + dataCount + "-" + sliceCount;
+		var maxSize = 179;
+		if (sliceSize <= maxSize) {
+			addSlice(sliceSize, pieElement, offset, sliceID, color);
+		} else {
+			addSlice(maxSize, pieElement, offset, sliceID, color);
+			iterateSlices(sliceSize - maxSize, pieElement, offset + maxSize,
+					dataCount, sliceCount + 1, color);
+		}
+	}
+	function createPie(dataElement, pieElement) {
+		var listData = [];
+		$(dataElement + " span").each(function() {
+			listData.push(Number($(this).html()));
+		});
+		var listTotal = 0;
+		for (var i = 0; i < listData.length; i++) {
+			listTotal += listData[i];
+		}
+		var offset = 0;
+		var color = [ "cornflowerblue", "olivedrab", "orange", "tomato",
+				"crimson", "purple", "turquoise", "forestgreen", "navy", "gray" ];
+		for (var i = 0; i < listData.length; i++) {
+			var size = sliceSize(listData[i], listTotal);
+			iterateSlices(size, pieElement, offset, i, 0, color[i]);
+			$(dataElement + " li:nth-child(" + (i + 1) + ")").css(
+					"border-color", color[i]);
+			offset += size;
+		}
+	}
 	
 	let vi = new Vue({
 		el:"#mylist",
@@ -369,75 +497,36 @@ footer {
 				.finally(() => {this.loading = false});
 			},
 			showChart(){
+				this.isEat = !this.isEat;
+				createPie(".pieID.legend", ".pieID.pie");
 				
+				for(let i=0; i<this.checkList.length; i++){
+					axios
+					.get("/SafeFood_Web_Spring_GJ_BYG_LSH/session/nextfood/"+this.checkList[i])
+					.then(response => {
+						let data = response.data;
+						this.kcal+=data.kcal;
+						this.tan+=data.tan;
+						this.dan+=data.dan;
+						this.gi+=data.gi;
+						this.dang+=data.dang;
+						this.na+=data.na;
+						this.col+=data.col;
+						this.fat+=data.fat;
+						this.trans+=data.trans;
+						if(i == this.checkList.length-1){
+							createPie(".npieID.nlegend", ".npieID.npie");
+						}
+					})
+					.catch(error =>{
+						console.log(error)
+						this.errored= true;
+					})
+					//함수에서의 this는 window, arrow 함수에서는 vue
+					.finally(() => {this.loading = false});
+				}
 			}
 		}
 	});
-	
-	<%-- 
-	//파이차트 생성
-	<% long[] sum = (long[]) request.getAttribute("nutriSum");%>
-
-		$(".kcal").text('<%=sum[0]%>');
-		$(".tan").text('<%=sum[1]%>');
-		$(".dan").text('<%=sum[2]%>');
-		$(".gi").text('<%=sum[3]%>');
-		$(".dang").text('<%=sum[4]%>');
-		$(".na").text('<%=sum[5]%>');
-		$(".col").text('<%=sum[6]%>');
-		$(".fat").text('<%=sum[7]%>');
-		$(".trans").text('<%=sum[8]%>'); 
-	
-		<%if(sum[0] <1)%> --%>
-			/* createPie(".pieID.legend", ".pieID.pie"); */
-	
-		function sliceSize(dataNum, dataTotal) {
-			return (dataNum / dataTotal) * 360;
-		}
-		function addSlice(sliceSize, pieElement, offset, sliceID, color) {
-			$(pieElement).append(
-					"<div class='slice "+sliceID+"'><span></span></div>");
-			var offset = offset - 1;
-			var sizeRotation = -179 + sliceSize;
-			$("." + sliceID).css({
-				"transform" : "rotate(" + offset + "deg) translate3d(0,0,0)"
-			});
-			$("." + sliceID + " span").css({
-				"transform" : "rotate(" + sizeRotation + "deg) translate3d(0,0,0)",
-				"background-color" : color
-			});
-		}
-		function iterateSlices(sliceSize, pieElement, offset, dataCount,
-				sliceCount, color) {
-			var sliceID = "s" + dataCount + "-" + sliceCount;
-			var maxSize = 179;
-			if (sliceSize <= maxSize) {
-				addSlice(sliceSize, pieElement, offset, sliceID, color);
-			} else {
-				addSlice(maxSize, pieElement, offset, sliceID, color);
-				iterateSlices(sliceSize - maxSize, pieElement, offset + maxSize,
-						dataCount, sliceCount + 1, color);
-			}
-		}
-		function createPie(dataElement, pieElement) {
-			var listData = [];
-			$(dataElement + " span").each(function() {
-				listData.push(Number($(this).html()));
-			});
-			var listTotal = 0;
-			for (var i = 0; i < listData.length; i++) {
-				listTotal += listData[i];
-			}
-			var offset = 0;
-			var color = [ "cornflowerblue", "olivedrab", "orange", "tomato",
-					"crimson", "purple", "turquoise", "forestgreen", "navy", "gray" ];
-			for (var i = 0; i < listData.length; i++) {
-				var size = sliceSize(listData[i], listTotal);
-				iterateSlices(size, pieElement, offset, i, 0, color[i]);
-				$(dataElement + " li:nth-child(" + (i + 1) + ")").css(
-						"border-color", color[i]);
-				offset += size;
-			}
-		}
 	</script>
 </html>
