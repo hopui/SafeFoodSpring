@@ -34,13 +34,12 @@ public class TakenFoodRepo
 		return tmp.insert(stmt, userEmail);
 	}
 	
-	public int deleteTakenFood(String userEmail, String foodCode) {
+	public int deleteTakenFood(String userEmail, String foodCode, String takenTime) {
 		String stmt = ns + "deleteTakenFood";
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("userEmail", userEmail);
 		map.put("foodCode", foodCode);
-		Date d = new Date();
-		map.put("date", d);
+		map.put("time", takenTime);
 		return tmp.delete(stmt, map);
 	}
 

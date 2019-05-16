@@ -303,7 +303,7 @@ th, td{
                             					<input type="number" v-model="info.quantity" min=1 style="width:40px;">
                             				</td>
                             				<td>
-                            					<input type="checkbox" name="checked" :value="info.foodCode" @click="checkFoodCode(info.foodCode)">
+                            					<input type="checkbox" name="checked" :value="info.foodCode" v-model="deleteList">
                             				</td>
                             			</tr>
                             		</tbody>

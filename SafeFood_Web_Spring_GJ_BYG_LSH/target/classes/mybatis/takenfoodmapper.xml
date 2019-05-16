@@ -14,7 +14,7 @@
 	
 	<delete id="deleteTakenFood" parameterType="map">
 		delete from takenFood where user_email=#{userEmail} and food_code=#{foodCode}
-		and day(taken_time)=day(#{date}) and month(taken_time)=month(#{date})
+		and day(taken_time)=day(#{time}) and month(taken_time)=month(#{time})
 	</delete>
 	
 	<update id="updateTakenFood" parameterType="map">
@@ -34,8 +34,8 @@
 	</select>
 	
 	<select id="selectMyAllFoods" resultType="map">
-		select f.*, t.taken_time 
-		from food f 
+		select f.*, t.taken_time
+		from food f
 		join takenfood t on f.code = t.food_code
 		where t.user_email = #{userEmail}
 			  and year(t.taken_time) = year(now()) 

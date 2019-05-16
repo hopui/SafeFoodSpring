@@ -50,11 +50,13 @@ public class TakenFoodController
 		return map;
 	}
 	
-	@DeleteMapping("/session/takenfoods/delete/{foodCode}")
-	public ResponseEntity<Integer> empDelete(@PathVariable String foodCode, HttpSession session)
+	@DeleteMapping("/session/takenfoods/delete/{foodCode}/{takenTime}")
+	public ResponseEntity<Integer> empDelete(@PathVariable String foodCode, @PathVariable String takenTime, HttpSession session)
 	{
+		System.err.println("삭제하려는 날짜: "+takenTime);
+		
 		String email = ((User)session.getAttribute("loginUser")).getEmail();
-		Integer result = service.deleteTakenFood(email, foodCode);
+		Integer result = service.deleteTakenFood(email, foodCode, takenTime);
 		
 		ResponseEntity<Integer> ent;
 		if( result>-1) {

@@ -277,17 +277,12 @@ let vi = new Vue({
 				console.log(error);
 			});
     	},
-    	checkFoodCode(foodCode) {
-    		let idx = this.deleteList.indexOf(foodCode);
-    		if(idx > -1) this.deleteList.splice(idx, 1);
-    		else this.deleteList.push(foodCode);
-    		console.log("삭제할 목록: "+this.deleteList);
-    	},
     	deleteChecked() {
     		let url = "http://"+this.hostname+":8080/"+contextRoot+"/session/takenfoods/delete/";
     		// db에서 삭제
     		for(let i = 0; i < this.deleteList.length; i++){
-				axios.delete(url + this.deleteList[i])
+    			console.log("moment: ", this.selectedDate, ", format: ", this.selectedDate.format("YYYY-MM-DD"));
+				axios.delete(url + this.deleteList[i] +"/"+ this.selectedDate.format("YYYY-MM-DD"))
 				.then(response => {
 					console.log(response);
 					if(i == this.deleteList.length-1) {
