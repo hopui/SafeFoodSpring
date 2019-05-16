@@ -163,7 +163,6 @@ public class FoodController {
 	@GetMapping("/session/myTakenInfo")
 	public String doMyTakenInfo(Model model, HttpSession session) {
 		User user = (User) session.getAttribute("loginUser");
-		List<Food> list = service.selectMyfoodAll(user.getEmail());
 		List<Food> flist = service.selectMyFoodToday(user.getEmail());
 		long nutriToday[] = new long[9];
 		for(Food f : flist) {
@@ -178,9 +177,9 @@ public class FoodController {
 			nutriToday[6]+=(f.getChole()*quan);
 			nutriToday[7]+=(f.getFattyacid()*quan);
 			nutriToday[8]+=(f.getTransfat()*quan);
-		}
-		
-		session.setAttribute("nutri", nutriToday);
+		}				
+		session.setAttribute("nutri", nutriToday);	
+		List<Food> list = service.selectMyfoodAll(user.getEmail());
 		model.addAttribute("foods", list);
 		return "session/MyTakenInfo";
 	}
@@ -223,8 +222,8 @@ public class FoodController {
 	}
 
 	@PostMapping("/session/modify")
-	public String doInsert(String code, String quantity, int haccp, String name, HttpSession session,
-			RedirectAttributes redir) {
+	public String doInsert(String code, String quantity, int haccp, String name, String allergy,
+			HttpSession session,RedirectAttributes redir) {
 		User user = (User) session.getAttribute("loginUser");
 		System.out.println(quantity);
 		boolean check = true;
@@ -232,13 +231,30 @@ public class FoodController {
 			quantity = "1";
 			check = false;
 		}
-		System.out.println(code+"!!!!!");
+		
 		if (quantity != null && !quantity.trim().equals("")) {
-			int result = service.insertMyfood(user.getEmail(), code, Integer.parseInt(quantity), haccp, name);
+			int result = service.insertMyfood(user.getEmail(), code, Integer.parseInt(quantity), haccp, name,allergy);
 
-			if (result > 0)
+			if (result > 0) {
+				List<Food> flist = service.selectMyFoodToday(user.getEmail());
+				long nutriToday[] = new long[9];
+				for(Food f : flist) {
+					Integer quan = (Integer)service.selectQuantity(user.getEmail(),String.valueOf( f.getCode()));
+					f.setQuantity(quan);
+					nutriToday[0]+=(f.getCalory()*quan);
+					nutriToday[1]+=(f.getCarbo()*quan);
+					nutriToday[2]+=(f.getProtein()*quan);
+					nutriToday[3]+=(f.getFat()*quan);
+					nutriToday[4]+=(f.getSugar()*quan);
+					nutriToday[5]+=(f.getNatrium()*quan);
+					nutriToday[6]+=(f.getChole()*quan);
+					nutriToday[7]+=(f.getFattyacid()*quan);
+					nutriToday[8]+=(f.getTransfat()*quan);
+				}				
+				session.setAttribute("nutri", nutriToday);		
 				redir.addFlashAttribute("alarm", "섭취 등록 성공했습니다.");
-			else
+			
+			}else
 				redir.addFlashAttribute("alarm", "섭취 등록 실패했습니다.");
 		}
 

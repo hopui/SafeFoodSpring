@@ -10,6 +10,7 @@ public class TakenFood
 	private int quantity;
 	private String foodCode;
 	private int haccp;
+	private String allergy;
 	
 	public TakenFood(){}
 	public TakenFood(String userEmail, String etc, Date takenTime, int quantity, String foodCode, int haccp)
@@ -82,6 +83,13 @@ public class TakenFood
 		this.etc = etc;
 	}
 
+	
+	public String getAllergy() {
+		return allergy;
+	}
+	public void setAllergy(String allergy) {
+		this.allergy = allergy;
+	}
 	@Override
 	public String toString()
 	{

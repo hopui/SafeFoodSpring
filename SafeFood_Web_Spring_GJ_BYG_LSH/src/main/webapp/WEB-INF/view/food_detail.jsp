@@ -261,7 +261,6 @@ footer {
 
 				<!--  도넛차트 -->
 				<ul class="pieID legend">
-					<li><em class="ss">칼로리</em> <span class="kcal"></span></li>
 					<li><em class="ss">탄수화물</em> <span class="tan"></span></li>
 					<li><em class="ss">단백질</em> <span class="dan"></span></li>
 					<li><em class="ss">지방</em> <span class="gi"></span></li>
@@ -272,49 +271,92 @@ footer {
 					<li><em class="ss">트랜스지방</em> <span class="trans"></span></li>
 				</ul>
 			</div>
-
+			<%
+				long[] nutri = (long[]) session.getAttribute("nutri");
+			%>
+			
 			<!--  도넛차트 옆 테이블 -->
 			<div class="col-sm-6" id="detail">
 				<table class="table text-center">
 					<tr>
 						<td>일일 제공량</td>
-						<td class="daily"></td>
+						<td></td>
+						<td>
+						<span class="daily"></span></td>
 					</tr>
 					<tr>
 						<td>칼로리</td>
-						<td class="kcal"></td>
+						<td>
+						<%if(nutri[0] > 1300) {%>
+						<span style="color: red">과다섭취 주의</span>
+						<% }%></td>
+						<td>
+						<span class="kcal"></span></td>
 					</tr>
 					<tr>
 						<td>탄수화물</td>
-						<td class="tan"></td>
+						<td>
+						<%if(nutri[1] > 230) {%>
+						<span style="color: red">과다섭취 주의</span>
+						<% }%></td>
+						<td>
+						<span class="tan"></span></td>
 					</tr>
 					<tr>
 						<td>단백질</td>
-						<td class="dan"></td>
+						<td>
+						<%if(nutri[2] > 27.5) {%>
+						<span style="color: red">과다섭취 주의</span>
+						<% }%></td>
+						<td>
+						<span class="dan"></span></td>
 					</tr>
 					<tr>
 						<td>지방</td>
-						<td class="gi"></td>
+						<td>
+						<%if(nutri[3] > 800) {%>
+						<span style="color: red">과다섭취 주의</span>
+						<% }%>
+						</td>
+						<td>
+						<span class="gi"></span></td>
 					</tr>
 					<tr>
 						<td>당류</td>
-						<td class="dang"></td>
+						<td>
+						<%if(nutri[4] > 12.5) {%>
+						<span style="color: red">과다섭취 주의</span>
+						<% }%></td>
+						<td>
+						<span class="dang"></span></td>
 					</tr>
 					<tr>
 						<td>나트륨</td>
-						<td class="na"></td>
+						<td>
+							<%if(nutri[5] > 750) {%>
+						<span style="color: red">과다섭취 주의</span>
+							<% }%>
+						</td>
+						<td>
+						<span class="na"></span></td>
 					</tr>
 					<tr>
 						<td>콜레스테롤</td>
-						<td class="col"></td>
+							<td></td>
+						<td>
+						<span class="col"></span></td>
 					</tr>
 					<tr>
 						<td>포화 지방산</td>
-						<td class="fat"></td>
+							<td></td>
+						<td>
+						<span class="fat"></span></td>
 					</tr>
 					<tr>
 						<td>트랜스지방</td>
-						<td class="trans"></td>
+							<td></td>
+						<td>
+						<span class="trans"></span></td>
 					</tr>
 				</table>
 			</div>

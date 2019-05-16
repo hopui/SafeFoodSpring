@@ -293,8 +293,7 @@ footer {
 	<c:url value="/session/takenFoodChart" var="takenFoodChartUrl" />
 	<div align="center">
 		<iframe width="1280" height="800" frameborder="0" scrolling="no"
-			src="${takenFoodChartUrl }">
-		</iframe>
+			src="${takenFoodChartUrl }"> </iframe>
 	</div>
 
 	<div class="container" id="mylist">
@@ -303,88 +302,96 @@ footer {
 			<br>
 			<div class="col-sm-12" style="margin-bottom: 20px;">
 				<div class="col-sm-2 likebox" v-for="(item, index) in mylist">
-				<div align="right" style="margin-right: 5px; width: 18px; height: 13px;">
-						<input  v-if="item.haccp =='0'" type="checkbox" name="food" :value="item.foodCode"
-							v-model="checkList">
+					<div align="right"
+						style="margin-right: 5px; width: 18px; height: 13px;">
+						<input v-if="item.haccp =='0'" type="checkbox" name="food"
+							:value="item.foodCode" v-model="checkList">
 					</div>
-				
-				<div align="center" style="absolute; width: 200px;height: 250px; padding: 20px 20px;">
-					<div align="center">
-						<c:url value="/static/img/" var="ImgUrl"></c:url>
-						<c:url value="/detail/haccp/" var="hdetailUrl"></c:url>
-						<a class="likeimg" v-if="item.haccp =='1'"
-							:href="'${hdetailUrl}'+item.foodCode+'/'+item.foodName"> <img
-							alt="#" :src="'${ImgUrl }'+img[index]">
-						</a>
 
-						<c:url value="/detail/" var="detailUrl"></c:url>
-						<a v-if="item.haccp =='0'" class="likeimg"
-							:href="'${detailUrl}'+item.foodCode"> <img alt="#"
-							:src="'${ImgUrl }'+img[index]">
-						</a>
-					</div>
-					<h5 align="center" v-text="item.foodName"></h5>
-					<div align="center">
-						<c:url value="/session/modify" var="modilUrl"></c:url>
-						<form method="post" action="${modilUrl}">
-							<input type="hidden" name='quantity' value=0> <input
-								type="hidden" name='name' :value='item.foodName'> <input
-								type="hidden" name='code' :value='item.foodCode'> <input
-								type="hidden" name='haccp' :value='item.haccp'>
-							<button class='btn btn-primary' id="button_insert">
-								<span id="insert" class='glyphicon glyphicon-plus'
-									aria-hidden='true'></span>냠냠
-							</button>
-							<button class='btn btn-danger' id="button_delete"
-								@click="deleteLike(item)">
+					<div align="center"
+						style="width: 200px; height: 250px; padding: 20px 20px;">
+						<div align="center">
+							<c:url value="/static/img/" var="ImgUrl"></c:url>
+							<c:url value="/detail/haccp/" var="hdetailUrl"></c:url>
+							<a class="likeimg" v-if="item.haccp =='1'"
+								:href="'${hdetailUrl}'+item.foodCode+'/'+item.foodName"> <img
+								alt="#" :src="'${ImgUrl }'+img[index]">
+							</a>
 
-								<span id="delete" class='glyphicon glyphicon-minus'
-									aria-hidden='true'></span>찜해제
-							</button>
-						</form>
+							<c:url value="/detail/" var="detailUrl"></c:url>
+							<a v-if="item.haccp =='0'" class="likeimg"
+								:href="'${detailUrl}'+item.foodCode"> <img alt="#"
+								:src="'${ImgUrl }'+img[index]">
+							</a>
+						</div>
+						<h5 align="center" v-text="item.foodName"></h5>
+						<div align="center">
+							<c:url value="/session/modify" var="modilUrl"></c:url>
+							<form method="post" action="${modilUrl}">
+								<input type="hidden" name='quantity' value=0> <input
+									type="hidden" name='name' :value='item.foodName'> <input
+									type="hidden" name='code' :value='item.foodCode'> <input
+									type="hidden" name='haccp' :value='item.haccp'>
+								<button class='btn btn-primary' id="button_insert">
+									<span id="insert" class='glyphicon glyphicon-plus'
+										aria-hidden='true'></span>냠냠
+								</button>
+								<button class='btn btn-danger' id="button_delete"
+									@click="deleteLike(item)">
+
+									<span id="delete" class='glyphicon glyphicon-minus'
+										aria-hidden='true'></span>찜해제
+								</button>
+							</form>
+						</div>
 					</div>
 				</div>
 			</div>
-			</div>
-			<button @click="showChart">찜한 식품 예상 통계보기</button>
+			<button class="btn btn-success" @click="showChart">찜한 식품 예상 통계보기</button>
 		</div>
 		<div class="col-sm-6" id="graph" v-show="isEat">
-			<div class="pieID pie"></div>
 			<%
 				long[] nutri = (long[]) session.getAttribute("nutri");
 			%>
 			<!--도넛차트-->
-			<ul class="pieID legend">
-				<li><em class="ss">칼로리</em> <span class="kcal"><%=nutri[0]%></span></li>
-				<li><em class="ss">탄수화물</em> <span class="tan"><%=nutri[1]%></span></li>
-				<li><em class="ss">단백질</em> <span class="dan"><%=nutri[2]%></span></li>
-				<li><em class="ss">지방</em> <span class="gi"><%=nutri[3]%></span></li>
-				<li><em class="ss">당류</em> <span class="dang"><%=nutri[4]%></span></li>
-				<li><em class="ss">나트륨</em> <span class="na"><%=nutri[5]%></span></li>
-				<li><em class="ss">콜레스테론</em> <span class="col"><%=nutri[6]%></span></li>
-				<li><em class="ss">포화 지방산</em> <span class="fat"><%=nutri[7]%></span></li>
-				<li><em class="ss">트랜스지방</em> <span class="trans"><%=nutri[8]%></span></li>
-			</ul>
+			<div align="center" style="margin-bottom: 20px">
+				<div class="pieID pie"></div>
+				<ul class="pieID legend">
+					<li><em class="ss">칼로리</em> <span class="kcal"><%=nutri[0]%></span></li>
+					<li><em class="ss">탄수화물</em> <span class="tan"><%=nutri[1]%></span></li>
+					<li><em class="ss">단백질</em> <span class="dan"><%=nutri[2]%></span></li>
+					<li><em class="ss">지방</em> <span class="gi"><%=nutri[3]%></span></li>
+					<li><em class="ss">당류</em> <span class="dang"><%=nutri[4]%></span></li>
+					<li><em class="ss">나트륨</em> <span class="na"><%=nutri[5]%></span></li>
+					<li><em class="ss">콜레스테론</em> <span class="col"><%=nutri[6]%></span></li>
+					<li><em class="ss">포화 지방산</em> <span class="fat"><%=nutri[7]%></span></li>
+					<li><em class="ss">트랜스지방</em> <span class="trans"><%=nutri[8]%></span></li>
+				</ul>
+			</div>
+			<h4 align="center">섭취 전</h4>
 		</div>
 
 		<div class="col-sm-6" id="graph" v-show="isEat">
-			<div class="npieID npie"></div>
-			<ul class="npieID nlegend">
-				<li><em class="ss">칼로리</em> <span v-text="kcal"></span></li>
-				<li><em class="ss">탄수화물</em> <span v-text="tan"></span></li>
-				<li><em class="ss">단백질</em> <span v-text="dan"></span></li>
-				<li><em class="ss">지방</em> <span v-text="gi"></span></li>
-				<li><em class="ss">당류</em> <span v-text="dang"></span></li>
-				<li><em class="ss">나트륨</em> <span v-text="na"></span></li>
-				<li><em class="ss">콜레스테론</em> <span v-text="col"></span></li>
-				<li><em class="ss">포화 지방산</em> <span v-text="fat"></span></li>
-				<li><em class="ss">트랜스지방</em> <span v-text="trans"></span></li>
-			</ul>
+			<div align="center" style="margin-bottom: 20px">
+				<div class="npieID npie"></div>
+				<ul class="npieID nlegend">
+					<li><em class="ss">칼로리</em> <span v-text="kcal"></span></li>
+					<li><em class="ss">탄수화물</em> <span v-text="tan"></span></li>
+					<li><em class="ss">단백질</em> <span v-text="dan"></span></li>
+					<li><em class="ss">지방</em> <span v-text="gi"></span></li>
+					<li><em class="ss">당류</em> <span v-text="dang"></span></li>
+					<li><em class="ss">나트륨</em> <span v-text="na"></span></li>
+					<li><em class="ss">콜레스테론</em> <span v-text="col"></span></li>
+					<li><em class="ss">포화 지방산</em> <span v-text="fat"></span></li>
+					<li><em class="ss">트랜스지방</em> <span v-text="trans"></span></li>
+				</ul>
+			</div>
+				<h4 align="center">섭취 후</h4>
 		</div>
 	</div>
 	<br>
 	<br>
-	
+
 	<!-- footer -->
 	<jsp:include page="../include/footer.jsp" />
 </body>
