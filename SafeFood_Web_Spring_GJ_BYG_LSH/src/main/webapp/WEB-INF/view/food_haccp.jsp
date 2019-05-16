@@ -276,7 +276,7 @@ footer {
 					<form id="eat_form" method="post" action="${modilUrl}">
 						<label>Quantity</label> 
 						<input type="number" class="form-control"name='quantity'> <br>
-						
+						 <input type="hidden" name='allergy' v-model="allergy">
 						 <input type="hidden" name='code' v-model="code">
 						 <input type="hidden" name='name' v-model='name'> 
 						 <input hidden='true' name='haccp' value=1>
@@ -348,7 +348,8 @@ footer {
 				image:'apple_origin.png',
 				rank:[],
 				code:'',
-				name:''
+				name:'',
+				allergy:''
 			}
 		},
 		mounted(){
@@ -390,6 +391,7 @@ footer {
 					}
 					this.code = this.food.prdlstReportNo;
 					this.name = this.food.prdlstNm;
+					this.allergy = this.food.allergy;
 					this.likefood('c'); 
 				})
 				.catch(error =>{
