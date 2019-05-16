@@ -541,32 +541,32 @@ footer {
 	function sliceSize(dataNum, dataTotal) {
 		return (dataNum / dataTotal) * 360;
 	}
-	function addSlice(sliceSize, pieElement, offset, sliceID, color) {
+	function addSlice(sliceSize, pieElement, offset, sliceID, color,comp) {
 		$(pieElement).append(
-				"<div class='slice "+sliceID+"'><span></span></div>");
+				"<div class='slice "+comp+sliceID+"'><span></span></div>");
 		var offset = offset - 1;
 		var sizeRotation = -179 + sliceSize;
-		$("." + sliceID).css({
+		$("." +comp+ sliceID).css({
 			"transform" : "rotate(" + offset + "deg) translate3d(0,0,0)"
 		});
-		$("." + sliceID + " span").css({
+		$("." +comp+ sliceID + " span").css({
 			"transform" : "rotate(" + sizeRotation + "deg) translate3d(0,0,0)",
 			"background-color" : color
 		});
 	}
 	function iterateSlices(sliceSize, pieElement, offset, dataCount,
-			sliceCount, color) {
+			sliceCount, color,comp) {
 		var sliceID = "s" + dataCount + "-" + sliceCount;
 		var maxSize = 179;
 		if (sliceSize <= maxSize) {
-			addSlice(sliceSize, pieElement, offset, sliceID, color);
+			addSlice(sliceSize, pieElement, offset, sliceID, color, comp);
 		} else {
-			addSlice(maxSize, pieElement, offset, sliceID, color);
+			addSlice(maxSize, pieElement, offset, sliceID, color, comp);
 			iterateSlices(sliceSize - maxSize, pieElement, offset + maxSize,
-					dataCount, sliceCount + 1, color);
+					dataCount, sliceCount + 1, color, comp);
 		}
 	}
-	function createPie(dataElement, pieElement) {
+	function createPie(dataElement, pieElement, comp) {
 		var listData = [];
 		$(dataElement + " span").each(function() {
 			listData.push(Number($(this).html()));
@@ -580,7 +580,7 @@ footer {
 				"crimson", "purple", "turquoise", "forestgreen", "navy", "gray" ];
 		for (var i = 0; i < listData.length; i++) {
 			var size = sliceSize(listData[i], listTotal);
-			iterateSlices(size, pieElement, offset, i, 0, color[i]);
+			iterateSlices(size, pieElement, offset, i, 0, color[i],comp);
 			$(dataElement + " li:nth-child(" + (i + 1) + ")").css(
 					"border-color", color[i]);
 			offset += size;
@@ -619,13 +619,17 @@ footer {
 			},
 			deleteLike(item){
 				let compare='';
-				if(item.haccp=='1')
+				let group='';
+				if(item.haccp=='1'){
 					compare= 'haccp/';
+				}else{
+					group="/"+item.foodGroup;
+				}
 				
 				axios
 				.get("/SafeFood_Web_Spring_GJ_BYG_LSH/session/likefood/"+compare
 						+item.foodCode+"/"
-						+item.foodName+"i/none")
+						+item.foodName+"i"+group)
 				.then(response => {
 						this.loadData();
 				})
@@ -638,8 +642,19 @@ footer {
 			},
 			showChart(){
 				vi.isEat = !vi.isEat;
-				createPie(".pieID.legend", ".pieID.pie");
+				createPie(".pieID.legend", ".pieID.pie","");
 				
+				if(vi.isEat){
+					vi.kcal=vi.nutris[0];
+					vi.tan=vi.nutris[1];
+					vi.dan=vi.nutris[2];
+					vi.gi=vi.nutris[3];
+					vi.dang=vi.nutris[4];
+					vi.na=vi.nutris[5];
+					vi.col=vi.nutris[6];
+					vi.fat=vi.nutris[7];
+					vi.trans=vi.nutris[8];
+					
 				for(let i=0; i<this.checkList.length; i++){
 					axios
 					.get("/SafeFood_Web_Spring_GJ_BYG_LSH/session/nextfood/"+this.checkList[i])
@@ -654,16 +669,18 @@ footer {
 						vi.col+=data.col;
 						vi.fat+=data.fat;
 						vi.trans+=data.trans;
-						if(i == this.checkList.length-1){
-							createPie(".npieID.nlegend", ".npieID.npie");
-						}
 					})
 					.catch(error =>{
 						console.log(error)
 						this.errored= true;
 					})
 					//함수에서의 this는 window, arrow 함수에서는 vue
-					.finally(() => {this.loading = false});
+					.finally(() => {this.loading = false;
+					if(i == this.checkList.length-1){
+						createPie(".npieID.nlegend", ".npieID.npie","n");
+					}
+					});
+				}
 				}
 			}
 		}
@@ -694,7 +711,7 @@ footer {
 				})
 				//함수에서의 this는 window, arrow 함수에서는 vue
 				.finally(() => {this.loading = false;
-				createPie(".fpieID.flegend", ".fpieID.fpie");
+				createPie(".fpieID.flegend", ".fpieID.fpie","f");
 				});
 			}
 		}
@@ -705,15 +722,17 @@ footer {
 		data: {
 			  currentview: 'maincomp',
 		      allviews:['maincomp','graphcomp'],
-		      kcal:<%=nutri[0]%>,
-				tan:<%=nutri[1]%>,
-				dan:<%=nutri[2]%>,
-				gi:<%=nutri[3]%>,
-				dang:<%=nutri[4]%>,
-				na:<%=nutri[5]%>,
-				col:<%=nutri[6]%>,
-				fat:<%=nutri[7]%>,
-				trans:<%=nutri[8]%>, 
+		      kcal:0,
+				tan:0,
+				dan:0,
+				gi:0,
+				dang:0,
+				na:0,
+				col:0,
+				fat:0,
+				trans:0, 
+				nutris:[<%=nutri[0]%>,<%=nutri[1]%>,<%=nutri[2]%>,<%=nutri[3]%>,<%=nutri[4]%>,
+					<%=nutri[5]%>,<%=nutri[6]%>,<%=nutri[7]%>,<%=nutri[8]%>],
 		      isEat:false
 		   },
 		   components: {

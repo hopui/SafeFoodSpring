@@ -64,7 +64,7 @@
 	<select id="selectQuantity" resultType="int" parameterType="map">
 		select quantity from takenfood 
 		where user_email = #{email} and food_code = #{code} 
-		and day(taken_time)=day(#{date}) and month(taken_time)=month(#{date})
+		and day(taken_time)=day(now()) and month(taken_time)=month(now())
 	</select>
 	<select id="selectHit" resultType="int" parameterType="map">
 		select hit from hitfood 
@@ -89,7 +89,7 @@
 	<update id="updateMyFood" parameterType="map">
 		update takenfood set quantity = #{quantity} 
 		where user_email =#{email} and food_code=#{code}
-		and day(taken_time)=day(#{date}) and month(taken_time)=month(#{date})
+		and day(taken_time)=day(now()) and month(taken_time)=month(now())
 	</update>
 	<update id="updateHit" parameterType="map">
 		update hitfood set hit = #{hit} where food_code = #{code} and user_email= #{email} 
