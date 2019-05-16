@@ -83,4 +83,10 @@ public class MainController
 	{
 		return "/session/MyBestFoodInfo";
 	}
+	
+	@GetMapping("/session/takenFoodChart")
+	public String goToMyTakenFoodChart(Model model)
+	{
+		return "/session/MyTakenFoodChart";
+	}
 }
