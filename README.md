@@ -38,3 +38,28 @@
 > 식품 영양정보 공공데이터를 활용하여 식품군, 식품명, 가공업체별 리스트를 제공
 > ```
 >
+> ### 3. 나의 섭취식품 페이지
+> ***
+> ![메인페이지](./SafeFood_Web_Spring_GJ_BYG_LSH/캡처/F08_섭취식품_데이터관리.PNG)
+>
+> * 섭취식품 달력 하단의 세가지 탭
+>
+> ![메인페이지](./SafeFood_Web_Spring_GJ_BYG_LSH/캡처/F09_섭취식품_영양소별통계.PNG)
+> ![메인페이지](./SafeFood_Web_Spring_GJ_BYG_LSH/캡처/F12_찜한식품_통계보기.PNG)
+> 
+> ```
+> 회원의 섭취 식품과 찜한 식품을 관리하고 통계를 보여주는 페이지
+> Google Chart Api와 Vue를 활용
+> ```
+>
+> ### 4. 공지사항과 로그인 기능
+> ***
+> ```
+> * Spring Boot로 공지사항 Restful Api를 제공하고 그 데이터를 게시판 형식으로 보여주는 페이지.
+> * 회원관리와 로그인 구현
+> ```
+>
+> ![메인페이지](./SafeFood_Web_Spring_GJ_BYG_LSH/캡처/F07_공지사항_01.PNG)
+> ***
+> ![메인페이지](./SafeFood_Web_Spring_GJ_BYG_LSH/캡처/F05_회원관리.PNG)
+> ![메인페이지](./SafeFood_Web_Spring_GJ_BYG_LSH/캡처/F06_로그인관리.PNG)
