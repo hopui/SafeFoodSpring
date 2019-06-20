@@ -45,7 +45,7 @@
 > * 섭취식품 달력 하단의 세가지 탭
 >
 > ![메인페이지](./SafeFood_Web_Spring_GJ_BYG_LSH/캡처/F09_섭취식품_영양소별통계.PNG)
-> ![메인페이지](./SafeFood_Web_Spring_GJ_BYG_LSH/캡처/F12_찜한식품_통계보기.PNG)
+> ![메인페이지](./SafeFood_Web_Spring_GJ_BYG_LSH/캡처/F12_찜한식품_통계보기.png)
 > 
 > ```
 > 회원의 섭취 식품과 찜한 식품을 관리하고 통계를 보여주는 페이지
@@ -62,4 +62,4 @@
 > ![메인페이지](./SafeFood_Web_Spring_GJ_BYG_LSH/캡처/F07_공지사항_01.PNG)
 > ***
 > ![메인페이지](./SafeFood_Web_Spring_GJ_BYG_LSH/캡처/F05_회원관리.PNG)
-> ![메인페이지](./SafeFood_Web_Spring_GJ_BYG_LSH/캡처/F06_로그인관리.PNG)
+> ![메인페이지](./SafeFood_Web_Spring_GJ_BYG_LSH/캡처/F06_로그인관리.png)
