@@ -28,7 +28,7 @@
 >
 > ### 2. 식품 영양정보 DB
 > ***
-> ![메인페이지](./SafeFood_Web_Spring_GJ_BYG_LSH/캡처/F21_검색기능.PNG)
+> ![메인페이지](./SafeFood_Web_Spring_GJ_BYG_LSH/캡처/F21_검색기능.png)
 > ```
 > 식품 영양정보 공공데이터를 활용하여 식품군, 식품명, 가공업체별 리스트를 제공
 > ```
