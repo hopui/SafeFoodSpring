@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.repo.BoardMapper">
+	<select id="selectPage" parameterType="int" resultType="board">
+	<bind name="pattern1" value="(_parameter-1)*10" />
+	<bind name="pattern2" value="_parameter+9" />
+		select
+		b.board_id, b.title, b.user_email, b.hit, b.reg_date, b.content, u.name
+		from board b, user u
+		where b.user_email = u.email
+		limit #{pattern1}, #{pattern2}
+	</select>
+	<select id="select" resultType="board">
+		select b.board_id, b.title, u.name, b.hit, b.reg_date, b.content, b.user_email
+		from board b join user u on b.user_email = u.email
+		where b.board_id = #{id}
+	</select>
+
+	<select id="selectById" resultType="board">
+		select b.board_id, b.title, u.name, b.hit, b.reg_date, b.content
+		from board b join user u on b.user_email = u.email
+		where b.user_email= #{email}
+	</select>
+	
+	<select id="selectCount" resultType="int">
+		select count(*) from board where board_id=1
+	</select>
+
+	<insert id="insertBoard" parameterType="board">
+		insert into board(title, user_email, content) values(#{title},#{userEmail},#{content})
+	</insert>
+
+	<update id="updateBoard" parameterType="board">
+		update board set title = #{title}, content=#{content} where board_id=#{boardId}
+	</update>
+
+	<delete id="deleteBoard">
+		delete from board where board_id=#{boardId}
+	</delete> 
+
+	<update id="updateHit">
+		update board set hit=hit+1 where board_id=#{boardId}
+	</update>
+	
+	<!-- 검색기능 -->
+	<select id="selectByName" resultType="board">
+		<bind name="searchValue" value="'%' + _parameter + '%'" />
+		select b.board_id, b.title, u.name, b.hit, b.reg_date, b.content
+		from board b join user u on b.user_email = u.email
+		where u.name like #{searchValue}
+	</select>
+	<select id="selectByTitle" resultType="board">
+		<bind name="searchValue" value="'%' + _parameter + '%'" />
+		select b.board_id, b.title, u.name, b.hit, b.reg_date, b.content
+		from board b join user u on b.user_email = u.email
+		where b.title like #{searchValue}
+	</select>
+	<select id="selectByContent" resultType="board">
+		<bind name="searchValue" value="'%' + _parameter + '%'" />
+		select b.board_id, b.title, u.name, b.hit, b.reg_date, b.content
+		from board b join user u on b.user_email = u.email
+		where b.content like #{searchValue}
+	</select>
+</mapper>
