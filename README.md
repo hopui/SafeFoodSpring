@@ -10,4 +10,7 @@
 > 
 > ### 1. HACCP 식품 데이터
 > ***
->![석촌호수 러버덕](http://cfile6.uf.tistory.com/image/2426E646543C9B4532C7B0)
+> ![메인페이지](./SafeFood_Web_Spring_GJ_BYG_LSH/캡처/F01_식품명검색.PNG)
+> ```
+> 식품 안전 정보의 메인페이지. HACCP인증 식품들을 위주로 노출되며 식품명, 보고번호로 검색할 수 있다.
+> ```
